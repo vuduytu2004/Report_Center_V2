@@ -280,7 +280,7 @@ namespace Report_Center.Presentation
 
         private async void bt_BC_Click(object sender, EventArgs e)
         {
-            if (Pro_name.Text ==null) { return; }
+            if (Pro_name.Text ==null || Pro_name.Text== "" || Pro_name.Text == "1") { return; }
 
             progressBar1.Style = ProgressBarStyle.Marquee;
 

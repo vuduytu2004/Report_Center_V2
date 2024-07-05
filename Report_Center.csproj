@@ -172,6 +172,12 @@
     <Compile Include="Presentation\fr_BLe_BBuon_By_SKU_VH.designer.cs">
       <DependentUpon>fr_BLe_BBuon_By_SKU_VH.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\fr_change_pass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\fr_change_pass.designer.cs">
+      <DependentUpon>fr_change_pass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\fr_CheckConnects.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_BLe_BBuon_By_SKU_VH.resx">
       <DependentUpon>fr_BLe_BBuon_By_SKU_VH.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\fr_change_pass.resx">
+      <DependentUpon>fr_change_pass.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_CheckConnects.resx">
       <DependentUpon>fr_CheckConnects.cs</DependentUpon>
