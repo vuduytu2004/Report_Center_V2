@@ -48,7 +48,7 @@
             this.dgvUsers.AllowUserToAddRows = false;
             this.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUsers.Location = new System.Drawing.Point(8, 38);
-            this.dgvUsers.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvUsers.Margin = new System.Windows.Forms.Padding(2);
             this.dgvUsers.Name = "dgvUsers";
             this.dgvUsers.ReadOnly = true;
             this.dgvUsers.RowHeadersWidth = 62;
@@ -66,7 +66,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvUserPermissions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUserPermissions.Location = new System.Drawing.Point(638, 38);
-            this.dgvUserPermissions.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvUserPermissions.Margin = new System.Windows.Forms.Padding(2);
             this.dgvUserPermissions.Name = "dgvUserPermissions";
             this.dgvUserPermissions.RowHeadersWidth = 62;
             this.dgvUserPermissions.RowTemplate.Height = 28;
@@ -80,7 +80,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dgvRoleGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRoleGroup.Location = new System.Drawing.Point(8, 286);
-            this.dgvRoleGroup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvRoleGroup.Margin = new System.Windows.Forms.Padding(2);
             this.dgvRoleGroup.Name = "dgvRoleGroup";
             this.dgvRoleGroup.RowHeadersWidth = 62;
             this.dgvRoleGroup.RowTemplate.Height = 28;
@@ -91,7 +91,7 @@
             // 
             this.cmbUsers.FormattingEnabled = true;
             this.cmbUsers.Location = new System.Drawing.Point(885, 16);
-            this.cmbUsers.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbUsers.Margin = new System.Windows.Forms.Padding(2);
             this.cmbUsers.Name = "cmbUsers";
             this.cmbUsers.Size = new System.Drawing.Size(73, 21);
             this.cmbUsers.TabIndex = 4;
@@ -102,7 +102,7 @@
             // txt_Fillter
             // 
             this.txt_Fillter.Location = new System.Drawing.Point(99, 14);
-            this.txt_Fillter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txt_Fillter.Margin = new System.Windows.Forms.Padding(2);
             this.txt_Fillter.Name = "txt_Fillter";
             this.txt_Fillter.Size = new System.Drawing.Size(130, 20);
             this.txt_Fillter.TabIndex = 6;
@@ -177,9 +177,9 @@
             this.Controls.Add(this.cmbUsers);
             this.Controls.Add(this.dgvUserPermissions);
             this.Controls.Add(this.dgvUsers);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "fr_Permissions";
-            this.Text = "fr_Permissions";
+            this.Text = "Phân Quyền cho NSD";
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserPermissions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRoleGroup)).EndInit();

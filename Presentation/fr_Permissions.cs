@@ -53,7 +53,8 @@ namespace Report_Center.Presentation
             {
                 connection.Open();
 
-                string query = "SELECT MenuItemID, MenuItemName, ParentMenuID FROM MenuItems WITH (NOLOCK) where Enable_Check=1 ORDER BY COALESCE(ParentMenuID, MenuItemID), MenuItemID;";
+                string query = "SELECT MenuItemID, MenuItemName, ParentMenuID FROM MenuItems WITH (NOLOCK) where Enable_Check=1 ORDER BY lever1,lever2,lever3;";
+                //string query = "SELECT MenuItemID, MenuItemName, ParentMenuID FROM MenuItems WITH (NOLOCK) where Enable_Check=1 ORDER BY COALESCE(ParentMenuID, MenuItemID), MenuItemID;";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);

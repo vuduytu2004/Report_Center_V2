@@ -198,7 +198,8 @@ namespace Report_Center
                 //string query = "SELECT * FROM MenuItems where MenuItemID in "+ allowedMenuItems + " ORDER BY MenuItemID,MenuLevel, ParentMenuID, MenuItemName";
                 // Xây dựng câu truy vấn với danh sách giá trị MenuItemID
                 string menuItemIds = string.Join(",", allowedMenuItems.Select(id => id.ToString()));
-                string query = $"SELECT * FROM MenuItems WITH (NOLOCK) WHERE MenuItemID IN ({menuItemIds}) and  Enable_Check=1  ORDER BY MenuItemID, MenuLevel, ParentMenuID, MenuItemName";
+                string query = $"SELECT * FROM MenuItems WITH (NOLOCK) WHERE MenuItemID IN ({menuItemIds}) and  Enable_Check=1  ORDER BY lever1,lever2,lever3";
+                //string query = $"SELECT * FROM MenuItems WITH (NOLOCK) WHERE MenuItemID IN ({menuItemIds}) and  Enable_Check=1  ORDER BY MenuItemID, MenuLevel, ParentMenuID, MenuItemName";
                 //string query = $"SELECT * FROM MenuItems ORDER BY MenuItemID, MenuLevel, ParentMenuID, MenuItemName";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 DataTable dataTable = new DataTable();

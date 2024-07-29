@@ -184,6 +184,12 @@
     <Compile Include="Presentation\fr_CheckConnects.designer.cs">
       <DependentUpon>fr_CheckConnects.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\fr_Check_Month_Close.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\fr_Check_Month_Close.designer.cs">
+      <DependentUpon>fr_Check_Month_Close.cs</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\fr_DangNhap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +232,12 @@
     <Compile Include="Presentation\fr_Reports.Designer.cs">
       <DependentUpon>fr_Reports.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\fr_Sell_By_USER_Theu_TM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\fr_Sell_By_USER_Theu_TM.designer.cs">
+      <DependentUpon>fr_Sell_By_USER_Theu_TM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\fr_StkISQty.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,6 +249,18 @@
     </Compile>
     <Compile Include="Presentation\fr_StkISQty_Doc.designer.cs">
       <DependentUpon>fr_StkISQty_Doc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\fr_StkISQty_Kho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\fr_StkISQty_Kho.designer.cs">
+      <DependentUpon>fr_StkISQty_Kho.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\fr_StockBLK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\fr_StockBLK.designer.cs">
+      <DependentUpon>fr_StockBLK.cs</DependentUpon>
     </Compile>
     <Compile Include="Presentation\fr_SUM_Bill_By_Store_VH.cs">
       <SubType>Form</SubType>
@@ -262,6 +286,42 @@
     <Compile Include="Presentation\GetFrAPI_BM01.Designer.cs">
       <DependentUpon>GetFrAPI_BM01.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\MuaHang_Export_Full_Barcode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\MuaHang_Export_Full_Barcode.designer.cs">
+      <DependentUpon>MuaHang_Export_Full_Barcode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\rptASSORTMENT_Lv2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\rptASSORTMENT_Lv2.designer.cs">
+      <DependentUpon>rptASSORTMENT_Lv2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\rpt_SKU_UseByDays.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\rpt_SKU_UseByDays.designer.cs">
+      <DependentUpon>rpt_SKU_UseByDays.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\rpt_StkISQty_Order.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\rpt_StkISQty_Order.designer.cs">
+      <DependentUpon>rpt_StkISQty_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\rpt_StkISQty_Order_SUM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\rpt_StkISQty_Order_SUM.designer.cs">
+      <DependentUpon>rpt_StkISQty_Order_SUM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\rpt_StkISQty_Order_SUM_Mart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\rpt_StkISQty_Order_SUM_Mart.designer.cs">
+      <DependentUpon>rpt_StkISQty_Order_SUM_Mart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Presentation\fr_BLe_BBuon_By_NH_VH.resx">
@@ -275,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_CheckConnects.resx">
       <DependentUpon>fr_CheckConnects.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\fr_Check_Month_Close.resx">
+      <DependentUpon>fr_Check_Month_Close.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_DangNhap.resx">
       <DependentUpon>fr_DangNhap.cs</DependentUpon>
@@ -297,11 +360,20 @@
     <EmbeddedResource Include="Presentation\fr_Reports.resx">
       <DependentUpon>fr_Reports.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\fr_Sell_By_USER_Theu_TM.resx">
+      <DependentUpon>fr_Sell_By_USER_Theu_TM.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_StkISQty.resx">
       <DependentUpon>fr_StkISQty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_StkISQty_Doc.resx">
       <DependentUpon>fr_StkISQty_Doc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\fr_StkISQty_Kho.resx">
+      <DependentUpon>fr_StkISQty_Kho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\fr_StockBLK.resx">
+      <DependentUpon>fr_StockBLK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_SUM_Bill_By_Store_VH.resx">
       <DependentUpon>fr_SUM_Bill_By_Store_VH.cs</DependentUpon>
@@ -314,6 +386,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Presentation\GetFrAPI_BM01.resx">
       <DependentUpon>GetFrAPI_BM01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\MuaHang_Export_Full_Barcode.resx">
+      <DependentUpon>MuaHang_Export_Full_Barcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\rptASSORTMENT_Lv2.resx">
+      <DependentUpon>rptASSORTMENT_Lv2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\rpt_SKU_UseByDays.resx">
+      <DependentUpon>rpt_SKU_UseByDays.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\rpt_StkISQty_Order.resx">
+      <DependentUpon>rpt_StkISQty_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\rpt_StkISQty_Order_SUM.resx">
+      <DependentUpon>rpt_StkISQty_Order_SUM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\rpt_StkISQty_Order_SUM_Mart.resx">
+      <DependentUpon>rpt_StkISQty_Order_SUM_Mart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
