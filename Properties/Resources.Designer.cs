@@ -63,6 +63,16 @@ namespace Report_Center.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ajax_loader_blue_round {
+            get {
+                object obj = ResourceManager.GetObject("ajax_loader_blue_round", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Brg_mart {
             get {
                 object obj = ResourceManager.GetObject("Brg_mart", resourceCulture);
@@ -76,6 +86,16 @@ namespace Report_Center.Properties {
         internal static System.Drawing.Bitmap BRGMart {
             get {
                 object obj = ResourceManager.GetObject("BRGMart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hcrc_destop {
+            get {
+                object obj = ResourceManager.GetObject("hcrc_destop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

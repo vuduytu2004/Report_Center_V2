@@ -18,6 +18,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Report_Center.DataAccess;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using System.Threading;
 //using Font = System.Drawing.Font;
 using Application = System.Windows.Forms.Application;
@@ -235,7 +237,6 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
 
                         if (value.Contains(","))
                             value = "\"" + value + "\"";
-
                         fs.Write(value + ",");
 
                     }
@@ -479,202 +480,8 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
             }
         }
 
-        private async void export_full_Click(object sender, EventArgs e)
+        private async void export_full_Click_Luu(object sender, EventArgs e)
         {
-            // Giải phóng bộ nhớ trước khi bắt đầu
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            if (backgroundWorker1.IsBusy)
-            {
-                MessageBox.Show("Đang load dữ liệu, xin đợi ...", "Chú Ý !");
-                return;
-            }
-
-            progressBar1.Visible = true;
-            export_full.Enabled = false;
-
-            int totalRows = dataGridView_full.Rows.Count;
-            int maxRowsPerSheet = 800000; // Số dòng tối đa trên mỗi sheet
-
-            await Task.Run(() =>
-            {
-                using (ExcelPackage excelPackage = new ExcelPackage())
-                {
-                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet1");
-                    int sheetNumber = 1;
-                    int currentRow = 1; // Vị trí hiện tại trên sheet
-
-                    // Ghi tiêu đề cột
-                    foreach (DataGridViewColumn column in dataGridView_full.Columns)
-                    {
-                        worksheet.Cells[currentRow, column.Index + 1].Value = column.HeaderText;
-                    }
-
-                    currentRow++; // Bắt đầu ghi dữ liệu từ dòng thứ hai
-
-                    for (int rowIndex = 0; rowIndex < totalRows; rowIndex++)
-                    {
-                        DataGridViewRow row = dataGridView_full.Rows[rowIndex];
-                        int columnIndex = 1;
-
-                        foreach (DataGridViewCell cell in row.Cells)
-                        {
-                            if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
-                            {
-                                string cellValue = cell.Value.ToString();
-                                if (cell.ColumnIndex == 3 || cell.ColumnIndex == 8 || cell.ColumnIndex == 7 || cell.ColumnIndex == 10)
-                                {
-                                    cellValue = Converter.TCVN3ToUnicode(cellValue);
-                                }
-                                worksheet.Cells[currentRow, columnIndex].Value = cellValue;
-                            }
-                            else
-                            {
-                                worksheet.Cells[currentRow, columnIndex].Value = DBNull.Value;
-                            }
-                            columnIndex++;
-                        }
-
-                        currentRow++;
-
-                        //if (currentRow > maxRowsPerSheet)
-                        //{
-                        //    // Nếu số dòng vượt quá ngưỡng, chuyển sang sheet mới
-                        //    sheetNumber++;
-                        //    worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
-
-                        //    currentRow = 1;
-
-                        //    // Ghi tiêu đề cột trên sheet mới
-                        //    foreach (DataGridViewColumn column in dataGridView_full.Columns)
-                        //    {
-                        //        worksheet.Cells[currentRow, column.Index + 1].Value = column.HeaderText;
-                        //    }
-
-                        //    currentRow++; // Bắt đầu ghi dữ liệu từ dòng thứ hai
-                        //}
-                    }
-
-                    string randomNum = new Random().Next(1, 10000).ToString();
-                    string fileName = $"D:\\Zone_Price_STK_{DateTime.Today.Day}{DateTime.Today.Month}{DateTime.Today.Year}_{randomNum}.xlsx";
-                    FileInfo excelFile = new FileInfo(fileName);
-                    excelPackage.SaveAs(excelFile);
-
-                    // Mở file Excel sau khi xuất xong
-                    System.Diagnostics.Process.Start(fileName);
-
-                    // Giải phóng bộ nhớ sau khi hoàn thành
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                }
-            });
-
-            progressBar1.Visible = false;
-            export_full.Enabled = true;
-        }
-
-        private async void export_full_Click_9992(object sender, EventArgs e)
-        {
-            // Giải phóng bộ nhớ trước khi bắt đầu
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            if (backgroundWorker1.IsBusy)
-            {
-                MessageBox.Show("Đang load dữ liệu, xin đợi ...", "Chú Ý !");
-                return;
-            }
-
-            progressBar1.Visible = true;
-            export_full.Enabled = false;
-
-            int maxRowsPerSheet = 400000; // Số dòng tối đa trên mỗi sheet
-
-            await Task.Run(() =>
-            {
-                using (ExcelPackage excelPackage = new ExcelPackage())
-                {
-                    //ExcelWorksheet worksheet = null;
-                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet1");
-                    int sheetNumber = 1;
-                    int currentRow = 1; // Vị trí hiện tại trên sheet
-
-                    foreach (DataGridViewColumn column in dataGridView_full.Columns)
-                    {
-                        if (column != null && column.HeaderText != null)
-                        {
-                            worksheet.Cells[1, column.Index + 1].Value = column.HeaderText;
-                        }
-                    }
-
-
-                    foreach (DataGridViewRow row in dataGridView_full.Rows)
-                    {
-                        int rowIndex = row.Index;
-                        int columnIndex = 1;
-
-                        foreach (DataGridViewCell cell in row.Cells)
-                        {
-                            if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
-                            {
-                                string cellValue = cell.Value.ToString();
-                                if (cell.ColumnIndex == 3 || cell.ColumnIndex == 8 || cell.ColumnIndex == 7 || cell.ColumnIndex == 10)
-                                {
-                                    cellValue = Converter.TCVN3ToUnicode(cellValue);
-                                }
-                                worksheet.Cells[rowIndex + 2, columnIndex].Value = cellValue;
-                            }
-                            else
-                            {
-                                worksheet.Cells[rowIndex + 2, columnIndex].Value = DBNull.Value;
-                            }
-
-                            columnIndex++;
-                        }
-
-                        currentRow++;
-
-                        if (currentRow > maxRowsPerSheet)
-                        {
-                            // Nếu số dòng vượt quá ngưỡng, chuyển sang sheet mới
-                            sheetNumber++;
-                            worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
-
-                            currentRow = 1;
-
-                            foreach (DataGridViewColumn column in dataGridView_full.Columns)
-                            {
-                                worksheet.Cells[currentRow, column.Index + 1].Value = column.HeaderText;
-                            }
-                        }
-                    }
-
-                    string randomNum = new Random().Next(1, 10000).ToString();
-                    string fileName = $"D:\\Zone_Price_STK_{DateTime.Today.Day}{DateTime.Today.Month}{DateTime.Today.Year}_{randomNum}.xlsx";
-                    FileInfo excelFile = new FileInfo(fileName);
-                    excelPackage.SaveAs(excelFile);
-
-                    // Mở file Excel sau khi xuất xong
-                    System.Diagnostics.Process.Start(fileName);
-
-                    // Giải phóng bộ nhớ trước khi bắt đầu
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                }
-            });
-
-            progressBar1.Visible = false;
-            export_full.Enabled = true;
-        }
-
-
-        private async void export_full_Click_9991(object sender, EventArgs e)
-        {
-            // Giải phóng bộ nhớ trước khi bắt đầu
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
             if (backgroundWorker1.IsBusy)
             {
                 MessageBox.Show("Đang load dữ liệu, xin đợi ...", "Chú Ý !");
@@ -695,16 +502,16 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                     int sheetNumber = 1;
                     int currentRow = 1; // Vị trí hiện tại trên sheet
 
-                    DataTable dt_chunk = new DataTable();
-                    foreach (DataGridViewColumn column in dataGridView_full.Columns)
-                    {
-                        dt_chunk.Columns.Add(column.HeaderText, column.ValueType);
-                    }
-
                     for (int startIndex = 0; startIndex < totalRows; startIndex += maxRowsPerSheet)
                     {
-                        dt_chunk.Clear();
                         int endIndex = Math.Min(startIndex + maxRowsPerSheet, totalRows);
+
+                        DataTable dt_chunk = new DataTable();
+
+                        foreach (DataGridViewColumn column in dataGridView_full.Columns)
+                        {
+                            dt_chunk.Columns.Add(column.HeaderText, column.ValueType);
+                        }
 
                         for (int rowIndex = startIndex; rowIndex < endIndex; rowIndex++)
                         {
@@ -733,25 +540,30 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                             dt_chunk.Rows.Add(newRow);
                         }
 
-                        if (worksheet == null || currentRow + dt_chunk.Rows.Count > maxRowsPerSheet)
+                        if (currentRow + dt_chunk.Rows.Count > maxRowsPerSheet)
                         {
+                            // Nếu số dòng vượt quá ngưỡng, chuyển sang sheet mới
                             worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
                             sheetNumber++;
                             currentRow = 1;
+                        }
 
-                            for (int i = 0; i < dt_chunk.Columns.Count; i++)
-                            {
-                                worksheet.Cells[currentRow, i + 1].Value = dt_chunk.Columns[i].ColumnName;
-                            }
+                        if (worksheet == null)
+                        {
+                            worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
+                            sheetNumber++;
+                        }
 
-                            currentRow++; // Chuyển xuống hàng tiếp theo sau header
+                        for (int i = 0; i < dt_chunk.Columns.Count; i++)
+                        {
+                            worksheet.Cells[currentRow, i + 1].Value = dt_chunk.Columns[i].ColumnName;
                         }
 
                         for (int i = 0; i < dt_chunk.Rows.Count; i++)
                         {
                             for (int j = 0; j < dt_chunk.Columns.Count; j++)
                             {
-                                worksheet.Cells[currentRow + i, j + 1].Value = dt_chunk.Rows[i][j];
+                                worksheet.Cells[currentRow + i + 1, j + 1].Value = dt_chunk.Rows[i][j];
                             }
                         }
 
@@ -760,142 +572,103 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
 
                     string randomNum = new Random().Next(1, 10000).ToString();
                     string fileName = $"D:\\Zone_Price_STK_{DateTime.Today.Day}{DateTime.Today.Month}{DateTime.Today.Year}_{randomNum}.xlsx";
+                    //string filePath = "D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx";
 
                     FileInfo excelFile = new FileInfo(fileName);
                     excelPackage.SaveAs(excelFile);
 
                     // Mở file Excel sau khi xuất xong
                     System.Diagnostics.Process.Start(fileName);
+                }
+            });
 
-                    // Giải phóng bộ nhớ sau khi hoàn thành
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
+            progressBar1.Visible = false;
+            export_full.Enabled = true;
+
+        }
+        private async void export_full_Click(object sender, EventArgs e)
+        {
+            if (backgroundWorker1.IsBusy)
+            {
+                MessageBox.Show("Đang load dữ liệu, xin đợi ...", "Chú Ý!");
+                return;
+            }
+
+            progressBar1.Visible = true;
+            export_full.Enabled = false;
+
+            int totalRows = dataGridView_full.Rows.Count;
+            int maxRowsPerSheet = 500000; // Số dòng tối đa trên mỗi sheet
+
+            await Task.Run(() =>
+            {
+                using (ExcelPackage excelPackage = new ExcelPackage())
+                {
+                    int sheetNumber = 1;
+                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
+                    int currentRow = 1; // Vị trí hiện tại trên sheet
+
+                    // Ghi tiêu đề cột vào hàng đầu tiên của sheet
+                    foreach (DataGridViewColumn column in dataGridView_full.Columns)
+                    {
+                        worksheet.Cells[currentRow, column.Index + 1].Value = column.HeaderText;
+                    }
+
+                    currentRow++; // Bắt đầu ghi dữ liệu từ dòng thứ hai
+
+                    for (int rowIndex = 0; rowIndex < totalRows; rowIndex++)
+                    {
+                        DataGridViewRow row = dataGridView_full.Rows[rowIndex];
+
+                        for (int columnIndex = 0; columnIndex < row.Cells.Count; columnIndex++)
+                        {
+                            var cell = row.Cells[columnIndex];
+                            if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
+                            {
+                                string cellValue = cell.Value.ToString();
+                                if (columnIndex == 3 || columnIndex == 8 || columnIndex == 7 || columnIndex == 10)
+                                {
+                                    cellValue = Converter.TCVN3ToUnicode(cellValue);
+                                }
+                                worksheet.Cells[currentRow, columnIndex + 1].Value = cellValue;
+                            }
+                            else
+                            {
+                                worksheet.Cells[currentRow, columnIndex + 1].Value = DBNull.Value;
+                            }
+                        }
+
+                        currentRow++;
+
+                        if (currentRow > maxRowsPerSheet)
+                        {
+                            // Nếu số dòng vượt quá ngưỡng, chuyển sang sheet mới
+                            sheetNumber++;
+                            worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
+
+                            // Ghi tiêu đề cột trên sheet mới
+                            foreach (DataGridViewColumn column in dataGridView_full.Columns)
+                            {
+                                worksheet.Cells[1, column.Index + 1].Value = column.HeaderText;
+                            }
+
+                            currentRow = 2; // Bắt đầu ghi dữ liệu từ dòng thứ hai trên sheet mới
+                        }
+                    }
+
+                    string randomNum = new Random().Next(1, 10000).ToString();
+                    string fileName = $"D:\\Zone_Price_STK_{DateTime.Today.Day}{DateTime.Today.Month}{DateTime.Today.Year}_{randomNum}.xlsx";
+                    FileInfo excelFile = new FileInfo(fileName);
+                    excelPackage.SaveAs(excelFile);
+
+                    // Mở file Excel sau khi xuất xong
+                    System.Diagnostics.Process.Start(fileName);
                 }
             });
 
             progressBar1.Visible = false;
             export_full.Enabled = true;
         }
-
-
-        //private async void export_full_Click_999(object sender, EventArgs e)
-        //{
-
-        //    // Giải phóng bộ nhớ trước khi bắt đầu
-        //    GC.Collect();
-        //    GC.WaitForPendingFinalizers();
-        //    GC.Collect();
-
-        //    if (backgroundWorker1.IsBusy)
-        //    {
-        //        MessageBox.Show("Đang load dữ liệu, xin đợi ...", "Chú Ý !");
-        //        return;
-        //    }
-
-        //    progressBar1.Visible = true;
-        //    export_full.Enabled = false;
-
-        //    int totalRows = dataGridView_full.Rows.Count;
-        //    int maxRowsPerSheet = 800000; // Số dòng tối đa trên mỗi sheet
-
-        //    await Task.Run(() =>
-        //    {
-        //        using (ExcelPackage excelPackage = new ExcelPackage())
-        //        {
-        //            ExcelWorksheet worksheet = null;
-        //            int sheetNumber = 1;
-        //            int currentRow = 1; // Vị trí hiện tại trên sheet
-
-        //            for (int startIndex = 0; startIndex < totalRows; startIndex += maxRowsPerSheet)
-        //            {
-        //                int endIndex = Math.Min(startIndex + maxRowsPerSheet, totalRows);
-
-        //                DataTable dt_chunk = new DataTable();
-
-        //                foreach (DataGridViewColumn column in dataGridView_full.Columns)
-        //                {
-        //                    dt_chunk.Columns.Add(column.HeaderText, column.ValueType);
-        //                }
-
-        //                for (int rowIndex = startIndex; rowIndex < endIndex; rowIndex++)
-        //                {
-        //                    DataGridViewRow row = dataGridView_full.Rows[rowIndex];
-        //                    DataRow newRow = dt_chunk.NewRow();
-
-        //                    foreach (DataGridViewCell cell in row.Cells)
-        //                    {
-        //                        if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
-        //                        {
-        //                            if (cell.ColumnIndex == 3 || cell.ColumnIndex == 8 || cell.ColumnIndex == 7 || cell.ColumnIndex == 10)
-        //                            {
-        //                                newRow[cell.ColumnIndex] = Converter.TCVN3ToUnicode(cell.Value.ToString());
-        //                            }
-        //                            else
-        //                            {
-        //                                newRow[cell.ColumnIndex] = cell.Value.ToString();
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            newRow[cell.ColumnIndex] = DBNull.Value; // Set giá trị NULL vào newRow
-        //                        }
-        //                    }
-
-        //                    dt_chunk.Rows.Add(newRow);
-        //                }
-
-        //                if (currentRow + dt_chunk.Rows.Count > maxRowsPerSheet)
-        //                {
-        //                    // Nếu số dòng vượt quá ngưỡng, chuyển sang sheet mới
-        //                    worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
-        //                    sheetNumber++;
-        //                    currentRow = 1;
-        //                }
-
-        //                if (worksheet == null)
-        //                {
-        //                    worksheet = excelPackage.Workbook.Worksheets.Add($"Sheet{sheetNumber}");
-        //                    sheetNumber++;
-        //                }
-
-        //                for (int i = 0; i < dt_chunk.Columns.Count; i++)
-        //                {
-        //                    worksheet.Cells[currentRow, i + 1].Value = dt_chunk.Columns[i].ColumnName;
-        //                }
-
-        //                for (int i = 0; i < dt_chunk.Rows.Count; i++)
-        //                {
-        //                    for (int j = 0; j < dt_chunk.Columns.Count; j++)
-        //                    {
-        //                        worksheet.Cells[currentRow + i + 1, j + 1].Value = dt_chunk.Rows[i][j];
-        //                    }
-        //                }
-
-        //                currentRow += dt_chunk.Rows.Count;
-        //            }
-
-        //            string randomNum = new Random().Next(1, 10000).ToString();
-        //            string fileName = $"D:\\Zone_Price_STK_{DateTime.Today.Day}{DateTime.Today.Month}{DateTime.Today.Year}_{randomNum}.xlsx";
-        //            //string filePath = "D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx";
-
-        //            FileInfo excelFile = new FileInfo(fileName);
-        //            excelPackage.SaveAs(excelFile);
-
-
-        //            // Mở file Excel sau khi xuất xong
-        //            System.Diagnostics.Process.Start(fileName);
-
-        //            // Giải phóng bộ nhớ sau khi hoàn thành
-        //            GC.Collect();
-        //            GC.WaitForPendingFinalizers();
-
-        //        }
-        //    });
-
-        //    progressBar1.Visible = false;
-        //    export_full.Enabled = true;
-
-        //}
 
 
 
