@@ -82,7 +82,6 @@ namespace Report_Center.Presentation
                 fileName = Path.Combine(directory, $"{fileNameWithoutExtension}_{counter}{fileExtension}");
                 counter++;
             }
-
             return fileName;
         }
 
