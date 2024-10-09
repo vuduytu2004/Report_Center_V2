@@ -99,7 +99,7 @@ namespace Report_Center.Presentation
             DataTable table = new DataTable();
 
             string tim_sql;
-            tim_sql = @"SELECT sql_str FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
+            tim_sql = @"SELECT sql_str_DWH FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
             string sql = cn.LayQuen(tim_sql).Trim();
             /// -----------------------------test//----------------------------------------------------------------------------------
             //            string sql = @"select  ROW_NUMBER() OVER (ORDER BY a.SKU_ID) AS [STT],a.SUPP_ID as 'Mã NCC', ISDEFAULT as 'NCC Chỉ định' ,(b.SUPP_NAME) as 'Tên NCC' 
@@ -271,13 +271,13 @@ namespace Report_Center.Presentation
                     , c.TAX_RATE as 'Thuế Bán', SPPRICE as 'Giá Nhập chỉ định'                    , PREFPR as 'Giá Vốn chỉ định' , iif( f.tax_rate is null ,'Not Set', CAST(f.tax_rate as varchar(10))) as 'Thuế Nhập'    --, iif(  LEN(ISNULL(a.tax_code,''))=0, 'Not Set',a.tax_code ) as 'Thuế Nhập'  --f.tax_code as 'Thuế Nhập'--
                     ,PCPR_CODE as 'Vùng Giá'                     ,c.STATUS as 'Trạng Thái'                    ,c.ITEM_TYPE as 'Loại hàng'
                     ,e.OPEN_DATE ,e.MODI_DATE
-,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
+                    ,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
 					from  DSMART12.dbo.SPPRICE a WITH (NOLOCK)
-                    left join  DSMART12.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
-                    left join  DSMART12.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
 					 left join  DSMART12.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
 					 left join  DSMART12.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
-LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
+                    LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
                     where c.status NOT IN ( '02','05') order by a.SKU_ID";
 
 
@@ -363,46 +363,28 @@ LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
         {
             if (e.RowIndex >= 0)
             {
-                //string value =
-                if (e.ColumnIndex == 1)
-                {
-                    Ma_NCC.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 3)
-                {
-                    Ma_NCC.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                if (e.ColumnIndex == 4 || e.ColumnIndex == 5 || e.ColumnIndex == 6)
-                {
-                    Ma_hang.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 9)
-                {
-                    Ma_nhom.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 10)
-                {
-                    Ma_nhom.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                if (e.ColumnIndex == 7)
-                {
-                    Ma_hang.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                ////Lưu lại dòng dữ liệu vừa kích chọn
-                //DataGridViewRow rowss = this.dataGridView_full.Rows[e.RowIndex];
-                ////DataGridViewCell cell = this.dataGridView_full.CellClick();
-                //DataGridViewColumn columnss =this.dataGridView_full.Columns[e.ColumnIndex];
-                ////Đưa dữ liệu vào textbox
-                //Ma_NCC.Text = rowss.Cells[columnss.ValueType].Value.ToString();
-                //string value =
-                //dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                //txtHoVaTen.Text = row.Cells[1].Value.ToString();
-                //txtQueQuan.Text = row.Cells[2].Value.ToString();
+                var cellValue = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
 
-                //Không cho phép sửa trường STT
-                //txtSTT.Enabled = false;
+                switch (e.ColumnIndex)
+                {
+                    case 1:
+                    case 3:
+                        Ma_NCC.Text = cellValue;
+                        break;
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        Ma_hang.Text = cellValue;
+                        break;
+                    case 9:
+                    case 10:
+                        Ma_nhom.Text = cellValue;
+                        break;
+                }
             }
         }
+
         //----------------------------------------------------------
         private void dataGridView_full_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
@@ -449,10 +431,10 @@ LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
                     ,iif( f.tax_rate is null ,'Not Set', CAST(f.tax_rate as varchar(10))) as 'Thuế Nhập'    --, iif(  LEN(ISNULL(a.tax_code,''))=0, 'Not Set',a.tax_code ) as 'Thuế Nhập'  --f.tax_code as 'Thuế Nhập'--
                     ,PCPR_CODE as 'Vùng Giá'                     ,c.STATUS as 'Trạng Thái'                    ,c.ITEM_TYPE as 'Loại hàng'
                     ,e.OPEN_DATE ,e.MODI_DATE
-,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
+                    ,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
 					from  DSMART12.dbo.SPPRICE a WITH (NOLOCK)
-                    left join  DSMART12.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
-                    left join  DSMART12.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
 					 left join  DSMART12.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
 					 left join  DSMART12.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
                     LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
@@ -463,11 +445,11 @@ LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
                 return;
             }
             if ((Ma_NCC.Text != ""))
-            { sql += " and a.SUPP_ID= N'" + Ma_NCC.Text + "' or b.SUPP_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_NCC.Text) + "%'"; }
+            { sql += " and a.SUPP_ID= N'" + Ma_NCC.Text + "' or b.SUPP_NAME like N'%" + (Ma_NCC.Text) + "%'"; }
             if ((Ma_hang.Text != ""))
-            { sql += " and (a.SKU_ID like N'%" + Ma_hang.Text + "%' or c.BARCODE like N'%" + Ma_hang.Text + "%' or c.SKU_CODE like N'%" + Ma_hang.Text + "%' or c.FULL_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_hang.Text) + "%')"; }
+            { sql += " and (a.SKU_ID like N'%" + Ma_hang.Text + "%' or c.BARCODE like N'%" + Ma_hang.Text + "%' or c.SKU_CODE like N'%" + Ma_hang.Text + "%' or c.FULL_NAME like N'%" + (Ma_hang.Text) + "%')"; }
             if ((Ma_nhom.Text != ""))
-            { sql += " and c.GRP_ID like N'%" + Ma_nhom.Text + "%' or c.grp_name like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_nhom.Text) + "%'"; }
+            { sql += " and c.GRP_ID like N'%" + Ma_nhom.Text + "%' or c.grp_name like N'%" + (Ma_nhom.Text) + "%'"; }
 
 
 
@@ -522,7 +504,7 @@ LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
             //System.Diagnostics.Process.Start("D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx");
 
             string filePath = "D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx";
-            ExcelExporter.ExportDataGridViewToExcel(dataGridView_full, filePath);
+            ExcelExporter1.ExportDataGridViewToExcel(dataGridView_full, filePath);
             System.Diagnostics.Process.Start(filePath);
             progressBar1.Visible = false;
 
@@ -543,129 +525,146 @@ LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
+        //private void button3_Click(object sender, EventArgs e)
+        //{
 
-            progressBar1.Visible = true;
+        //    progressBar1.Visible = true;
 
-            //Lấy số ngẫu nhiên
-            Random _r = new Random();
-            string n = _r.Next(1, 10000).ToString();
+        //    //Lấy số ngẫu nhiên
+        //    Random _r = new Random();
+        //    string n = _r.Next(1, 10000).ToString();
 
-            //System.Diagnostics.Process.Start("D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx");
+        //    //System.Diagnostics.Process.Start("D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx");
 
-            string filePath = "D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx";
-            ExcelExporter.ExportDataGridViewToExcel(dataGridView_full, filePath);
-            System.Diagnostics.Process.Start(filePath);
-            progressBar1.Visible = false;
+        //    string filePath = "D:\\Zone_Price_" + DateTime.Today.Day + DateTime.Today.Month + DateTime.Today.Year + "_" + n + ".xlsx";
+        //    ExcelExporter.ExportDataGridViewToExcel(dataGridView_full, filePath);
+        //    System.Diagnostics.Process.Start(filePath);
+        //    progressBar1.Visible = false;
 
-        }
+        //}
+
 
 
         public class ExcelExporter
         {
             public static void ExportDataGridViewToExcel(DataGridView dataGridView, string filePath)
             {
+                // Tạo một DataTable mới
+                DataTable dataTable = new DataTable();
+
+                // Tạo các cột trong DataTable dựa trên tên cột của DataGridView
+                foreach (DataGridViewColumn column in dataGridView.Columns)
+                {
+                    dataTable.Columns.Add(column.HeaderText, column.ValueType);
+                }
+
+                // Lấy dữ liệu từ DataGridView và thêm vào DataTable
+                foreach (DataGridViewRow row in dataGridView.Rows)
+                {
+                    if (!row.IsNewRow) // Bỏ qua hàng trống cuối cùng (nếu có)
+                    {
+                        DataRow dataRow = dataTable.NewRow();
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            if (cell.Value != null)
+                            {
+                                dataRow[cell.ColumnIndex] = cell.Value.ToString();
+                            }
+                        }
+                        dataTable.Rows.Add(dataRow);
+                    }
+                }
+
+                // Sử dụng EPPlus để xuất dữ liệu từ DataTable ra file Excel
                 using (var package = new ExcelPackage())
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Zone Prices");
 
+                    // Ghi dữ liệu từ DataTable vào worksheet
+                    worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+
                     // Tạo header từ DataGridView columns
                     for (int col = 0; col < dataGridView.Columns.Count; col++)
                     {
-                        worksheet.Cells[1, col + 1].Value = dataGridView.Columns[col].HeaderText;
                         worksheet.Cells[1, col + 1].Style.Font.Bold = true;
                         worksheet.Cells[1, col + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         worksheet.Cells[1, col + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
                     }
 
-                    // Tạo nội dung từ DataGridView rows
-                    for (int row = 0; row < dataGridView.Rows.Count; row++)
-                    {
-                        if (!dataGridView.Rows[row].IsNewRow) // Bỏ qua hàng trống cuối cùng (nếu có)
-                        {
-                            for (int col = 0; col < dataGridView.Columns.Count; col++)
-                            {
-                                var cellValue = dataGridView.Rows[row].Cells[col].Value;
+                    // Điều chỉnh tự động chiều rộng cột
+                    worksheet.Cells.AutoFitColumns();
 
-                                if (cellValue != null)
+                    // Sử dụng FileStream để lưu tạm thời
+                    using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    {
+                        package.SaveAs(fileStream);
+                    }
+                }
+
+                // Giải phóng bộ nhớ không cần thiết
+                GC.Collect();
+            }
+        }
+
+        public class ExcelExporter1
+        {
+            public static void ExportDataGridViewToExcel(DataGridView dataGridView, string filePath)
+            {
+                int maxRowsPerSheet = 450000;
+                int totalRows = dataGridView.Rows.Count;
+                int sheetIndex = 1;
+                int currentRow = 0;
+
+                using (var package = new ExcelPackage())
+                {
+                    while (currentRow < totalRows)
+                    {
+                        var worksheet = package.Workbook.Worksheets.Add($"Zone Prices {sheetIndex}");
+
+                        // Tạo header từ DataGridView columns
+                        for (int col = 0; col < dataGridView.Columns.Count; col++)
+                        {
+                            worksheet.Cells[1, col + 1].Value = dataGridView.Columns[col].HeaderText;
+                            worksheet.Cells[1, col + 1].Style.Font.Bold = true;
+                            worksheet.Cells[1, col + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[1, col + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        }
+
+                        // Tạo nội dung từ DataGridView rows
+                        int rowCount = 0;
+                        while (currentRow < totalRows && rowCount < maxRowsPerSheet)
+                        {
+                            if (!dataGridView.Rows[currentRow].IsNewRow) // Bỏ qua hàng trống cuối cùng (nếu có)
+                            {
+                                for (int col = 0; col < dataGridView.Columns.Count; col++)
                                 {
-                                    if (col == 3 || col == 7 || col == 8 || col == 10)
+                                    var cellValue = dataGridView.Rows[currentRow].Cells[col].Value;
+
+                                    if (cellValue != null)
                                     {
-                                        worksheet.Cells[row + 2, col + 1].Value = Converter.TCVN3ToUnicode(cellValue.ToString());
-                                    }
-                                    else
-                                    {
-                                        worksheet.Cells[row + 2, col + 1].Value = cellValue.ToString();
+                                        worksheet.Cells[rowCount + 2, col + 1].Value = cellValue.ToString();
                                     }
                                 }
                             }
+                            currentRow++;
+                            rowCount++;
                         }
-                    }
 
-                    // Điều chỉnh tự động chiều rộng cột
-                    worksheet.Cells.AutoFitColumns();
+                        // Điều chỉnh tự động chiều rộng cột
+                        worksheet.Cells.AutoFitColumns();
+
+                        sheetIndex++;
+                    }
 
                     // Lưu tệp Excel
                     FileInfo fileInfo = new FileInfo(filePath);
                     package.SaveAs(fileInfo);
                 }
+                // Giải phóng bộ nhớ không cần thiết
+                GC.Collect();
             }
-
-            //public static void ExportDataGridViewToExcel(DataGridView dataGridView, string filePath)
-            //{
-            //    // Tạo một DataTable mới
-            //    DataTable dataTable = new DataTable();
-
-            //    // Tạo các cột trong DataTable dựa trên tên cột của DataGridView
-            //    foreach (DataGridViewColumn column in dataGridView.Columns)
-            //    {
-            //        dataTable.Columns.Add(column.HeaderText, column.ValueType);
-            //    }
-
-            //    // Lấy dữ liệu từ DataGridView và thêm vào DataTable
-            //    foreach (DataGridViewRow row in dataGridView.Rows)
-            //    {
-            //        DataRow dataRow = dataTable.NewRow();
-
-            //        foreach (DataGridViewCell cell in row.Cells)
-            //        {
-            //            //dataRow[cell.ColumnIndex] = cell.Value;
-
-
-            //            if (cell.ColumnIndex == 3 || cell.ColumnIndex == 8 || cell.ColumnIndex == 7 || cell.ColumnIndex == 10)
-            //            {
-            //                dataRow[cell.ColumnIndex] = Converter.TCVN3ToUnicode(cell.Value.ToString());
-            //            }
-            //            else
-            //            {
-            //                dataRow[cell.ColumnIndex] = cell.Value.ToString();
-            //            }
-            //        }
-
-            //        dataTable.Rows.Add(dataRow);
-            //    }
-
-            //    // Xuất dữ liệu ra tệp Excel bằng EPPlus
-            //    using (ExcelPackage package = new ExcelPackage())
-            //    {
-            //        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Zone Prices");
-            //        ///*worksheet*/.Worksheet(1).Columns().AdjustToContents();
-            //        //Worksheet(1).Columns().AdjustToContents();
-
-            //        // Ghi dữ liệu từ DataTable vào worksheet
-            //        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-
-            //        // Điều chỉnh tự động chiều rộng cột
-            //        worksheet.Cells.AutoFitColumns();
-
-            //        // Lưu tệp Excel
-            //        FileInfo fileInfo = new FileInfo(filePath);
-            //        package.SaveAs(fileInfo);
-            //    }
-            //}
-
         }
+
 
 
 

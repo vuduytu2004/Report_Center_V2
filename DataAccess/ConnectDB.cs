@@ -14,6 +14,7 @@ namespace Report_Center.DataAccess
         public static string userchung, passchung, amti = "BC123", b_Server2, b_Database2, b_user2, B_pass2, tenfilenhap, keylog, Server_nguon, Database_nguon, user_nguon, pass_nguon, b_Server3, b_Database3, b_user3, B_pass3;
         public static string connectionString;
         public static string connectionString_DWH;
+        public static string connectionString_BRGReports_97_30= "Data Source=172.16.79.30;initial catalog=BRGReports;persist security info=True;user id=report1h;Password=Reports@123;";
         //public static string amti = "BC123";
     }
     class ConnectDB
@@ -183,37 +184,56 @@ namespace Report_Center.DataAccess
             ad.Fill(dt);
             return dt;
         }
+        //public DataTable taobang_NO_Para_All(string sql, int ketnoi)
+        //{
+        //    if (ketnoi == 3)
+        //    {
+        //        con = getcon_Center();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 2)
+        //    {
+        //        con = getcon1();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 1)
+        //    {
+        //        con = getcon();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+
+        //    SqlDataAdapter ad = new SqlDataAdapter(sql, con);
+        //    DataTable dt = new DataTable();
+        //    ad.Fill(dt);
+        //    return dt;
+        //}
         public DataTable taobang_NO_Para_All(string sql, int ketnoi)
         {
-            if (ketnoi == 3)
-            {
-                con = getcon_Center();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 2)
-            {
-                con = getcon1();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 1)
-            {
-                con = getcon();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
+            SqlConnection con = GetConnectionBasedOnKetnoi(ketnoi);
 
-            SqlDataAdapter ad = new SqlDataAdapter(sql, con);
-            DataTable dt = new DataTable();
-            ad.Fill(dt);
-            return dt;
+            using (con)
+            {
+                if (con.State != ConnectionState.Open)
+                {
+                    con.Open();
+                }
+
+                using (SqlDataAdapter ad = new SqlDataAdapter(sql, con))
+                {
+                    DataTable dt = new DataTable();
+                    ad.Fill(dt);
+                    return dt;
+                }
+            }
         }
         public DataTable taobang_from_Procedure(string sql)
         {
@@ -341,89 +361,169 @@ namespace Report_Center.DataAccess
         }
 
 
+        //public DataTable taobang_from_Procedure_Parameter1(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id)
+        //{
+        //    con = getcon();
+        //    if (con.State != ConnectionState.Open)
+        //    {
+        //        con.Open();
+        //    }
+        //    //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = con;
+        //    cmd.CommandTimeout = 0;
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.CommandText = sql;
+        //    SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
+        //    SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
+        //    SqlParameter nodeid = new SqlParameter("@node_id", SqlDbType.VarChar);
+        //    frDate.Value = Convert.ToDateTime(fr_date.Value);
+        //    toDate.Value = Convert.ToDateTime(to_date.Value);
+        //    nodeid.Value = node_id.ToString();
+        //    cmd.Parameters.Add(frDate);
+        //    cmd.Parameters.Add(toDate);
+        //    cmd.Parameters.Add(nodeid);
+        //    SqlDataReader dr = cmd.ExecuteReader();
+        //    DataTable dt = new DataTable();
+        //    DataColumn Col = new DataColumn("STT", typeof(int));
+        //    dt.Columns.Add(Col);
+        //    dt.Load(dr);//gắn dữ liệu vào DataSet
+        //    return dt;
+        //    con.Close();
+        //    con.Dispose();
+
+        //}
+        //public DataTable taobang_from_Procedure_Ton_Kho_Now(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, int ketnoi)
+        //{
+        //    if (ketnoi == 3)
+        //    {
+        //        con = getcon_Center();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 2)
+        //    {
+        //        con = getcon1();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 1)
+        //    {
+        //        con = getcon();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = con;
+        //    cmd.CommandTimeout = 0;
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.CommandText = sql;
+        //    SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
+        //    SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
+        //    SqlParameter nodeid = new SqlParameter("@node_id", SqlDbType.VarChar);
+        //    frDate.Value = Convert.ToDateTime(fr_date.Value);
+        //    toDate.Value = Convert.ToDateTime(to_date.Value);
+        //    nodeid.Value = node_id.ToString();
+        //    cmd.Parameters.Add(frDate);
+        //    cmd.Parameters.Add(toDate);
+        //    cmd.Parameters.Add(nodeid);
+        //    SqlDataReader dr = cmd.ExecuteReader();
+        //    DataTable dt = new DataTable();
+        //    DataColumn Col = new DataColumn("STT", typeof(int));
+        //    dt.Columns.Add(Col);
+        //    dt.Load(dr);//gắn dữ liệu vào DataSet
+        //    con.Close();
+        //    con.Dispose();
+        //    return dt;
+
+
+        //}
         public DataTable taobang_from_Procedure_Parameter1(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id)
         {
-            con = getcon();
-            if (con.State != ConnectionState.Open)
+            using (SqlConnection con = getcon())
             {
-                con.Open();
-            }
-            //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandTimeout = 0;
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = sql;
-            SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
-            SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
-            SqlParameter nodeid = new SqlParameter("@node_id", SqlDbType.VarChar);
-            frDate.Value = Convert.ToDateTime(fr_date.Value);
-            toDate.Value = Convert.ToDateTime(to_date.Value);
-            nodeid.Value = node_id.ToString();
-            cmd.Parameters.Add(frDate);
-            cmd.Parameters.Add(toDate);
-            cmd.Parameters.Add(nodeid);
-            SqlDataReader dr = cmd.ExecuteReader();
-            DataTable dt = new DataTable();
-            DataColumn Col = new DataColumn("STT", typeof(int));
-            dt.Columns.Add(Col);
-            dt.Load(dr);//gắn dữ liệu vào DataSet
-            return dt;
-            con.Close();
-            con.Dispose();
+                if (con.State != ConnectionState.Open)
+                {
+                    con.Open();
+                }
 
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.CommandTimeout = 0;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@frDate", SqlDbType.Date) { Value = fr_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@toDate", SqlDbType.Date) { Value = to_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@node_id", SqlDbType.VarChar) { Value = node_id });
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Columns.Add(new DataColumn("STT", typeof(int)));
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
+            }
         }
+
         public DataTable taobang_from_Procedure_Ton_Kho_Now(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, int ketnoi)
         {
-            if (ketnoi == 3)
-            {
-                con = getcon_Center();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 2)
-            {
-                con = getcon1();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 1)
-            {
-                con = getcon();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandTimeout = 0;
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = sql;
-            SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
-            SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
-            SqlParameter nodeid = new SqlParameter("@node_id", SqlDbType.VarChar);
-            frDate.Value = Convert.ToDateTime(fr_date.Value);
-            toDate.Value = Convert.ToDateTime(to_date.Value);
-            nodeid.Value = node_id.ToString();
-            cmd.Parameters.Add(frDate);
-            cmd.Parameters.Add(toDate);
-            cmd.Parameters.Add(nodeid);
-            SqlDataReader dr = cmd.ExecuteReader();
-            DataTable dt = new DataTable();
-            DataColumn Col = new DataColumn("STT", typeof(int));
-            dt.Columns.Add(Col);
-            dt.Load(dr);//gắn dữ liệu vào DataSet
-            return dt;
-            con.Close();
-            con.Dispose();
+            SqlConnection con = GetConnectionBasedOnKetnoi(ketnoi);
 
+            using (con)
+            {
+                if (con.State != ConnectionState.Open)
+                {
+                    con.Open();
+                }
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.CommandTimeout = 0;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@frDate", SqlDbType.Date) { Value = fr_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@toDate", SqlDbType.Date) { Value = to_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@node_id", SqlDbType.VarChar) { Value = node_id });
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Columns.Add(new DataColumn("STT", typeof(int)));
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
+            }
         }
+
+        private SqlConnection GetConnectionBasedOnKetnoi(int ketnoi)
+        {
+            SqlConnection con;
+            switch (ketnoi)
+            {
+                case 3:
+                    con = getcon_Center();
+                    break;
+                case 2:
+                    con = getcon1();
+                    break;
+                case 1:
+                    con = getcon();
+                    break;
+                default:
+                    throw new ArgumentException("Invalid value for ketnoi");
+            }
+            return con;
+        }
+
         public DataTable taobang_from_Procedure_Parameter1_Center(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id)
         {
             con = getcon_Center();
@@ -456,168 +556,250 @@ namespace Report_Center.DataAccess
             con.Dispose();
 
         }
+        //public DataTable taobang_from_Procedure_Parameter1_Center_USER(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, int ketnoi)
+        //{
+        //    if (ketnoi == 3)
+        //    {
+        //        con = getcon_Center();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 2)
+        //    {
+        //        con = getcon1();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 1)
+        //    {
+        //        con = getcon();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = con;
+        //    cmd.CommandTimeout = 0;
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.CommandText = sql;
+        //    SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
+        //    SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
+        //    SqlParameter nodeid = new SqlParameter("@Node_id", SqlDbType.VarChar);
+        //    SqlParameter grpid = new SqlParameter("@GRP_ID", SqlDbType.VarChar);
+        //    frDate.Value = Convert.ToDateTime(fr_date.Value);
+        //    toDate.Value = Convert.ToDateTime(to_date.Value);
+        //    nodeid.Value = node_id.ToString();
+        //    cmd.Parameters.Add(frDate);
+        //    cmd.Parameters.Add(toDate);
+        //    cmd.Parameters.Add(nodeid);
+        //    SqlDataReader dr = cmd.ExecuteReader();
+        //    DataTable dt = new DataTable();
+        //    //DataColumn Col = new DataColumn("STT", typeof(int));
+        //    //dt.Columns.Add(Col);
+        //    dt.Load(dr);//gắn dữ liệu vào DataSet
+        //    return dt;
+        //    con.Close();
+        //    con.Dispose();
+
+        //}
         public DataTable taobang_from_Procedure_Parameter1_Center_USER(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, int ketnoi)
         {
-            if (ketnoi == 3)
+            using (SqlConnection con = GetConnectionBasedOnKetnoi(ketnoi))
             {
-                con = getcon_Center();
                 if (con.State != ConnectionState.Open)
                 {
                     con.Open();
                 }
-            }
-            else if (ketnoi == 2)
-            {
-                con = getcon1();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 1)
-            {
-                con = getcon();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandTimeout = 0;
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = sql;
-            SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
-            SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
-            SqlParameter nodeid = new SqlParameter("@Node_id", SqlDbType.VarChar);
-            SqlParameter grpid = new SqlParameter("@GRP_ID", SqlDbType.VarChar);
-            frDate.Value = Convert.ToDateTime(fr_date.Value);
-            toDate.Value = Convert.ToDateTime(to_date.Value);
-            nodeid.Value = node_id.ToString();
-            cmd.Parameters.Add(frDate);
-            cmd.Parameters.Add(toDate);
-            cmd.Parameters.Add(nodeid);
-            SqlDataReader dr = cmd.ExecuteReader();
-            DataTable dt = new DataTable();
-            //DataColumn Col = new DataColumn("STT", typeof(int));
-            //dt.Columns.Add(Col);
-            dt.Load(dr);//gắn dữ liệu vào DataSet
-            return dt;
-            con.Close();
-            con.Dispose();
 
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.CommandTimeout = 0;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@frDate", SqlDbType.Date) { Value = fr_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@toDate", SqlDbType.Date) { Value = to_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@Node_id", SqlDbType.VarChar) { Value = node_id });
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
+            }
         }
+        //public DataTable taobang_from_Procedure_Parameter1_Center_GRP(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, string grp_id, int ketnoi)
+        //{
+        //    if (ketnoi == 3)
+        //    {
+        //        con = getcon_Center();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 2)
+        //    {
+        //        con = getcon1();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 1)
+        //    {
+        //        con = getcon();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = con;
+        //    cmd.CommandTimeout = 0;
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.CommandText = sql;
+        //    SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
+        //    SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
+        //    SqlParameter nodeid = new SqlParameter("@Node_id", SqlDbType.VarChar);
+        //    SqlParameter grpid = new SqlParameter("@GRP_ID", SqlDbType.VarChar);
+        //    frDate.Value = Convert.ToDateTime(fr_date.Value);
+        //    toDate.Value = Convert.ToDateTime(to_date.Value);
+        //    nodeid.Value = node_id.ToString();
+        //    grpid.Value = grp_id.ToString();
+        //    cmd.Parameters.Add(frDate);
+        //    cmd.Parameters.Add(toDate);
+        //    cmd.Parameters.Add(nodeid);
+        //    cmd.Parameters.Add(grpid);
+        //    SqlDataReader dr = cmd.ExecuteReader();
+        //    DataTable dt = new DataTable();
+        //    DataColumn Col = new DataColumn("STT", typeof(int));
+        //    dt.Columns.Add(Col);
+        //    dt.Load(dr);//gắn dữ liệu vào DataSet
+        //    return dt;
+        //    con.Close();
+        //    con.Dispose();
+
+        //}
         public DataTable taobang_from_Procedure_Parameter1_Center_GRP(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, string grp_id, int ketnoi)
         {
-            if (ketnoi == 3)
+            using (SqlConnection con = GetConnectionBasedOnKetnoi(ketnoi))
             {
-                con = getcon_Center();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 2)
-            {
-                con = getcon1();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 1)
-            {
-                con = getcon();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandTimeout = 0;
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = sql;
-            SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
-            SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
-            SqlParameter nodeid = new SqlParameter("@Node_id", SqlDbType.VarChar);
-            SqlParameter grpid = new SqlParameter("@GRP_ID", SqlDbType.VarChar);
-            frDate.Value = Convert.ToDateTime(fr_date.Value);
-            toDate.Value = Convert.ToDateTime(to_date.Value);
-            nodeid.Value = node_id.ToString();
-            grpid.Value = grp_id.ToString();
-            cmd.Parameters.Add(frDate);
-            cmd.Parameters.Add(toDate);
-            cmd.Parameters.Add(nodeid);
-            cmd.Parameters.Add(grpid);
-            SqlDataReader dr = cmd.ExecuteReader();
-            DataTable dt = new DataTable();
-            DataColumn Col = new DataColumn("STT", typeof(int));
-            dt.Columns.Add(Col);
-            dt.Load(dr);//gắn dữ liệu vào DataSet
-            return dt;
-            con.Close();
-            con.Dispose();
+                con.Open();
 
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.CommandTimeout = 0;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@frDate", SqlDbType.Date) { Value = fr_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@toDate", SqlDbType.Date) { Value = to_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@Node_id", SqlDbType.VarChar) { Value = node_id });
+                    cmd.Parameters.Add(new SqlParameter("@GRP_ID", SqlDbType.VarChar) { Value = grp_id });
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        DataColumn Col = new DataColumn("STT", typeof(int));
+                        dt.Columns.Add(Col);
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
+            }
         }
+        //public DataTable taobang_from_Procedure_Parameter1_Center_SKU(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, string grp_id, string sku_id, int ketnoi)
+        //{
+        //    if (ketnoi == 3)
+        //    {
+        //        con = getcon_Center();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 2)
+        //    {
+        //        con = getcon1();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    else if (ketnoi == 1)
+        //    {
+        //        con = getcon();
+        //        if (con.State != ConnectionState.Open)
+        //        {
+        //            con.Open();
+        //        }
+        //    }
+        //    //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = con;
+        //    cmd.CommandTimeout = 0;
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.CommandText = sql;
+        //    SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
+        //    SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
+        //    SqlParameter nodeid = new SqlParameter("@Node_id", SqlDbType.VarChar);
+        //    SqlParameter grpid = new SqlParameter("@GRP_ID", SqlDbType.VarChar);
+        //    SqlParameter skuid = new SqlParameter("@SKU_ID", SqlDbType.VarChar);
+        //    frDate.Value = Convert.ToDateTime(fr_date.Value);
+        //    toDate.Value = Convert.ToDateTime(to_date.Value);
+        //    nodeid.Value = node_id.ToString();
+        //    grpid.Value = grp_id.ToString();
+        //    skuid.Value = sku_id.ToString();
+        //    cmd.Parameters.Add(frDate);
+        //    cmd.Parameters.Add(toDate);
+        //    cmd.Parameters.Add(nodeid);
+        //    cmd.Parameters.Add(grpid);
+        //    cmd.Parameters.Add(skuid);
+        //    SqlDataReader dr = cmd.ExecuteReader();
+        //    DataTable dt = new DataTable();
+        //    DataColumn Col = new DataColumn("STT", typeof(int));
+        //    dt.Columns.Add(Col);
+        //    dt.Load(dr);//gắn dữ liệu vào DataSet
+        //    return dt;
+        //    con.Close();
+        //    con.Dispose();
+
+        //}
         public DataTable taobang_from_Procedure_Parameter1_Center_SKU(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id, string grp_id, string sku_id, int ketnoi)
         {
-            if (ketnoi == 3)
+            using (SqlConnection con = GetConnectionBasedOnKetnoi(ketnoi))
             {
-                con = getcon_Center();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 2)
-            {
-                con = getcon1();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            else if (ketnoi == 1)
-            {
-                con = getcon();
-                if (con.State != ConnectionState.Open)
-                {
-                    con.Open();
-                }
-            }
-            //SqlDataAdapter ad = new SqlDataAdapter(sql, con);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandTimeout = 0;
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = sql;
-            SqlParameter frDate = new SqlParameter("@frDate", SqlDbType.Date);
-            SqlParameter toDate = new SqlParameter("@toDate", SqlDbType.Date);
-            SqlParameter nodeid = new SqlParameter("@Node_id", SqlDbType.VarChar);
-            SqlParameter grpid = new SqlParameter("@GRP_ID", SqlDbType.VarChar);
-            SqlParameter skuid = new SqlParameter("@SKU_ID", SqlDbType.VarChar);
-            frDate.Value = Convert.ToDateTime(fr_date.Value);
-            toDate.Value = Convert.ToDateTime(to_date.Value);
-            nodeid.Value = node_id.ToString();
-            grpid.Value = grp_id.ToString();
-            skuid.Value = sku_id.ToString();
-            cmd.Parameters.Add(frDate);
-            cmd.Parameters.Add(toDate);
-            cmd.Parameters.Add(nodeid);
-            cmd.Parameters.Add(grpid);
-            cmd.Parameters.Add(skuid);
-            SqlDataReader dr = cmd.ExecuteReader();
-            DataTable dt = new DataTable();
-            DataColumn Col = new DataColumn("STT", typeof(int));
-            dt.Columns.Add(Col);
-            dt.Load(dr);//gắn dữ liệu vào DataSet
-            return dt;
-            con.Close();
-            con.Dispose();
+                con.Open();
 
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.CommandTimeout = 0;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@frDate", SqlDbType.Date) { Value = fr_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@toDate", SqlDbType.Date) { Value = to_date.Value.Date });
+                    cmd.Parameters.Add(new SqlParameter("@Node_id", SqlDbType.VarChar) { Value = node_id });
+                    cmd.Parameters.Add(new SqlParameter("@GRP_ID", SqlDbType.VarChar) { Value = grp_id });
+                    cmd.Parameters.Add(new SqlParameter("@SKU_ID", SqlDbType.VarChar) { Value = sku_id });
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        DataColumn Col = new DataColumn("STT", typeof(int));
+                        dt.Columns.Add(Col);
+                        dt.Load(dr); // Gắn dữ liệu vào DataTable
+                        return dt;
+                    }
+                }
+            }
         }
         public DataSet taobang_from_Procedure_Parameter2(string sql, DateTimePicker fr_date, DateTimePicker to_date, string node_id)
         {

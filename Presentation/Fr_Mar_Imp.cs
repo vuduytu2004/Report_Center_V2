@@ -1,6 +1,7 @@
 ﻿using OfficeOpenXml;
 using Report_Center.DataAccess;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -129,7 +130,7 @@ namespace Report_Center.Presentation
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-
+            bool loi = false;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string filePath = openFileDialog.FileName;
@@ -148,6 +149,11 @@ namespace Report_Center.Presentation
                 {
                     var worksheetByItems = package.Workbook.Worksheets["By items"];
                     var worksheetKeHoachVH = package.Workbook.Worksheets["Kế hoạch VH"];
+                    if (worksheetByItems == null || worksheetKeHoachVH == null)
+                    {
+                        MessageBox.Show("Không tìm thấy các sheet 'By items' hoặc 'Kế hoạch VH' trong file Excel.");
+                        return;
+                    }
 
                     int totalRows = (worksheetByItems.Dimension.End.Row - 2) + (worksheetKeHoachVH.Dimension.End.Row - 2);
                     int currentRow = 0;
@@ -163,71 +169,105 @@ namespace Report_Center.Presentation
                         // Insert dữ liệu từ sheet 'By items'
                         for (int row = 3; row <= worksheetByItems.Dimension.End.Row; row++)
                         {
-                            string query = @"
-                        INSERT INTO DATA_IMP (
-                            Ma10So, Ma_Nganh_Hàng, Goods_id, TenSanPham, NganhHang, GiaBanLe, GiaKhuyenMaiMart, 
-                            GiaKhuyenMaiMini, Key1, TotalKM, Thue, ApDung, ApDungMart, ApDungMiniMart, Note, 
-                            Key_sheet
-                        ) VALUES (
-                            @Ma10So, @Ma_Nganh_Hàng, @Goods_id, @TenSanPham, @NganhHang, @GiaBanLe, @GiaKhuyenMaiMart, 
-                            @GiaKhuyenMaiMini, @Key1, @TotalKM, @Thue, @ApDung, @ApDungMart, @ApDungMiniMart, @Note, 
-                            @Key_sheet
-                        )";
-
-                            using (SqlCommand command = new SqlCommand(query, connection))
+                            try
                             {
-                                command.Parameters.AddWithValue("@Ma10So", GetCellValue(worksheetByItems.Cells[row, 1]));
-                                command.Parameters.AddWithValue("@Ma_Nganh_Hàng", GetCellValue(worksheetByItems.Cells[row, 2]));
-                                command.Parameters.AddWithValue("@Goods_id", GetCellValue(worksheetByItems.Cells[row, 3]));
-                                command.Parameters.AddWithValue("@TenSanPham", GetCellValue(worksheetByItems.Cells[row, 4]));
-                                command.Parameters.AddWithValue("@NganhHang", GetCellValue(worksheetByItems.Cells[row, 5]));
-                                command.Parameters.AddWithValue("@GiaBanLe", GetCellValue(worksheetByItems.Cells[row, 6]));
-                                command.Parameters.AddWithValue("@GiaKhuyenMaiMart", GetCellValue(worksheetByItems.Cells[row, 7]));
-                                command.Parameters.AddWithValue("@GiaKhuyenMaiMini", GetCellValue(worksheetByItems.Cells[row, 8]));
-                                command.Parameters.AddWithValue("@Key1", GetCellValue(worksheetByItems.Cells[row, 9]));
-                                command.Parameters.AddWithValue("@TotalKM", GetCellValue(worksheetByItems.Cells[row, 10]));
-                                command.Parameters.AddWithValue("@Thue", GetCellValue(worksheetByItems.Cells[row, 11]));
-                                command.Parameters.AddWithValue("@ApDung", GetCellValue(worksheetByItems.Cells[row, 12]));
-                                command.Parameters.AddWithValue("@ApDungMart", GetCellValue(worksheetByItems.Cells[row, 13]));
-                                command.Parameters.AddWithValue("@ApDungMiniMart", GetCellValue(worksheetByItems.Cells[row, 14]));
-                                command.Parameters.AddWithValue("@Note", GetCellValue(worksheetByItems.Cells[row, 15]));
-                                command.Parameters.AddWithValue("@Key_sheet", "By_items");
+                                var Ma10So_check = GetCellValue(worksheetByItems.Cells[row, 1])?.ToString();
+                                if (!string.IsNullOrEmpty(Ma10So_check))
+                                {
+                                    string query = @"
+                                INSERT INTO DATA_IMP (
+                                    Ma10So, Ma_Nganh_Hàng, Goods_id, TenSanPham, NganhHang, GiaBanLe, GiaKhuyenMaiMart, 
+                                    GiaKhuyenMaiMini, Key1, TotalKM, Thue, ApDung, ApDungMart, ApDungMiniMart, Note, 
+                                    Key_sheet
+                                ) VALUES (
+                                    @Ma10So, @Ma_Nganh_Hàng, @Goods_id, @TenSanPham, @NganhHang, @GiaBanLe, @GiaKhuyenMaiMart, 
+                                    @GiaKhuyenMaiMini, @Key1, @TotalKM, @Thue, @ApDung, @ApDungMart, @ApDungMiniMart, @Note, 
+                                    @Key_sheet
+                                )";
 
-                                command.ExecuteNonQuery();
+                                    using (SqlCommand command = new SqlCommand(query, connection))
+                                    {
+                                        command.Parameters.AddWithValue("@Ma10So", GetCellValue(worksheetByItems.Cells[row, 1]).ToString());
+                                        command.Parameters.AddWithValue("@Ma_Nganh_Hàng", GetCellValue(worksheetByItems.Cells[row, 2]).ToString());
+                                        command.Parameters.AddWithValue("@Goods_id", GetCellValue(worksheetByItems.Cells[row, 3]).ToString());
+                                        command.Parameters.AddWithValue("@TenSanPham", GetCellValue(worksheetByItems.Cells[row, 4]).ToString());
+                                        command.Parameters.AddWithValue("@NganhHang", GetCellValue(worksheetByItems.Cells[row, 5]).ToString());
+                                        command.Parameters.AddWithValue("@GiaBanLe", GetCellValue(worksheetByItems.Cells[row, 6]));
+                                        command.Parameters.AddWithValue("@GiaKhuyenMaiMart", GetCellValue(worksheetByItems.Cells[row, 7]));
+                                        command.Parameters.AddWithValue("@GiaKhuyenMaiMini", GetCellValue(worksheetByItems.Cells[row, 8]));
+                                        command.Parameters.AddWithValue("@Key1", GetCellValue(worksheetByItems.Cells[row, 9]));
+                                        command.Parameters.AddWithValue("@TotalKM", GetCellValue(worksheetByItems.Cells[row, 10]));
+                                        command.Parameters.AddWithValue("@Thue", GetCellValue(worksheetByItems.Cells[row, 11]));
+                                        command.Parameters.AddWithValue("@ApDung", GetCellValue(worksheetByItems.Cells[row, 12]));
+                                        command.Parameters.AddWithValue("@ApDungMart", GetCellValue(worksheetByItems.Cells[row, 13]));
+                                        command.Parameters.AddWithValue("@ApDungMiniMart", GetCellValue(worksheetByItems.Cells[row, 14]));
+                                        command.Parameters.AddWithValue("@Note", GetCellValue(worksheetByItems.Cells[row, 15]));
+                                        command.Parameters.AddWithValue("@Key_sheet", "By_items");
+
+                                        command.ExecuteNonQuery();
+                                    }
+                                }
+                                currentRow++;
+                                progressBar1.Value = currentRow;
                             }
-
-                            currentRow++;
-                            progressBar1.Value = currentRow;
+                            catch (Exception ex)
+                            {
+                                // Hiển thị thông báo lỗi với số dòng gây lỗi
+                                MessageBox.Show($"By_items-Lỗi tại dòng: {row}: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                loi = true;
+                                // Có thể chọn break hoặc continue tùy tình huống:
+                                break; // Ngưng thực hiện khi có lỗi hoặc sử dụng continue để bỏ qua dòng bị lỗi
+                            }
                         }
 
                         // Insert dữ liệu từ sheet 'Kế hoạch VH'
                         for (int row = 3; row <= worksheetKeHoachVH.Dimension.End.Row; row++)
                         {
-                            string query = @"
-                        INSERT INTO DATA_IMP (
-                            STK_ID, Goods_id, SL_DuKien_Ban, Key_sheet
-                        ) VALUES (
-                            @STK_ID, @Goods_id, @SL_DuKien_Ban, @Key_sheet
-                        )";
-
-                            using (SqlCommand command = new SqlCommand(query, connection))
+                            try
                             {
-                                command.Parameters.AddWithValue("@STK_ID", GetCellValue(worksheetKeHoachVH.Cells[row, 1]));
-                                command.Parameters.AddWithValue("@Goods_id", GetCellValue(worksheetKeHoachVH.Cells[row, 2]));
-                                command.Parameters.AddWithValue("@SL_DuKien_Ban", GetCellValue(worksheetKeHoachVH.Cells[row, 3]));
-                                command.Parameters.AddWithValue("@Key_sheet", "Ke_hoach_VH");
+                                var STK_ID_check = GetCellValue(worksheetKeHoachVH.Cells[row, 1])?.ToString();
+                                if (!string.IsNullOrEmpty(STK_ID_check))
+                                {
+                                    string query = @"
+                                    INSERT INTO DATA_IMP (
+                                        STK_ID, Goods_id, SL_DuKien_Ban, Key_sheet
+                                    ) VALUES (
+                                        @STK_ID, @Goods_id, @SL_DuKien_Ban, @Key_sheet
+                                    )";
 
-                                command.ExecuteNonQuery();
+                                    using (SqlCommand command = new SqlCommand(query, connection))
+                                    {
+                                        command.Parameters.AddWithValue("@STK_ID", GetCellValue(worksheetKeHoachVH.Cells[row, 1]).ToString());
+                                        command.Parameters.AddWithValue("@Goods_id", GetCellValue(worksheetKeHoachVH.Cells[row, 2]).ToString());
+                                        command.Parameters.AddWithValue("@SL_DuKien_Ban", GetCellValue(worksheetKeHoachVH.Cells[row, 3]));
+                                        command.Parameters.AddWithValue("@Key_sheet", "Ke_hoach_VH");
+
+                                        command.ExecuteNonQuery();
+                                    }
+                                }
+                                currentRow++;
+                                progressBar1.Value = currentRow;
                             }
-
-                            currentRow++;
-                            progressBar1.Value = currentRow;
+                            catch (Exception ex)
+                            {
+                                // Hiển thị thông báo lỗi với số dòng gây lỗi
+                                MessageBox.Show($"Ke_hoach_VH-Lỗi tại dòng: {row}: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                loi = true;
+                                // Có thể chọn break hoặc continue tùy tình huống:
+                                break; // Ngưng thực hiện khi có lỗi hoặc sử dụng continue để bỏ qua dòng bị lỗi
+                            }
                         }
                     }
                 }
             }
-
-            MessageBox.Show("Import completed successfully.");
+            if (loi == false)
+            {
+                MessageBox.Show("Import completed successfully.", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Sưa lỗi rồi Import lại.","Lỗi",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }    
         }
 
         private object GetCellValue(ExcelRange cell)
@@ -247,8 +287,6 @@ namespace Report_Center.Presentation
 
         private async void Exp_data_Click(object sender, EventArgs e)
         {
-            // Thiết lập progressBar1 vào chế độ Marquee
-            progressBar1.Style = ProgressBarStyle.Marquee;
 
             string Dirpath = Directory.GetCurrentDirectory();
             string Template = Path.Combine(Dirpath, "Media", "Template");
@@ -265,6 +303,9 @@ namespace Report_Center.Presentation
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    // Thiết lập progressBar1 vào chế độ Marquee
+                    progressBar1.Style = ProgressBarStyle.Marquee;
+
                     string selectedDirectory = Path.GetDirectoryName(saveFileDialog.FileName);
                     string uniqueFileName = GetUniqueFileName(Path.GetFileName(saveFileDialog.FileName), selectedDirectory);
                     Exp_data.Enabled = false;
@@ -272,10 +313,10 @@ namespace Report_Center.Presentation
                     Exp_data.Enabled = true;
                     //MessageBox.Show($"File saved to: {uniqueFileName}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else
-                {
-                    MessageBox.Show("Operation canceled by the user.", "Export Canceled", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                //else
+                //{
+                //    MessageBox.Show("Operation canceled by the user.", "Export Canceled", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //}
             }
         }
 
@@ -285,7 +326,7 @@ namespace Report_Center.Presentation
             {
                 await connection.OpenAsync();
 
-                using (SqlCommand command = new SqlCommand("rpt_SUM_Bill_By_SKU_MarKeting", connection))
+                using (SqlCommand command = new SqlCommand("rpt_SUM_Bill_By_SKU_MarKeting_V2", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
@@ -327,32 +368,68 @@ namespace Report_Center.Presentation
                                 } while (await reader.ReadAsync());
                             }
 
+                            //await reader.NextResultAsync();
+                            //if (await reader.ReadAsync())
+                            //{
+                            //    ExcelWorksheet sheet3 = package.Workbook.Worksheets["Kế hoạch VH"];
+                            //    int row = 3;
+                            //    do
+                            //    {
+                            //        for (int col = 0; col < reader.FieldCount; col++)
+                            //        {
+                            //            sheet3.Cells[row, col + 3].Value = reader.GetValue(col);
+                            //        }
+                            //        row++;
+                            //    } while (await reader.ReadAsync());
+                            //}
+
+                            // Tạo một danh sách để lưu trữ dữ liệu từ reader
+                            var dataList = new List<object[]>();
+
                             await reader.NextResultAsync();
-                            if (await reader.ReadAsync())
+                            while (await reader.ReadAsync())
                             {
-                                ExcelWorksheet sheet3 = package.Workbook.Worksheets["Kế hoạch VH"];
-                                int row = 3;
-                                do
-                                {
-                                    for (int col = 0; col < reader.FieldCount; col++)
-                                    {
-                                        sheet3.Cells[row, col + 3].Value = reader.GetValue(col);
-                                    }
-                                    row++;
-                                } while (await reader.ReadAsync());
+                                var values = new object[reader.FieldCount];
+                                reader.GetValues(values);
+                                dataList.Add(values);
                             }
 
-                            // Sau khi công việc dài hạn hoàn tất, bạn có thể đặt lại progressBar1 vào chế độ mặc định
-                            progressBar1.Style = ProgressBarStyle.Blocks;
+                            // Ghi vào sheet "Kế hoạch VH"
+                            ExcelWorksheet sheet3 = package.Workbook.Worksheets["Kế hoạch VH"];
+                            int row1 = 3;
+                            foreach (var data in dataList)
+                            {
+                                for (int col = 0; col < data.Length; col++)
+                                {
+                                    sheet3.Cells[row1, col + 3].Value = data[col];
+                                }
+                                row1++;
+                            }
 
-                            await package.SaveAsAsync(new FileInfo(savePath));
+                            // Ghi vào sheet "Data chi tiết"
+                            ExcelWorksheet sheet4 = package.Workbook.Worksheets["Data chi tiết"];
+                            int row2 = 3;
+                            foreach (var data in dataList)
+                            {
+                                for (int col = 0; col < 2; col++)  // Chỉ lấy 2 cột đầu tiên
+                                {
+                                    sheet4.Cells[row2, col + 2].Value = data[col];
+                                }
+                                row2++;
+                            }
+
+                            ////await package.SaveAsAsync(new FileInfo(savePath));
+                            await Task.Run(() => package.SaveAsAsync(new FileInfo(savePath)));
+                            ////await package.SaveAsAsync(new FileInfo(savePath)).ConfigureAwait(false);
+                            // Sau khi công việc dài hạn hoàn tất, bạn có thể đặt lại progressBar1 vào chế độ mặc định
+
+
                             System.Diagnostics.Process.Start(new ProcessStartInfo(savePath) { UseShellExecute = true });
+                            progressBar1.Style = ProgressBarStyle.Blocks;
                         }
                     }
                 }
             }
         }
-
-
     }
 }

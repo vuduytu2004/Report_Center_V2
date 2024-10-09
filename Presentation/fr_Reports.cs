@@ -280,7 +280,7 @@ namespace Report_Center.Presentation
 
         private async void bt_BC_Click(object sender, EventArgs e)
         {
-            if (Pro_name.Text ==null || Pro_name.Text== "" || Pro_name.Text == "1") { return; }
+            if (Pro_name.Text == null || Pro_name.Text == "" || Pro_name.Text == "1") { return; }
 
             progressBar1.Style = ProgressBarStyle.Marquee;
 
@@ -916,7 +916,7 @@ namespace Report_Center.Presentation
 
                         using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
                         {
-                            
+
                             var frto = "Từ ngày: " + frdate.Value.ToString("dd-MM-yyyy") + " đến ngày: " + todate.Value.ToString("dd-MM-yyyy");
                             if (await reader.ReadAsync())
                             {
@@ -927,7 +927,7 @@ namespace Report_Center.Presentation
                                 {
                                     for (int col = 0; col < reader.FieldCount; col++)
                                     {
-                                        sheet1.Cells[row, col+1 ].Value = reader.GetValue(col);
+                                        sheet1.Cells[row, col + 1].Value = reader.GetValue(col);
                                     }
                                     row++;
                                 } while (await reader.ReadAsync());
@@ -943,7 +943,7 @@ namespace Report_Center.Presentation
                                     range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                                 }
                             }
-                            
+
                             await reader.NextResultAsync();
                             if (await reader.ReadAsync())
                             {

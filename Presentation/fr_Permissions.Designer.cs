@@ -51,6 +51,7 @@
             this.dgvUsers.Margin = new System.Windows.Forms.Padding(2);
             this.dgvUsers.Name = "dgvUsers";
             this.dgvUsers.ReadOnly = true;
+            this.dgvUsers.RowHeadersVisible = false;
             this.dgvUsers.RowHeadersWidth = 62;
             this.dgvUsers.RowTemplate.Height = 28;
             this.dgvUsers.Size = new System.Drawing.Size(626, 244);
@@ -68,6 +69,7 @@
             this.dgvUserPermissions.Location = new System.Drawing.Point(638, 38);
             this.dgvUserPermissions.Margin = new System.Windows.Forms.Padding(2);
             this.dgvUserPermissions.Name = "dgvUserPermissions";
+            this.dgvUserPermissions.RowHeadersVisible = false;
             this.dgvUserPermissions.RowHeadersWidth = 62;
             this.dgvUserPermissions.RowTemplate.Height = 28;
             this.dgvUserPermissions.Size = new System.Drawing.Size(511, 436);
@@ -82,6 +84,7 @@
             this.dgvRoleGroup.Location = new System.Drawing.Point(8, 286);
             this.dgvRoleGroup.Margin = new System.Windows.Forms.Padding(2);
             this.dgvRoleGroup.Name = "dgvRoleGroup";
+            this.dgvRoleGroup.RowHeadersVisible = false;
             this.dgvRoleGroup.RowHeadersWidth = 62;
             this.dgvRoleGroup.RowTemplate.Height = 28;
             this.dgvRoleGroup.Size = new System.Drawing.Size(626, 188);

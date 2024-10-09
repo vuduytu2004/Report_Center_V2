@@ -227,7 +227,6 @@ namespace Report_Center.Presentation
             this.dataGridView_full.ReadOnly = true;
             this.dataGridView_full.RowHeadersWidth = 62;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font(".VnArial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dataGridView_full.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView_full.RowTemplate.Height = 28;
             this.dataGridView_full.Size = new System.Drawing.Size(831, 313);

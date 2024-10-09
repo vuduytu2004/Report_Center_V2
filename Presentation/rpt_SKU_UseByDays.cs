@@ -1,6 +1,7 @@
 ﻿//using System.Collections;
 using ClosedXML.Excel;
 using Microsoft.Office.Interop.Excel;
+using Report_Center.DataAccess;
 using System;
 //using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,6 @@ using System.Threading;
 //using System.Linq;
 //using System.Text;
 using System.Windows.Forms;
-using Report_Center.DataAccess;
 //using System.Threading;
 //using Font = System.Drawing.Font;
 using Application = System.Windows.Forms.Application;
@@ -119,7 +119,7 @@ namespace Report_Center.Presentation
             //DataTable table1 = new DataTable();
             //DataTable table1 = new DataTable();
             string tim_sql;
-            tim_sql = @"SELECT sql_str FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
+            tim_sql = @"SELECT sql_str_DWH FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
             string sql = cn.LayQuen(tim_sql).Trim();
 
             //string sql = @"select a.sku_id,a.sku_code,a.plu_code,a.dept_id,a.grp_id,(grp_name),(full_name),a.unit_symb,rtprice,tax_rate,a.status,a.ITEM_TYPE as 'Loại hàng', c.usebydays as 'Số ngày SD' from dsmart12.dbo.sku_def a with(nolock) --as b on a.sku_id=b.sku_id
@@ -146,15 +146,15 @@ namespace Report_Center.Presentation
             //    Creating DataTable.
             //DataTable dt_grid_nhap = new DataTable();
 
-            foreach (DataRow dong_row in table1.Rows)
-            {
-                dong_row[6] = Converter.TCVN3ToUnicode(dong_row[6].ToString());
-                dong_row[7] = Converter.TCVN3ToUnicode(dong_row[7].ToString());
-            }
-            foreach (DataColumn cot_cot in table1.Columns)
-            {
-                cot_cot.ColumnName = Converter.TCVN3ToUnicode(cot_cot.ToString());
-            }
+            //////////foreach (DataRow dong_row in table1.Rows)
+            //////////{
+            //////////    dong_row[6] = Converter.TCVN3ToUnicode(dong_row[6].ToString());
+            //////////    dong_row[7] = Converter.TCVN3ToUnicode(dong_row[7].ToString());
+            //////////}
+            //////////foreach (DataColumn cot_cot in table1.Columns)
+            //////////{
+            //////////    cot_cot.ColumnName = Converter.TCVN3ToUnicode(cot_cot.ToString());
+            //////////}
 
 
             //DataRow totalsRow = table_set1.Tables[1].NewRow();

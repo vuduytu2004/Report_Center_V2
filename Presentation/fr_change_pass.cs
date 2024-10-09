@@ -3,8 +3,6 @@ using Report_Center.DataAccess;
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Forms;
 using static Report_Center.Main;
 
@@ -19,7 +17,7 @@ namespace Report_Center.Presentation
             InitializeComponent();
             ApplyEnterKeyToAllControls(this);
         }
-        
+
 
         private void cmddn_Click(object sender, EventArgs e)
         {
@@ -56,7 +54,7 @@ namespace Report_Center.Presentation
             //}
             //else
             //{
-                this.Close();
+            this.Close();
             //}
         }
         private int ChangeUserPassword(int userID, string oldPassword, string newPassword)

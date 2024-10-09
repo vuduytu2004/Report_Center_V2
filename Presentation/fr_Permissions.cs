@@ -551,7 +551,7 @@ namespace Report_Center.Presentation
             //////////////////////////////////////////////////////////////////////////////////////////
             //  Khi khai bao thêm 1  nhóm thì thêm vào GroupsPermissions, [RoleGroupID]             //
             //////////////////////////////////////////////////////////////////////////////////////////
-            
+
             var convert_txt_UserID = Convert.ToInt32(txt_UserID.Text);
             foreach (DataGridViewRow row in dgvRoleGroup.Rows)
             {

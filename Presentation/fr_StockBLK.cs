@@ -5,6 +5,7 @@ using ClosedXML.Excel;
 //using Microsoft.Office.Interop;
 using Microsoft.Office.Interop.Excel;
 using OfficeOpenXml;
+using Report_Center.DataAccess;
 using System;
 //using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Report_Center.DataAccess;
 //using System.Threading;
 //using Font = System.Drawing.Font;
 using Application = System.Windows.Forms.Application;
@@ -91,7 +91,7 @@ namespace Report_Center.Presentation
             DataTable table = new DataTable();
 
             string tim_sql;
-            tim_sql = @"SELECT sql_str FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
+            tim_sql = @"SELECT sql_str_DWH FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
             string sql = cn.LayQuen(tim_sql).Trim();
 
             /// -----------------------------test//----------------------------------------------------------------------------------
@@ -352,55 +352,26 @@ namespace Report_Center.Presentation
         {
             if (e.RowIndex >= 0)
             {
+                var cellValue = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
 
-                //string value =
-                //if (e.ColumnIndex == 1)
-                //{
-                //    Ma_NCC.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                //}
-                //if (e.ColumnIndex == 2)
-                //{
-                //    Ma_NCC.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                //}
-                if (e.ColumnIndex == 5) // || e.ColumnIndex == 5 || e.ColumnIndex == 6)
+                switch (e.ColumnIndex)
                 {
-                    Ma_hang.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
+                    case 1:
+                    case 2:
+                        Ma_stk_id.Text = cellValue;
+                        break;
+                    case 3:
+                    case 4:
+                        Ma_nhom.Text = cellValue;
+                        break;
+                    case 5:
+                    case 6:
+                        Ma_hang.Text = cellValue;
+                        break;
                 }
-                if (e.ColumnIndex == 6)
-                {
-                    Ma_hang.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                if (e.ColumnIndex == 3)
-                {
-                    Ma_nhom.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 4)
-                {
-                    Ma_nhom.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                if (e.ColumnIndex == 1)
-                {
-                    Ma_stk_id.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 2)
-                {
-                    Ma_stk_id.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                ////Lưu lại dòng dữ liệu vừa kích chọn
-                //DataGridViewRow rowss = this.dataGridView_full.Rows[e.RowIndex];
-                ////DataGridViewCell cell = this.dataGridView_full.CellClick();
-                //DataGridViewColumn columnss =this.dataGridView_full.Columns[e.ColumnIndex];
-                ////Đưa dữ liệu vào textbox
-                //Ma_NCC.Text = rowss.Cells[columnss.ValueType].Value.ToString();
-                //string value =
-                //dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                //txtHoVaTen.Text = row.Cells[1].Value.ToString();
-                //txtQueQuan.Text = row.Cells[2].Value.ToString();
-
-                //Không cho phép sửa trường STT
-                //txtSTT.Enabled = false;
             }
         }
+
         //----------------------------------------------------------
         private void dataGridView_full_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
@@ -442,8 +413,8 @@ namespace Report_Center.Presentation
             progressBar1.Style = ProgressBarStyle.Marquee;
             string sql = @" SELECT ROW_NUMBER() OVER (ORDER BY STOCKBLK.STK_ID) AS [STT],STOCKBLK.STK_ID, c.stk_NAME,b.GRP_ID,b.GRP_NAME ,STOCKBLK.SKU_ID,b.FULL_NAME, STOCKBLK.BLOCK_CODE, STOCKBLK.MODI_DATE
                             FROM DSMART12.dbo.STOCKBLK STOCKBLK with(nolock) 
-                            left join sku_def as b  with(nolock) on STOCKBLK.sku_id=b.SKU_ID 
-                            left join stock as c  with(nolock) on STOCKBLK.stk_id=c.stk_id
+                            left join [172.16.70.30].DATA_DETAIL.dbo.sku_def as b  with(nolock) on STOCKBLK.sku_id=b.SKU_ID 
+                            left join [172.16.70.30].DATA_DETAIL.dbo.stock as c  with(nolock) on STOCKBLK.stk_id=c.stk_id
                             where ";
             if ((Ma_nhom.Text == "") && (Ma_hang.Text == "") && (Ma_stk_id.Text == ""))
             {
@@ -451,15 +422,15 @@ namespace Report_Center.Presentation
                 return;
             }
             if ((Ma_hang.Text != ""))
-            { sql += @"  (STOCKBLK.SKU_ID like N'%" + Ma_hang.Text + "%' or b.FULL_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_hang.Text) + "%')"; }
+            { sql += @"  (STOCKBLK.SKU_ID like N'%" + Ma_hang.Text + "%' or b.FULL_NAME like N'%" + (Ma_hang.Text) + "%')"; }
             if ((Ma_nhom.Text != "") && Ma_hang.Text != "")
-            { sql += @" and b.GRP_ID like N'%" + Ma_nhom.Text + "%' or b.grp_name like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_nhom.Text) + "%'"; }
+            { sql += @" and b.GRP_ID like N'%" + Ma_nhom.Text + "%' or b.grp_name like N'%" + (Ma_nhom.Text) + "%'"; }
             if ((Ma_nhom.Text != "") && Ma_hang.Text == "")
-            { sql += @" b.GRP_ID like N'%" + Ma_nhom.Text + "%' or b.grp_name like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_nhom.Text) + "%'"; }
+            { sql += @" b.GRP_ID like N'%" + Ma_nhom.Text + "%' or b.grp_name like N'%" + (Ma_nhom.Text) + "%'"; }
             if ((Ma_nhom.Text == "") && Ma_hang.Text == "" && (Ma_stk_id.Text != ""))
-            { sql += @" STOCKBLK.STK_ID like N'%" + Ma_stk_id.Text + "%' or c.stk_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_stk_id.Text) + "%'"; }
+            { sql += @" STOCKBLK.STK_ID like N'%" + Ma_stk_id.Text + "%' or c.stk_NAME like N'%" + (Ma_stk_id.Text) + "%'"; }
             if (((Ma_nhom.Text != "") && (Ma_stk_id.Text != "")) || (Ma_hang.Text != "" && (Ma_stk_id.Text != "")))
-            { sql += @" and STOCKBLK.STK_ID like N'%" + Ma_stk_id.Text + "%' or c.stk_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_stk_id.Text) + "%'"; }
+            { sql += @" and STOCKBLK.STK_ID like N'%" + Ma_stk_id.Text + "%' or c.stk_NAME like N'%" + (Ma_stk_id.Text) + "%'"; }
 
             dataGridView_full.DataSource = cn.taobang2(sql);
 
@@ -526,7 +497,7 @@ namespace Report_Center.Presentation
                 {
                     if (cell.ColumnIndex == 2 || cell.ColumnIndex == 4 || cell.ColumnIndex == 6) // || cell.ColumnIndex == 10)
                     {
-                        dt_grid_nhap.Rows[dt_grid_nhap.Rows.Count - 1][cell.ColumnIndex] = Converter.TCVN3ToUnicode(cell.Value.ToString());
+                        dt_grid_nhap.Rows[dt_grid_nhap.Rows.Count - 1][cell.ColumnIndex] = (cell.Value.ToString());
                     }
                     else
                     {
@@ -615,14 +586,14 @@ namespace Report_Center.Presentation
 
                             foreach (DataGridViewCell cell in row.Cells)
                             {
-                                if (cell.ColumnIndex == 2 || cell.ColumnIndex == 4 || cell.ColumnIndex == 6)
-                                {
-                                    newRow[cell.ColumnIndex] = Converter.TCVN3ToUnicode(cell.Value.ToString());
-                                }
-                                else
-                                {
+                                //if (cell.ColumnIndex == 2 || cell.ColumnIndex == 4 || cell.ColumnIndex == 6)
+                                //{
+                                //    newRow[cell.ColumnIndex] = Converter.TCVN3ToUnicode(cell.Value.ToString());
+                                //}
+                                //else
+                                //{
                                     newRow[cell.ColumnIndex] = cell.Value.ToString();
-                                }
+                                //}
                             }
 
                             dt_chunk.Rows.Add(newRow);

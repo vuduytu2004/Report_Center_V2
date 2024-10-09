@@ -263,6 +263,12 @@
     <Compile Include="Presentation\fr_Ketnoi.designer.cs">
       <DependentUpon>fr_Ketnoi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\Fr_BRG_Target_Imp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Fr_BRG_Target_Imp.Designer.cs">
+      <DependentUpon>Fr_BRG_Target_Imp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\fr_Permissions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -409,6 +415,9 @@
     <EmbeddedResource Include="Presentation\fr_Ketnoi.resx">
       <DependentUpon>fr_Ketnoi.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\Fr_BRG_Target_Imp.resx">
+      <DependentUpon>Fr_BRG_Target_Imp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_Permissions.resx">
       <DependentUpon>fr_Permissions.cs</DependentUpon>
     </EmbeddedResource>
@@ -513,6 +522,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template-Tach_Don_333_314_315.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Media\Template\Template-Target_tap_doan.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template.xlsx">

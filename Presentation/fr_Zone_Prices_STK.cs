@@ -18,8 +18,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Report_Center.DataAccess;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using System.Threading;
 //using Font = System.Drawing.Font;
 using Application = System.Windows.Forms.Application;
@@ -99,7 +97,7 @@ namespace Report_Center.Presentation
             //progressBar11.Style = ProgressBarStyle.Marquee;
             DataTable table = new DataTable();
             string tim_sql;
-            tim_sql = @"SELECT sql_str FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
+            tim_sql = @"SELECT sql_str_DWH FROM var_sql_str where [form_name]= '" + this.Name.Trim() + "' AND [id]=1";
             string sql = cn.LayQuen(tim_sql).Trim();
             /// -----------------------------test//----------------------------------------------------------------------------------
             //            string sql = @"select  ROW_NUMBER() OVER (ORDER BY a.SKU_ID) AS [STT],a.SUPP_ID as 'Mã NCC', ISDEFAULT as 'NCC Chỉ định' ,(b.SUPP_NAME) as 'Tên NCC' 
@@ -180,15 +178,15 @@ namespace Report_Center.Presentation
                     , c.TAX_RATE as 'Thuế Bán', SPPRICE as 'Giá Nhập chỉ định'                    , PREFPR as 'Giá Vốn chỉ định' , iif( f.tax_rate is null ,'Not Set', CAST(f.tax_rate as varchar(10))) as 'Thuế Nhập'    --, iif(  LEN(ISNULL(a.tax_code,''))=0, 'Not Set',a.tax_code ) as 'Thuế Nhập'  --f.tax_code as 'Thuế Nhập'--
                     ,PCPR_CODE as 'Vùng Giá'                     ,c.STATUS as 'Trạng Thái'                    ,c.ITEM_TYPE as 'Loại hàng'
                     ,e.OPEN_DATE ,e.MODI_DATE
-,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
-,CU2.STK_ID AS 'Vùng Kho', CU2.WSPRICE AS 'Giá bán theo KHO'
+                    ,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
+                    ,CU2.STK_ID AS 'Vùng Kho', CU2.WSPRICE AS 'Giá bán theo KHO'
 					from  DSMART12.dbo.SPPRICE a WITH (NOLOCK)
-                    left join  DSMART12.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
-                    left join  DSMART12.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
 					 left join  DSMART12.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
 					 left join  DSMART12.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
-LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
-lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
+                    LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
+                    lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                     where c.status NOT IN ( '02','05') order by a.SKU_ID";
 
 
@@ -266,45 +264,39 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
         {
             if (e.RowIndex >= 0)
             {
-                //string value =
-                if (e.ColumnIndex == 1)
-                {
-                    Ma_NCC.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 3)
-                {
-                    Ma_NCC.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                if (e.ColumnIndex == 4 || e.ColumnIndex == 5 || e.ColumnIndex == 6)
-                {
-                    Ma_hang.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 9)
-                {
-                    Ma_nhom.Text = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                }
-                if (e.ColumnIndex == 10)
-                {
-                    Ma_nhom.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                if (e.ColumnIndex == 7)
-                {
-                    Ma_hang.Text = Converter.TCVN3ToUnicode(dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString());
-                }
-                ////Lưu lại dòng dữ liệu vừa kích chọn
-                //DataGridViewRow rowss = this.dataGridView_full.Rows[e.RowIndex];
-                ////DataGridViewCell cell = this.dataGridView_full.CellClick();
-                //DataGridViewColumn columnss =this.dataGridView_full.Columns[e.ColumnIndex];
-                ////Đưa dữ liệu vào textbox
-                //Ma_NCC.Text = rowss.Cells[columnss.ValueType].Value.ToString();
-                //string value =
-                //dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
-                //txtHoVaTen.Text = row.Cells[1].Value.ToString();
-                //txtQueQuan.Text = row.Cells[2].Value.ToString();
+                var cellValue = dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
 
-                //Không cho phép sửa trường STT
-                //txtSTT.Enabled = false;
+                switch (e.ColumnIndex)
+                {
+                    case 1:
+                    case 3:
+                        Ma_NCC.Text = cellValue;
+                        break;
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        Ma_hang.Text = cellValue;
+                        break;
+                    case 9:
+                    case 10:
+                        Ma_nhom.Text = cellValue;
+                        break;
+                }
             }
+            ////Lưu lại dòng dữ liệu vừa kích chọn
+            //DataGridViewRow rowss = this.dataGridView_full.Rows[e.RowIndex];
+            ////DataGridViewCell cell = this.dataGridView_full.CellClick();
+            //DataGridViewColumn columnss =this.dataGridView_full.Columns[e.ColumnIndex];
+            ////Đưa dữ liệu vào textbox
+            //Ma_NCC.Text = rowss.Cells[columnss.ValueType].Value.ToString();
+            //string value =
+            //dataGridView_full.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
+            //txtHoVaTen.Text = row.Cells[1].Value.ToString();
+            //txtQueQuan.Text = row.Cells[2].Value.ToString();
+
+            //Không cho phép sửa trường STT
+            //txtSTT.Enabled = false;
         }
         //----------------------------------------------------------
 
@@ -338,15 +330,15 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                     ,iif( f.tax_rate is null ,'Not Set', CAST(f.tax_rate as varchar(10))) as 'Thuế Nhập'    --, iif(  LEN(ISNULL(a.tax_code,''))=0, 'Not Set',a.tax_code ) as 'Thuế Nhập'  --f.tax_code as 'Thuế Nhập'--
                     ,PCPR_CODE as 'Vùng Giá'                     ,c.STATUS as 'Trạng Thái'                    ,c.ITEM_TYPE as 'Loại hàng'
                     ,e.OPEN_DATE ,e.MODI_DATE
-,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
-,CU2.STK_ID AS 'Vùng Kho', CU2.WSPRICE AS 'Giá bán theo KHO'
+                    ,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
+                    ,CU2.STK_ID AS 'Vùng Kho', CU2.WSPRICE AS 'Giá bán theo KHO'
 					from  DSMART12.dbo.SPPRICE a WITH (NOLOCK)
-                    left join  DSMART12.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
-                    left join  DSMART12.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
+                    left join  [172.16.70.30].DATA_DETAIL.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
 					 left join  DSMART12.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
 					 left join  DSMART12.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
                     LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
-lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
+                    lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                     where c.status NOT IN ( '02','05') ";
             if ((Ma_NCC.Text == "") && (Ma_nhom.Text == "") && (Ma_hang.Text == ""))
             {
@@ -354,11 +346,11 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                 return;
             }
             if ((Ma_NCC.Text != ""))
-            { sql += " and a.SUPP_ID= N'" + Ma_NCC.Text + "' or b.SUPP_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_NCC.Text) + "%'"; }
+            { sql += " and a.SUPP_ID= N'" + Ma_NCC.Text + "' or b.SUPP_NAME like N'%" + (Ma_NCC.Text) + "%'"; }
             if ((Ma_hang.Text != ""))
-            { sql += " and (a.SKU_ID like N'%" + Ma_hang.Text + "%' or c.BARCODE like N'%" + Ma_hang.Text + "%' or c.SKU_CODE like N'%" + Ma_hang.Text + "%' or c.FULL_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_hang.Text) + "%')"; }
+            { sql += " and (a.SKU_ID like N'%" + Ma_hang.Text + "%' or c.BARCODE like N'%" + Ma_hang.Text + "%' or c.SKU_CODE like N'%" + Ma_hang.Text + "%' or c.FULL_NAME like N'%" + (Ma_hang.Text) + "%')"; }
             if ((Ma_nhom.Text != ""))
-            { sql += " and c.GRP_ID like N'%" + Ma_nhom.Text + "%' or c.grp_name like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_nhom.Text) + "%'"; }
+            { sql += " and c.GRP_ID like N'%" + Ma_nhom.Text + "%' or c.grp_name like N'%" + (Ma_nhom.Text) + "%'"; }
 
 
 
@@ -626,10 +618,10 @@ lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                             if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
                             {
                                 string cellValue = cell.Value.ToString();
-                                if (columnIndex == 3 || columnIndex == 8 || columnIndex == 7 || columnIndex == 10)
-                                {
-                                    cellValue = Converter.TCVN3ToUnicode(cellValue);
-                                }
+                                //if (columnIndex == 3 || columnIndex == 8 || columnIndex == 7 || columnIndex == 10)
+                                //{
+                                //    cellValue = Converter.TCVN3ToUnicode(cellValue);
+                                //}
                                 worksheet.Cells[currentRow, columnIndex + 1].Value = cellValue;
                             }
                             else

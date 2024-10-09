@@ -91,7 +91,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 180000;
+            this.timer1.Interval = 240000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Main
@@ -121,9 +121,9 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
