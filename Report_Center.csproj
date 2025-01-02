@@ -500,6 +500,9 @@
     <None Include="Media\Template\Template-BC-Nhanh.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Media\Template\Template-rpt_SUM_By_GRP_5.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Media\Template\Template-rpt_SUPP_IMPORT.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

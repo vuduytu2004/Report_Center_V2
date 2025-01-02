@@ -1,4 +1,6 @@
-﻿using OfficeOpenXml;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using OfficeOpenXml;
 using Report_Center.DataAccess;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,9 @@ using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DataTable = System.Data.DataTable;
+
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
@@ -404,5 +409,110 @@ namespace Report_Center.Presentation
                 e.Handled = true; // Ngăn chặn ký tự không hợp lệ
             }
         }
+
+
+        private void exp_target_BRG_Click(object sender, EventArgs e)
+        {
+            string dirPath = Directory.GetCurrentDirectory();
+            string templateDir = Path.Combine(dirPath, "Media", "Template");
+            string fileTemp = "Template-Target_tap_doan";
+            string dateAndRandom = MONTH_Target_BRG.Value.ToString("MMyyyy") + "_" + new Random().Next(100, 999); // Khởi tạo giá trị mặc định
+
+            string templatePath = Path.Combine(templateDir, $"{fileTemp}.xlsx");
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                saveFileDialog.DefaultExt = "xlsx";
+                saveFileDialog.AddExtension = true;
+                saveFileDialog.FileName = $"{fileTemp}_{dateAndRandom}.xlsx"; // Đặt tên file theo định dạng
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        // Kết nối đến cơ sở dữ liệu và thực thi truy vấn
+                        using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
+                        {
+                            connection.Open();
+
+                            string sqlQuery = @"
+                    SELECT 
+                        a.PRD_CODE,
+                        RIGHT(a.PRD_CODE, 2) AS Ngay,
+                        a.RPS_CODE,
+                        '' AS NHOM,
+                        a.TRG_AMT AS DT,
+                        b.TRG_AMT AS BILL
+                    FROM [HCRC_Report_Center].[dbo].[Target_DS_BRG] AS a
+                    LEFT JOIN [HCRC_Report_Center].[dbo].[Target_DS_BRG] AS b 
+                        ON b.PRD_CODE = a.PRD_CODE 
+                        AND b.RPS_CODE = a.RPS_CODE 
+                        AND b.TRG_TYPE = '03'
+                    WHERE a.TRG_TYPE = '01'
+                        AND a.Create_DATE IS NOT NULL 
+                        AND a.STATUS = 1
+                        AND YEAR(a.PRD_CODE) = @Year 
+                        AND MONTH(a.PRD_CODE) = @Month";
+
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                // Thêm tham số cho câu lệnh SQL
+                                command.Parameters.AddWithValue("@Year", MONTH_Target_BRG.Value.Year);
+                                command.Parameters.AddWithValue("@Month", MONTH_Target_BRG.Value.Month);
+
+                                // Đọc dữ liệu từ truy vấn
+                                using (SqlDataReader reader = command.ExecuteReader())
+                                {
+                                    System.Data.DataTable dataTable = new System.Data.DataTable(); // Sử dụng namespace rõ ràng
+                                    dataTable.Load(reader);
+
+                                    // Đảm bảo tên file được tạo đúng
+                                    string selectedDirectory = Path.GetDirectoryName(saveFileDialog.FileName);
+                                    string uniqueFileName = Path.Combine(selectedDirectory, $"{fileTemp}_{dateAndRandom}.xlsx");
+
+                                    //using (var package = new ExcelPackage())
+                                    using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
+                                    {
+                                        //var worksheet = package.Workbook.Worksheets.Add("Data");
+                                        //var worksheet = package.Workbook.Worksheets["Sheet1"]; // Lấy sheet có sẵn
+
+
+                                        var worksheet = package.Workbook.Worksheets["Sheet1"]; // Lấy sheet có sẵn
+
+                                        // Kiểm tra nếu worksheet không phải là null
+                                        if (worksheet == null)
+                                        {
+                                            MessageBox.Show("Sheet1 does not exist in the template.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            return;
+                                        }
+
+                                        worksheet.Cells["A3"].LoadFromDataTable(dataTable, false); // Tải dữ liệu từ DataTable vào worksheet
+                                        worksheet.Cells.AutoFitColumns(); // Tự động điều chỉnh độ rộng cột
+
+                                        // Lưu file Excel
+                                        package.SaveAs(new FileInfo(uniqueFileName));
+                                    }
+
+                                    // Mở file sau khi lưu
+                                    System.Diagnostics.Process.Start(uniqueFileName);
+                                    //MessageBox.Show($"File saved to: {uniqueFileName}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
     }
 }

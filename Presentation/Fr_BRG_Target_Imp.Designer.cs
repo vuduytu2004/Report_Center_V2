@@ -35,6 +35,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.exp_target_BRG = new System.Windows.Forms.Button();
+            this.MONTH_Target_BRG = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // import_data
@@ -51,10 +53,10 @@
             // 
             // Exp_data
             // 
-            this.Exp_data.Location = new System.Drawing.Point(460, 71);
+            this.Exp_data.Location = new System.Drawing.Point(460, 62);
             this.Exp_data.Margin = new System.Windows.Forms.Padding(2);
             this.Exp_data.Name = "Exp_data";
-            this.Exp_data.Size = new System.Drawing.Size(121, 48);
+            this.Exp_data.Size = new System.Drawing.Size(121, 35);
             this.Exp_data.TabIndex = 3;
             this.Exp_data.Text = "&Xuất BC";
             this.Exp_data.UseVisualStyleBackColor = true;
@@ -63,10 +65,10 @@
             // 
             // bt_Exit
             // 
-            this.bt_Exit.Location = new System.Drawing.Point(640, 71);
+            this.bt_Exit.Location = new System.Drawing.Point(640, 62);
             this.bt_Exit.Margin = new System.Windows.Forms.Padding(2);
             this.bt_Exit.Name = "bt_Exit";
-            this.bt_Exit.Size = new System.Drawing.Size(121, 48);
+            this.bt_Exit.Size = new System.Drawing.Size(121, 35);
             this.bt_Exit.TabIndex = 5;
             this.bt_Exit.Text = "&Exit";
             this.bt_Exit.UseVisualStyleBackColor = true;
@@ -110,11 +112,33 @@
             this.textBox1.TabIndex = 28;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
+            // exp_target_BRG
+            // 
+            this.exp_target_BRG.Location = new System.Drawing.Point(616, 116);
+            this.exp_target_BRG.Margin = new System.Windows.Forms.Padding(2);
+            this.exp_target_BRG.Name = "exp_target_BRG";
+            this.exp_target_BRG.Size = new System.Drawing.Size(121, 32);
+            this.exp_target_BRG.TabIndex = 29;
+            this.exp_target_BRG.Text = "Xuất &Target BRG";
+            this.exp_target_BRG.UseVisualStyleBackColor = true;
+            this.exp_target_BRG.Click += new System.EventHandler(this.exp_target_BRG_Click);
+            // 
+            // MONTH_Target_BRG
+            // 
+            this.MONTH_Target_BRG.CustomFormat = "MM/yyyy";
+            this.MONTH_Target_BRG.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.MONTH_Target_BRG.Location = new System.Drawing.Point(501, 120);
+            this.MONTH_Target_BRG.Name = "MONTH_Target_BRG";
+            this.MONTH_Target_BRG.Size = new System.Drawing.Size(79, 20);
+            this.MONTH_Target_BRG.TabIndex = 30;
+            // 
             // Fr_BRG_Target_Imp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(795, 159);
+            this.Controls.Add(this.MONTH_Target_BRG);
+            this.Controls.Add(this.exp_target_BRG);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label1);
@@ -140,5 +164,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button exp_target_BRG;
+        private System.Windows.Forms.DateTimePicker MONTH_Target_BRG;
     }
 }

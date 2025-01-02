@@ -313,7 +313,7 @@ namespace Report_Center.Presentation
                         --rtrim(LTRIM(RIGHT(+it_name, CHARINDEX(' ', REVERSE(+it_name))))) AS 'IT'
                         ,d.IT_PHONE
                         ,DS_TT,ds_tv,(DS_TT-ds_tv) as'Lệch DT', bills, Bills_LW,(bills- Bills_LW) as 'Lệch Bill' ,sales_lw as 'Lãi gộp'
-                        FROM doanhso a with(nolock) 
+                        FROM Doanhso_New a with(nolock) 
                         inner join [172.16.70.20].dsmart12.dbo.stock as b with(nolock) on a.Stk_id = b.STK_ID
                         inner join  BRG_Info as c with(nolock) on a.Stk_id = c.STK_ID
                         inner join  IT_BRG_INFO as d with(nolock) on a.Stk_id = d.STK_ID
@@ -355,7 +355,7 @@ namespace Report_Center.Presentation
                             --rtrim(LTRIM(RIGHT(+it_name, CHARINDEX(' ', REVERSE(+it_name))))) AS 'IT'
                             ,d.IT_PHONE
                             ,DS_TT,ds_tv,(DS_TT-ds_tv) as'Lệch DT', bills, Bills_LW,(bills- Bills_LW) as 'Lệch Bill' ,sales_lw as 'Lãi gộp'
-                            FROM doanhso a with(nolock) 
+                            FROM Doanhso_New a with(nolock) 
                             inner join[172.16.70.20].dsmart12.dbo.stock as b with(nolock) on a.Stk_id = b.STK_ID
                             inner join  BRG_Info as c with(nolock)  on a.Stk_id = c.STK_ID
                             inner join  IT_BRG_INFO as d with(nolock) on a.Stk_id = d.STK_ID
