@@ -56,6 +56,7 @@
             this.supp_id = new System.Windows.Forms.TextBox();
             this.lbl_supp_id = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.NPH = new System.Windows.Forms.Label();
             this.gr_fr_to_date.SuspendLayout();
             this.gr_dept_id.SuspendLayout();
             this.gr_stk_id.SuspendLayout();
@@ -142,6 +143,7 @@
             // 
             // gr_fr_to_date
             // 
+            this.gr_fr_to_date.Controls.Add(this.NPH);
             this.gr_fr_to_date.Controls.Add(this.todate);
             this.gr_fr_to_date.Controls.Add(this.frdate);
             this.gr_fr_to_date.Controls.Add(this.label5);
@@ -389,6 +391,19 @@
             this.progressBar1.Size = new System.Drawing.Size(408, 23);
             this.progressBar1.TabIndex = 28;
             // 
+            // NPH
+            // 
+            this.NPH.AutoSize = true;
+            this.NPH.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NPH.ForeColor = System.Drawing.Color.Magenta;
+            this.NPH.Location = new System.Drawing.Point(3, 1);
+            this.NPH.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.NPH.Name = "NPH";
+            this.NPH.Size = new System.Drawing.Size(123, 17);
+            this.NPH.TabIndex = 7;
+            this.NPH.Text = "Ngày phát hành";
+            this.NPH.Visible = false;
+            // 
             // fr_Reports
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -460,5 +475,6 @@
         private System.Windows.Forms.TextBox supp_id;
         private System.Windows.Forms.Label lbl_supp_id;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label NPH;
     }
 }

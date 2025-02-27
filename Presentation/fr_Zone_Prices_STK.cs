@@ -183,10 +183,10 @@ namespace Report_Center.Presentation
 					from  DSMART12.dbo.SPPRICE a WITH (NOLOCK)
                     left join  [172.16.70.30].DATA_DETAIL.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
                     left join  [172.16.70.30].DATA_DETAIL.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
-					 left join  DSMART12.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
-					 left join  DSMART12.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
-                    LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
-                    lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
+					 left join  DSMART16.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
+					 left join  DSMART16.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
+                    LEFT join  DSMART16.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
+                    lEFT join  DSMART16.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                     where c.status NOT IN ( '02','05') order by a.SKU_ID";
 
 
@@ -335,10 +335,10 @@ namespace Report_Center.Presentation
 					from  DSMART12.dbo.SPPRICE a WITH (NOLOCK)
                     left join  [172.16.70.30].DATA_DETAIL.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
                     left join  [172.16.70.30].DATA_DETAIL.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
-					 left join  DSMART12.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
-					 left join  DSMART12.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
-                    LEFT join  DSMART12.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
-                    lEFT join  DSMART12.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
+					 left join  DSMART16.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
+					 left join  DSMART16.dbo.TAX_TYPE as f WITH (NOLOCK) on  a.tax_code = f.tax_code
+                    LEFT join  DSMART16.dbo.RTPRICE AS CU WITH (NOLOCK) ON CU.SKU_ID = a.SKU_ID
+                    lEFT join  DSMART16.dbo.STKSPRICE AS CU2 WITH (NOLOCK) ON CU2.SKU_ID = a.SKU_ID
                     where c.status NOT IN ( '02','05') ";
             if ((Ma_NCC.Text == "") && (Ma_nhom.Text == "") && (Ma_hang.Text == ""))
             {

@@ -1,4 +1,5 @@
-﻿using Report_Center.DataAccess;
+﻿using MathNet.Numerics;
+using Report_Center.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -557,11 +558,13 @@ namespace Report_Center.Presentation
             {
                 int RoleGroupID = Convert.ToInt32(row.Cells["RoleGroupID"].Value);
                 int RoleGroupID_Check = Convert.ToInt32(row.Cells["CheckboxColumn"].Value);
+                // Hiển thị giá trị cột "GroupName" trong Console
+                //Console.WriteLine(row.Cells["GroupName"].Value);
                 // Thêm userID và menuItemID vào UserPermissions
                 using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
                 {
                     connection.Open();
-
+                    Console.WriteLine(row.Cells["GroupName"].Value);
                     string insertQuery = "IF EXISTS (SELECT * FROM [UserPermissionRoleGroups] WITH (NOLOCK) WHERE UserPermissionID = @UserID AND RoleGroupID = @RoleGroupID) BEGIN IF  @RoleGroupID_Check=0 DELETE FROM [UserPermissionRoleGroups] WHERE UserPermissionID = @UserID AND RoleGroupID = @RoleGroupID; END " +
                         "ELSE BEGIN IF  @RoleGroupID_Check=1 INSERT INTO [UserPermissionRoleGroups] (UserPermissionID, RoleGroupID) VALUES (@UserID, @RoleGroupID); END";
                     using (SqlCommand command = new SqlCommand(insertQuery, connection))

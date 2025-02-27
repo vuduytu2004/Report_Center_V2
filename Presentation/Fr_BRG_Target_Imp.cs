@@ -163,6 +163,22 @@ namespace Report_Center.Presentation
                     }
 
                     int totalRows = (worksheetByItems.Dimension.End.Row - 2);
+                    #region D dòng dưới là cách tính lại totalRows loại bỏ các dòng trống ngay,stk_id,tg_dt,tg_bill
+                    //------------------------------------------------------------------------
+                    //int totalRows = 0;
+
+                    //for (int row = 3; row <= worksheetByItems.Dimension.End.Row; row++)
+                    //{
+                    //    if (!string.IsNullOrWhiteSpace(worksheetByItems.Cells[row, 1].Text) &&
+                    //        !string.IsNullOrWhiteSpace(worksheetByItems.Cells[row, 3].Text) &&
+                    //        !string.IsNullOrWhiteSpace(worksheetByItems.Cells[row, 5].Text) &&
+                    //        !string.IsNullOrWhiteSpace(worksheetByItems.Cells[row, 6].Text))
+                    //    {
+                    //        totalRows++;
+                    //    }
+                    //}
+                    //------------------------------------------------------------------------
+                    #endregion 
                     int currentRow = 0;
 
                     progressBar1.Minimum = 0;
@@ -211,7 +227,7 @@ namespace Report_Center.Presentation
                                     //command.Parameters.AddWithValue("@TRG_TYPE_Bill", "03");
                                     command.Parameters.AddWithValue("@TRG_AMT", Convert.ToString(GetCellValue(worksheetByItems.Cells[row, 5])).Split('.')[0]);
                                     command.Parameters.AddWithValue("@TRG_AMT_Bill", Convert.ToString(GetCellValue(worksheetByItems.Cells[row, 6])).Split('.')[0]);
-                                    //command.Parameters.AddWithValue("@STATUS", "1");
+                                    //command.Parameters.AddWithValue("@STATUS", "1");l
                                     command.ExecuteNonQuery();
                                 }
                                 //}
@@ -302,7 +318,7 @@ namespace Report_Center.Presentation
                 //}
             }
         }
-
+        
         private async Task RunReportAsync_MKT(string templatePath, string savePath)
         {
             using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString_BRGReports_97_30))

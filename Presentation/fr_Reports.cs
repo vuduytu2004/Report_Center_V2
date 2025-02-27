@@ -229,6 +229,8 @@ namespace Report_Center.Presentation
             //    todate.Enabled = false;
             //}
             todate.Enabled = para_name.Text.Contains("todate");
+            NPH.Visible = para_name.Text.IndexOf("NPH", StringComparison.OrdinalIgnoreCase) >= 0;
+
 
         }
 
@@ -359,6 +361,14 @@ namespace Report_Center.Presentation
                     else if (Pro_name.Text == "Tach_Don_333_314_315")
                     {
                         await Task.Run(() => RunReportAsync_Tach_Don_333_314_315(templatePath, uniqueFileName));
+                    }
+                    else if (Pro_name.Text == "rpt_voucher_In_Stock")
+                    {
+                        await Task.Run(() => RunReportAsync_rpt_voucher_In_Stock(templatePath, uniqueFileName));
+                    }
+                    else if (Pro_name.Text == "rpt_Member_Card")
+                    {
+                        await Task.Run(() => RunReportAsync_rpt_Member_Card(templatePath, uniqueFileName));
                     }
                     else
                     {
@@ -1004,6 +1014,243 @@ namespace Report_Center.Presentation
                 }
             }
         }
+        private async Task RunReportAsync_rpt_voucher_In_Stock1(string templatePath, string outputPath)
+        {
+            using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command = new SqlCommand(Pro_name.Text, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
+
+                    command.Parameters.AddWithValue("@todate", todate.Value.ToString("yyyyMMdd"));
+
+                    command.CommandTimeout = 0; // Đặt thời gian chờ theo cần thiết
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+
+                        if (!reader.HasRows)
+                        {
+                            // Thông báo hoặc xử lý khi không có dữ liệu
+                            MessageBox.Show("Không có dữ liệu", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Console.WriteLine("Không có dữ liệu để xuất Excel.");
+                            return; // hoặc thực hiện các hành động khác theo yêu cầu của bạn
+                        }
+
+                        using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
+                        {
+
+                            var date_create = "Ngày tạo : " + DateTime.Now.ToString("dd/MM/yyyy - H:mm");
+                            var frto = "Từ ngày: " + frdate.Value.ToString("dd-MM-yyyy") + " đến ngày: " + todate.Value.ToString("dd-MM-yyyy");
+
+                            if (await reader.ReadAsync())
+                            {
+                                ExcelWorksheet sheet1 = package.Workbook.Worksheets["Sheet1"];
+                                sheet1.Cells["A2"].Value = frto;
+                                sheet1.Cells["N1"].Value = date_create;
+                                int row = 5;
+                                do
+                                {
+                                    for (int col = 0; col < reader.FieldCount; col++)
+                                    {
+                                        sheet1.Cells[row, col + 1].Value = reader.GetValue(col);
+                                    }
+                                    row++;
+                                } while (await reader.ReadAsync());
+                                // Kẻ ô cho file Excel từ A5 đến hết dữ liệu
+                                int Endrows = row - 1;
+                                int columns = reader.FieldCount;
+
+                                using (var range = sheet1.Cells[5, 1, Endrows, columns])
+                                {
+                                    range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                                }
+                            }
+
+
+                            await package.SaveAsAsync(new FileInfo(outputPath));
+                            System.Diagnostics.Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
+                        }
+                    }
+                }
+            }
+        }
+        private async Task RunReportAsync_rpt_voucher_In_Stock(string templatePath, string outputPath)
+        {
+            using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command = new SqlCommand(Pro_name.Text, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
+                    command.Parameters.AddWithValue("@todate", todate.Value.ToString("yyyyMMdd"));
+                    command.CommandTimeout = 0; // Không giới hạn thời gian chạy
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            MessageBox.Show("Không có dữ liệu", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Console.WriteLine("Không có dữ liệu để xuất Excel.");
+                            return;
+                        }
+
+                        using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
+                        {
+                            var date_create = "Ngày tạo : " + DateTime.Now.ToString("dd/MM/yyyy - H:mm");
+                            var frto = "Từ ngày: " + frdate.Value.ToString("dd/MM/yyyy") + " - đến ngày: " + todate.Value.ToString("dd/MM/yyyy");
+
+                            ExcelWorksheet sheet = package.Workbook.Worksheets["Sheet1"];
+                            if (sheet == null)
+                            {
+                                MessageBox.Show("Không tìm thấy sheet 'Sheet1' trong file template!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            // Ghi thông tin ngày tháng vào Sheet1
+                            sheet.Cells["A2"].Value = frto;
+                            sheet.Cells["N1"].Value = date_create;
+
+                            int row = 5;         // Dòng bắt đầu ghi dữ liệu
+                            int sheetIndex = 1;  // Đánh số sheet
+                            int maxRowsPerSheet = 500000; // Số dòng tối đa trên 1 sheet
+
+                            while (await reader.ReadAsync())
+                            {
+                                if (row > maxRowsPerSheet + 4) // Nếu vượt 50,000 dòng, tạo sheet mới
+                                {
+                                    sheetIndex++;
+                                    string newSheetName = "Sheet" + sheetIndex;
+                                    sheet = package.Workbook.Worksheets.Add(newSheetName, package.Workbook.Worksheets["Sheet1"]);
+
+                                    row = 5; // Reset lại số dòng để ghi dữ liệu vào Sheet mới
+                                }
+
+                                for (int col = 0; col < reader.FieldCount; col++)
+                                {
+                                    sheet.Cells[row, col + 1].Value = reader.GetValue(col);
+                                }
+                                row++;
+                            }
+
+                            // Kẻ ô cho toàn bộ dữ liệu trên tất cả các sheet
+                            foreach (var ws in package.Workbook.Worksheets)
+                            {
+                                int endRow = row - 1;
+                                int columns = reader.FieldCount;
+
+                                using (var range = ws.Cells[5, 1, endRow, columns])
+                                {
+                                    range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                                }
+                                // Tự động điều chỉnh độ rộng cột
+                                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+                            }
+
+                            await package.SaveAsAsync(new FileInfo(outputPath));
+                            System.Diagnostics.Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
+                        }
+                    }
+                }
+            }
+        }
+        private async Task RunReportAsync_rpt_Member_Card(string templatePath, string outputPath)
+        {
+            using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command = new SqlCommand(Pro_name.Text, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
+                    command.Parameters.AddWithValue("@todate", todate.Value.ToString("yyyyMMdd"));
+                    command.CommandTimeout = 0; // Không giới hạn thời gian chạy
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            MessageBox.Show("Không có dữ liệu", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Console.WriteLine("Không có dữ liệu để xuất Excel.");
+                            return;
+                        }
+
+                        using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
+                        {
+                            var date_create = "Ngày tạo : " + DateTime.Now.ToString("dd/MM/yyyy - H:mm");
+                            var frto = "Từ ngày: " + frdate.Value.ToString("dd/MM/yyyy") + " - đến ngày: " + todate.Value.ToString("dd/MM/yyyy");
+
+                            ExcelWorksheet sheet = package.Workbook.Worksheets["Sheet1"];
+                            if (sheet == null)
+                            {
+                                MessageBox.Show("Không tìm thấy sheet 'Sheet1' trong file template!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            // Ghi thông tin ngày tháng vào Sheet1
+                            sheet.Cells["A2"].Value = frto;
+                            sheet.Cells["N1"].Value = date_create;
+
+                            int row = 5;         // Dòng bắt đầu ghi dữ liệu
+                            int sheetIndex = 1;  // Đánh số sheet
+                            int maxRowsPerSheet = 500000; // Số dòng tối đa trên 1 sheet
+
+                            while (await reader.ReadAsync())
+                            {
+                                if (row > maxRowsPerSheet + 4) // Nếu vượt 50,000 dòng, tạo sheet mới
+                                {
+                                    sheetIndex++;
+                                    string newSheetName = "Sheet" + sheetIndex;
+                                    sheet = package.Workbook.Worksheets.Add(newSheetName, package.Workbook.Worksheets["Sheet1"]);
+
+                                    row = 5; // Reset lại số dòng để ghi dữ liệu vào Sheet mới
+                                }
+
+                                for (int col = 0; col < reader.FieldCount; col++)
+                                {
+                                    sheet.Cells[row, col + 1].Value = reader.GetValue(col);
+                                }
+                                row++;
+                            }
+
+                            // Kẻ ô cho toàn bộ dữ liệu trên tất cả các sheet
+                            foreach (var ws in package.Workbook.Worksheets)
+                            {
+                                int endRow = row - 1;
+                                int columns = reader.FieldCount;
+
+                                using (var range = ws.Cells[5, 1, endRow, columns])
+                                {
+                                    range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                                }
+                                // Tự động điều chỉnh độ rộng cột
+                                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+                            }
+
+                            await package.SaveAsAsync(new FileInfo(outputPath));
+                            System.Diagnostics.Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
+                        }
+                    }
+                }
+            }
+        }
+
         private async Task RunReportAsync_ByMonth(string templatePath, string outputPath)
         {
             using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))

@@ -263,10 +263,10 @@ namespace Report_Center.Presentation
                     ,PCPR_CODE as 'Vùng Giá'                     ,c.STATUS as 'Trạng Thái'                    ,c.ITEM_TYPE as 'Loại hàng'
                     ,e.OPEN_DATE ,e.MODI_DATE
 					from  DSMART12.dbo.SPPRICE a with(nolock) 
-                    left join  DSMART12.dbo.SUPPLIER as b with(nolock) on a.supp_id=b.supp_id
-                    left join  DSMART12.dbo.SKU_DEF as c with(nolock) on a.SKU_ID=c.SKU_ID
-					 left join  DSMART12.dbo.GOODS as e with(nolock) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
-					 left join  DSMART12.dbo.TAX_TYPE as f with(nolock) on  a.tax_code = f.tax_code
+                    left join  DSMART16.dbo.SUPPLIER as b with(nolock) on a.supp_id=b.supp_id
+                    left join  DSMART16.dbo.SKU_DEF as c with(nolock) on a.SKU_ID=c.SKU_ID
+					 left join  DSMART16.dbo.GOODS as e with(nolock) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
+					 left join  DSMART16.dbo.TAX_TYPE as f with(nolock) on  a.tax_code = f.tax_code
                     where c.status <> '02' order by a.SKU_ID";
 
 
@@ -412,7 +412,7 @@ namespace Report_Center.Presentation
             progressBar1.Visible = true;
             progressBar1.Style = ProgressBarStyle.Marquee;
             string sql = @" SELECT ROW_NUMBER() OVER (ORDER BY STOCKBLK.STK_ID) AS [STT],STOCKBLK.STK_ID, c.stk_NAME,b.GRP_ID,b.GRP_NAME ,STOCKBLK.SKU_ID,b.FULL_NAME, STOCKBLK.BLOCK_CODE, STOCKBLK.MODI_DATE
-                            FROM DSMART12.dbo.STOCKBLK STOCKBLK with(nolock) 
+                            FROM DSMART16.dbo.STOCKBLK STOCKBLK with(nolock) 
                             left join [172.16.70.30].DATA_DETAIL.dbo.sku_def as b  with(nolock) on STOCKBLK.sku_id=b.SKU_ID 
                             left join [172.16.70.30].DATA_DETAIL.dbo.stock as c  with(nolock) on STOCKBLK.stk_id=c.stk_id
                             where ";

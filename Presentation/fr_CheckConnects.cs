@@ -314,7 +314,7 @@ namespace Report_Center.Presentation
                         ,d.IT_PHONE
                         ,DS_TT,ds_tv,(DS_TT-ds_tv) as'Lệch DT', bills, Bills_LW,(bills- Bills_LW) as 'Lệch Bill' ,sales_lw as 'Lãi gộp'
                         FROM Doanhso_New a with(nolock) 
-                        inner join [172.16.70.20].dsmart12.dbo.stock as b with(nolock) on a.Stk_id = b.STK_ID
+                        inner join [172.16.70.20].dsmart16.dbo.stock as b with(nolock) on a.Stk_id = b.STK_ID
                         inner join  BRG_Info as c with(nolock) on a.Stk_id = c.STK_ID
                         inner join  IT_BRG_INFO as d with(nolock) on a.Stk_id = d.STK_ID
                         where b.DIMENSION <> 0 and(a.CurDate) is null or a.inventory <> 0 
@@ -356,7 +356,7 @@ namespace Report_Center.Presentation
                             ,d.IT_PHONE
                             ,DS_TT,ds_tv,(DS_TT-ds_tv) as'Lệch DT', bills, Bills_LW,(bills- Bills_LW) as 'Lệch Bill' ,sales_lw as 'Lãi gộp'
                             FROM Doanhso_New a with(nolock) 
-                            inner join[172.16.70.20].dsmart12.dbo.stock as b with(nolock) on a.Stk_id = b.STK_ID
+                            inner join[172.16.70.20].dsmart16.dbo.stock as b with(nolock) on a.Stk_id = b.STK_ID
                             inner join  BRG_Info as c with(nolock)  on a.Stk_id = c.STK_ID
                             inner join  IT_BRG_INFO as d with(nolock) on a.Stk_id = d.STK_ID
                             where b.DIMENSION <> 0";
