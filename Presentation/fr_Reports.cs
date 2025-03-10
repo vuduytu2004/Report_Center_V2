@@ -1175,8 +1175,8 @@ namespace Report_Center.Presentation
                 using (SqlCommand command = new SqlCommand(Pro_name.Text, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
-                    command.Parameters.AddWithValue("@todate", todate.Value.ToString("yyyyMMdd"));
+                    //command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
+                    //command.Parameters.AddWithValue("@todate", todate.Value.ToString("yyyyMMdd"));
                     command.CommandTimeout = 0; // Không giới hạn thời gian chạy
 
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
@@ -1202,7 +1202,7 @@ namespace Report_Center.Presentation
 
                             // Ghi thông tin ngày tháng vào Sheet1
                             sheet.Cells["A2"].Value = frto;
-                            sheet.Cells["N1"].Value = date_create;
+                            sheet.Cells["J1"].Value = date_create;
 
                             int row = 5;         // Dòng bắt đầu ghi dữ liệu
                             int sheetIndex = 1;  // Đánh số sheet

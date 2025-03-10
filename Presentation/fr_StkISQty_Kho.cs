@@ -553,28 +553,28 @@ namespace Report_Center.Presentation
             string phrase = Node_Id.Text;
             phrase = phrase.Replace(" ", "");
             string[] words = phrase.Split(',');
-            //if (phrase.Length != 0)
-            //{
-            int i = 0;
-            foreach (var word in words)
+            if (phrase.Length != 0)
             {
-                if (i == 0)
-                { dk = $"'{word}'"; }
+                int i = 0;
+                foreach (var word in words)
+                {
+                    if (i == 0)
+                    { dk = $"'{word}'"; }
 
-                else
-                { dk += "," + $"'{word}'"; }
-                i++;
-                //System.Console.WriteLine($"<{word}>");
+                    else
+                    { dk += "," + $"'{word}'"; }
+                    i++;
+                    //System.Console.WriteLine($"<{word}>");
+                }
+                string sql1 = @"select count(*)  from STK_INFO where right(left(stk_id,4),3) in (" + dk + ")";
+                //string sql1 = @"select count(*)  from STK_INFO with(nolock) where stk_id in (" + dk + ")";
+                i = cn.Gan_max_progressbar(sql1);
+                if (i == 0)
+                {
+                    MessageBox.Show("Điều kiện Siêu Thị/Vùng.. không có." + "\n" + "Hãy kiểm tra lại .", "Chú ý !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
-            string sql1 = @"select count(*)  from STK_INFO where right(left(stk_id,4),3) in (" + dk + ")";
-            //string sql1 = @"select count(*)  from STK_INFO with(nolock) where stk_id in (" + dk + ")";
-            i = cn.Gan_max_progressbar(sql1);
-            if (i == 0)
-            {
-                MessageBox.Show("Điều kiện Siêu Thị/Vùng.. không có." + "\n" + "Hãy kiểm tra lại .", "Chú ý !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            //}
             ClearTable(table1);
             ClearTable(table);
             dataGridView_full.Columns.Clear();
