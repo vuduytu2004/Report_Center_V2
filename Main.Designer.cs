@@ -98,7 +98,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::Report_Center.Properties.Resources.hcrc_destop;
+            this.BackgroundImage = global::Report_Center_V2.Properties.Resources.hcrc_destop;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(900, 488);
             this.Controls.Add(this.statusStrip1);

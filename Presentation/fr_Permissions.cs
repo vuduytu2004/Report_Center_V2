@@ -31,7 +31,7 @@ namespace Report_Center.Presentation
             {
                 connection.Open();
 
-                string query = "SELECT UserID, UserName,[FullName],[PositionCode_Name],[DepartmentCode_Name],[DSMART],[status] FROM Users WITH (NOLOCK)";
+                string query = "SELECT UserID, UserName,[FullName],[PositionCode_Name],[DepartmentCode_Name],[DSMART],[status] FROM Users WITH (NOLOCK) where userid<>1";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 userDataTable = new DataTable();
                 adapter.Fill(userDataTable);

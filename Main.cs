@@ -42,6 +42,11 @@ namespace Report_Center
             public static string User_Pass { get; set; }
             public static int First_Time { get; set; }
             public static int demSl { get; set; }
+            public static string txt_Node_name { get; set; }
+            public static string txt_Proc_name { get; set; }
+            public static string txt_Gr_Parameter { get; set; }
+            public static string txt_Parameter { get; set; }
+            public static int txt_Day { get; set; }
 
             // Các biến toàn cục khác có thể được thêm vào đây
         }
@@ -213,6 +218,13 @@ namespace Report_Center
                     int menuLevel = Convert.ToInt32(row["MenuLevel"]);
                     int MenuItemID = Convert.ToInt32(row["MenuItemID"]);
                     int? parentMenuID = row["ParentMenuID"] as int?;
+                    string txt_Node_name = row["MenuItemName"].ToString();
+                    string txt_Proc_name = row["Proc_name"].ToString();
+                    string txt_Gr_Parameter = row["Gr_Parameter"].ToString();
+                    string txt_Parameter = row["Parameter"].ToString();
+                    int txt_Day = DBNull.Value.Equals(row["day"]) ? 0 : Convert.ToInt32(row["day"]);
+
+
                     ToolStripMenuItem menuItem = new ToolStripMenuItem(row["MenuItemName"].ToString());
                     string urlForm = row["URL"].ToString();
                     // Lấy đường dẫn hình ảnh từ cột Menu_ImageList
@@ -234,7 +246,7 @@ namespace Report_Center
                     // Thêm sự kiện Click cho mỗi ToolStripMenuItem
                     if (urlForm != null)
                     {
-                        menuItem.Click += (sender, e) => MenuItem_Click(sender, e, urlForm);
+                        menuItem.Click += (sender, e) => MenuItem_Click(sender, e, urlForm, txt_Node_name, txt_Proc_name,txt_Gr_Parameter,txt_Parameter,txt_Day);
                     }
                     if (menuItem.Text == "Exit")
                     {
@@ -327,31 +339,32 @@ namespace Report_Center
             return null;
         }
 
-        private void MenuItem_Click(object sender, EventArgs e, string urlForm)
+        private void MenuItem_Click(object sender, EventArgs e, string urlForm, string ttxt_Node_name, string ttxt_Proc_name, string ttxt_Gr_Parameter, string ttxt_Parameter, int ttxt_Day)
         {
             if (!string.IsNullOrEmpty(urlForm))
             {
-                OpenAndShowForm(urlForm);
+                OpenAndShowForm(urlForm, ttxt_Proc_name, ttxt_Node_name,ttxt_Gr_Parameter, ttxt_Parameter,  ttxt_Day);
             }
         }
 
 
-        private void OpenAndShowForm(string formURL)
+        private void OpenAndShowForm(string formURL, string ttxtt_Proc_name,string ttxtt_Node_name, string ttxtt_Gr_Parameter, string ttxtt_Parameter, int ttxtt_Day)
         {
             if (!string.IsNullOrEmpty(formURL))
             {
                 // Giả sử formURL chứa tên đầy đủ của loại form (bao gồm namespace)
                 //Type formType = new fr_DangNhap().GetType(); // Sử dụng GetType từ instance của form
-                Type formType = Type.GetType(formURL);
+                 Type formType = Type.GetType(formURL);
                 if (formType != null && typeof(Form).IsAssignableFrom(formType))
                 {
                     // Kiểm tra xem form đã mở chưa                  
                     Form existingForm = kiemtratontai(formType);
 
-                    if (existingForm != null)
-                    {
+                    //if (existingForm != null && formType.Name.Substring(formType.Name.Length - 11) == "fr_Reports_V2")
+                    if (existingForm != null && !formType.Name.EndsWith("fr_Reports_V2"))
 
-                        existingForm.Activate(); // Đưa form đang mở lên trước
+                        {
+                            existingForm.Activate(); // Đưa form đang mở lên trước
                     }
                     else
                     {
@@ -362,6 +375,18 @@ namespace Report_Center
                         }
                         else
                         {
+                            GlobalVariables.txt_Node_name = ttxtt_Node_name.ToString();
+                            GlobalVariables.txt_Proc_name = ttxtt_Proc_name.ToString();
+                            GlobalVariables.txt_Gr_Parameter = ttxtt_Gr_Parameter.ToString();
+                            GlobalVariables.txt_Parameter = ttxtt_Parameter.ToString();
+                            GlobalVariables.txt_Day = ttxtt_Day;
+
+                //            MessageBox.Show($"txt_Proc_name: {GlobalVariables.txt_Proc_name}\n" +
+                //$"txt_Gr_Parameter: {GlobalVariables.txt_Gr_Parameter}\n" +
+                //$"txt_Parameter: {GlobalVariables.txt_Parameter}",
+                //"Kiểm tra giá trị", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
                             // Nếu form chưa mở, tạo một thể hiện mới và hiển thị
                             Form newForm = (Form)Activator.CreateInstance(formType);
                             newForm.MdiParent = this;

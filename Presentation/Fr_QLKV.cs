@@ -21,7 +21,7 @@ namespace Report_Center.Presentation
             using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
             {
                 connection.Open();
-                string query = "SELECT id, [Person_QLKV],[Size] ,[Bu_id] ,b.stk_name ,[Enable_check] FROM [HCRC_Report_Center].[dbo].[Person_QLKV] as a   left join [172.16.70.30].DATA_DETAIL.dbo.stock as b on a.Bu_id=b.node_id and b.comp_id='09' and b.type='01' order by a.id";
+                string query = "SELECT id, [Person_QLKV],[Size] ,[Bu_id] ,b.stk_name ,[Enable_check] FROM [HCRC_Report_Center_V2].[dbo].[Person_QLKV] as a   left join [172.16.70.30].DATA_DETAIL.dbo.stock as b on a.Bu_id=b.node_id and b.comp_id='09' and b.type='01' order by a.id";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);

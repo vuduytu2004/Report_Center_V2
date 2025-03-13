@@ -45,7 +45,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Report_Center.Properties.Resources.ajax_loader_blue_round;
+            this.pictureBox1.Image = global::Report_Center_V2.Properties.Resources.ajax_loader_blue_round;
             this.pictureBox1.Location = new System.Drawing.Point(59, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(54, 55);

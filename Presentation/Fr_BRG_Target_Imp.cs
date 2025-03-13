@@ -460,8 +460,8 @@ namespace Report_Center.Presentation
                         '' AS NHOM,
                         a.TRG_AMT AS DT,
                         b.TRG_AMT AS BILL
-                    FROM [HCRC_Report_Center].[dbo].[Target_DS_BRG] AS a
-                    LEFT JOIN [HCRC_Report_Center].[dbo].[Target_DS_BRG] AS b 
+                    FROM [HCRC_Report_Center_V2].[dbo].[Target_DS_BRG] AS a
+                    LEFT JOIN [HCRC_Report_Center_V2].[dbo].[Target_DS_BRG] AS b 
                         ON b.PRD_CODE = a.PRD_CODE 
                         AND b.RPS_CODE = a.RPS_CODE 
                         AND b.TRG_TYPE = '03'
