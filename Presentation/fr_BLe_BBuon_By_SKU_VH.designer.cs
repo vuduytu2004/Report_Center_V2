@@ -30,10 +30,11 @@ namespace Report_Center.Presentation
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
             this.SKU_ID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.Sum_DT = new System.Windows.Forms.Label();
@@ -69,7 +70,6 @@ namespace Report_Center.Presentation
             this.panel3 = new System.Windows.Forms.Panel();
             this.dataGridView_full = new System.Windows.Forms.DataGridView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label7 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_full)).BeginInit();
@@ -117,6 +117,19 @@ namespace Report_Center.Presentation
             this.panel1.Size = new System.Drawing.Size(874, 117);
             this.panel1.TabIndex = 35;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.label7.Location = new System.Drawing.Point(437, 93);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(31, 13);
+            this.label7.TabIndex = 39;
+            this.label7.Text = "Sum";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // SKU_ID
             // 
@@ -180,6 +193,7 @@ namespace Report_Center.Presentation
             this.button5.TabIndex = 33;
             this.button5.Text = "Chia_sheet";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
@@ -192,6 +206,7 @@ namespace Report_Center.Presentation
             this.button6.TabIndex = 32;
             this.button6.Text = "button6";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button4
@@ -294,6 +309,7 @@ namespace Report_Center.Presentation
             this.Exp2Excl.TabIndex = 19;
             this.Exp2Excl.Text = "Export";
             this.Exp2Excl.UseVisualStyleBackColor = true;
+            this.Exp2Excl.Visible = false;
             this.Exp2Excl.Click += new System.EventHandler(this.Exp2Excl_Click);
             // 
             // check_all
@@ -425,6 +441,7 @@ namespace Report_Center.Presentation
             this.button1.TabIndex = 6;
             this.button1.Text = "Export Data";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Node_Id
@@ -462,6 +479,7 @@ namespace Report_Center.Presentation
             this.export_full.TabIndex = 4;
             this.export_full.Text = "Export 1";
             this.export_full.UseVisualStyleBackColor = false;
+            this.export_full.Visible = false;
             this.export_full.Click += new System.EventHandler(this.export_full_Click);
             // 
             // tk_Full
@@ -492,17 +510,17 @@ namespace Report_Center.Presentation
             // 
             this.dataGridView_full.AllowUserToAddRows = false;
             this.dataGridView_full.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle22.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataGridView_full.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataGridView_full.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_full.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.Color.Maroon;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_full.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Maroon;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_full.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView_full.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_full.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_full.Location = new System.Drawing.Point(0, 0);
@@ -510,9 +528,9 @@ namespace Report_Center.Presentation
             this.dataGridView_full.Name = "dataGridView_full";
             this.dataGridView_full.ReadOnly = true;
             this.dataGridView_full.RowHeadersWidth = 62;
-            dataGridViewCellStyle24.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridView_full.RowsDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridView_full.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView_full.RowTemplate.Height = 28;
             this.dataGridView_full.Size = new System.Drawing.Size(874, 283);
             this.dataGridView_full.TabIndex = 0;
@@ -523,19 +541,6 @@ namespace Report_Center.Presentation
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.label7.Location = new System.Drawing.Point(437, 93);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(31, 13);
-            this.label7.TabIndex = 39;
-            this.label7.Text = "Sum";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // fr_BLe_BBuon_By_SKU_VH
             // 

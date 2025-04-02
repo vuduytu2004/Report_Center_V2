@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Report_Center
@@ -58,7 +59,7 @@ namespace Report_Center
             this.WindowState = FormWindowState.Maximized; // Mở rộng cửa sổ để che phủ toàn bộ màn hình
             GlobalVariables.First_Time = 1;
             ShowLoginForm();
-
+            //SetProgressBarFromAssemblyVersion();
 
             // Tạo một ToolStripStatusLabel
             ToolStripStatusLabel toolStripStatusLabel3 = new ToolStripStatusLabel();
@@ -75,7 +76,24 @@ namespace Report_Center
 
             //BuildDynamicMenu();
         }
+        //private void SetProgressBarFromAssemblyVersion()
+        //{
+        //    // Lấy phiên bản từ assembly
+        //    Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
+        //    // Chỉ lấy phần Major Version (số đầu tiên) để gán vào ProgressBar
+        //    int majorVersion = version.Major;
+
+        //    // Kiểm tra giá trị hợp lệ (ProgressBar phải trong khoảng 0 - 100)
+        //    if (majorVersion >= toolStripProgressBar1.Minimum && majorVersion <= toolStripProgressBar1.Maximum)
+        //    {
+        //        toolStripProgressBar1.Value = majorVersion;
+        //    }
+        //    else
+        //    {
+        //        toolStripProgressBar1.Value = toolStripProgressBar1.Minimum; // Giá trị mặc định nếu ngoài phạm vi
+        //    }
+        //}
         private void ShowLoginForm()
         {
             fr_DangNhap loginForm = new fr_DangNhap();
@@ -122,7 +140,9 @@ namespace Report_Center
                     //System.Windows.Forms.Application.Exit();
                 }
                 catch { }
-                toolStripStatusLabel2.Text = "   Người sử dụng: " + GlobalVariables.User_Name.ToString();
+                // Lấy phiên bản từ assembly
+                Version version = Assembly.GetExecutingAssembly().GetName().Version;
+                toolStripStatusLabel2.Text = "Ver: " + version + "  <->  Người sử dụng: " + GlobalVariables.User_Name.ToString() ;
                 BuildDynamicMenu(GlobalVariables.UserID);
                 if (chua_pham_quyen == -2) { MessageBox.Show("Bạn chưa được phân quyền, \r\n Vui lòng liên hệ với Quản trị viên ", "Thông báo!", MessageBoxButtons.OK, MessageBoxIcon.Information); }
             }

@@ -30,9 +30,9 @@ namespace Report_Center.Presentation
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -69,7 +69,7 @@ namespace Report_Center.Presentation
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
@@ -95,17 +95,19 @@ namespace Report_Center.Presentation
             this.panel1.Controls.Add(this.Exit);
             this.panel1.Controls.Add(this.export_full);
             this.panel1.Controls.Add(this.tk_Full);
-            this.panel1.Location = new System.Drawing.Point(12, 8);
+            this.panel1.Location = new System.Drawing.Point(8, 5);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1247, 136);
+            this.panel1.Size = new System.Drawing.Size(831, 88);
             this.panel1.TabIndex = 35;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(594, 31);
+            this.button4.Location = new System.Drawing.Point(396, 20);
+            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(50, 15);
             this.button4.TabIndex = 30;
             this.button4.Text = "button4";
             this.button4.UseVisualStyleBackColor = true;
@@ -115,9 +117,10 @@ namespace Report_Center.Presentation
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(903, 22);
+            this.button3.Location = new System.Drawing.Point(602, 14);
+            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(96, 38);
+            this.button3.Size = new System.Drawing.Size(64, 25);
             this.button3.TabIndex = 29;
             this.button3.Text = "Export";
             this.button3.UseVisualStyleBackColor = true;
@@ -125,9 +128,10 @@ namespace Report_Center.Presentation
             // 
             // Show_all
             // 
-            this.Show_all.Location = new System.Drawing.Point(468, 97);
+            this.Show_all.Location = new System.Drawing.Point(312, 63);
+            this.Show_all.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Show_all.Name = "Show_all";
-            this.Show_all.Size = new System.Drawing.Size(92, 38);
+            this.Show_all.Size = new System.Drawing.Size(61, 25);
             this.Show_all.TabIndex = 28;
             this.Show_all.Text = "Show All";
             this.Show_all.UseVisualStyleBackColor = true;
@@ -135,9 +139,10 @@ namespace Report_Center.Presentation
             // 
             // btm_Fillter
             // 
-            this.btm_Fillter.Location = new System.Drawing.Point(387, 97);
+            this.btm_Fillter.Location = new System.Drawing.Point(258, 63);
+            this.btm_Fillter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btm_Fillter.Name = "btm_Fillter";
-            this.btm_Fillter.Size = new System.Drawing.Size(75, 38);
+            this.btm_Fillter.Size = new System.Drawing.Size(50, 25);
             this.btm_Fillter.TabIndex = 27;
             this.btm_Fillter.Text = "Fillter";
             this.btm_Fillter.UseVisualStyleBackColor = true;
@@ -145,27 +150,30 @@ namespace Report_Center.Presentation
             // 
             // txt_Fillter
             // 
-            this.txt_Fillter.Location = new System.Drawing.Point(21, 101);
+            this.txt_Fillter.Location = new System.Drawing.Point(14, 66);
+            this.txt_Fillter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txt_Fillter.Name = "txt_Fillter";
-            this.txt_Fillter.Size = new System.Drawing.Size(357, 26);
+            this.txt_Fillter.Size = new System.Drawing.Size(239, 20);
             this.txt_Fillter.TabIndex = 26;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(625, 70);
+            this.label2.Location = new System.Drawing.Point(417, 46);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(494, 20);
+            this.label2.Size = new System.Drawing.Size(337, 13);
             this.label2.TabIndex = 22;
             this.label2.Text = "* Chú ý: Điều kiện BC phân cách nhau bằng dấu ,(phẩy) Vd : 001,002";
             // 
             // check_minimart_sg
             // 
             this.check_minimart_sg.AutoSize = true;
-            this.check_minimart_sg.Location = new System.Drawing.Point(492, 39);
+            this.check_minimart_sg.Location = new System.Drawing.Point(328, 25);
+            this.check_minimart_sg.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.check_minimart_sg.Name = "check_minimart_sg";
-            this.check_minimart_sg.Size = new System.Drawing.Size(123, 24);
+            this.check_minimart_sg.Size = new System.Drawing.Size(83, 17);
             this.check_minimart_sg.TabIndex = 21;
             this.check_minimart_sg.Text = "MiniMart-SG";
             this.check_minimart_sg.UseVisualStyleBackColor = true;
@@ -174,9 +182,10 @@ namespace Report_Center.Presentation
             // check_minimart_hn
             // 
             this.check_minimart_hn.AutoSize = true;
-            this.check_minimart_hn.Location = new System.Drawing.Point(354, 39);
+            this.check_minimart_hn.Location = new System.Drawing.Point(236, 25);
+            this.check_minimart_hn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.check_minimart_hn.Name = "check_minimart_hn";
-            this.check_minimart_hn.Size = new System.Drawing.Size(122, 24);
+            this.check_minimart_hn.Size = new System.Drawing.Size(84, 17);
             this.check_minimart_hn.TabIndex = 20;
             this.check_minimart_hn.Text = "MiniMart-HN";
             this.check_minimart_hn.UseVisualStyleBackColor = true;
@@ -185,21 +194,24 @@ namespace Report_Center.Presentation
             // Exp2Excl
             // 
             this.Exp2Excl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Exp2Excl.Location = new System.Drawing.Point(1209, 0);
+            this.Exp2Excl.Location = new System.Drawing.Point(806, 0);
+            this.Exp2Excl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Exp2Excl.Name = "Exp2Excl";
-            this.Exp2Excl.Size = new System.Drawing.Size(10, 38);
+            this.Exp2Excl.Size = new System.Drawing.Size(7, 25);
             this.Exp2Excl.TabIndex = 19;
             this.Exp2Excl.Text = "Export";
             this.Exp2Excl.UseVisualStyleBackColor = true;
+            this.Exp2Excl.Visible = false;
             this.Exp2Excl.Click += new System.EventHandler(this.Exp2Excl_Click);
             // 
             // check_all
             // 
             this.check_all.AutoSize = true;
             this.check_all.Checked = true;
-            this.check_all.Location = new System.Drawing.Point(24, 39);
+            this.check_all.Location = new System.Drawing.Point(16, 25);
+            this.check_all.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.check_all.Name = "check_all";
-            this.check_all.Size = new System.Drawing.Size(122, 24);
+            this.check_all.Size = new System.Drawing.Size(86, 17);
             this.check_all.TabIndex = 18;
             this.check_all.TabStop = true;
             this.check_all.Text = "All / Options ";
@@ -209,9 +221,10 @@ namespace Report_Center.Presentation
             // todate
             // 
             this.todate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.todate.Location = new System.Drawing.Point(406, 8);
+            this.todate.Location = new System.Drawing.Point(271, 5);
+            this.todate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.todate.Name = "todate";
-            this.todate.Size = new System.Drawing.Size(142, 26);
+            this.todate.Size = new System.Drawing.Size(96, 20);
             this.todate.TabIndex = 17;
             // 
             // label6
@@ -219,9 +232,10 @@ namespace Report_Center.Presentation
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label6.ForeColor = System.Drawing.Color.Blue;
-            this.label6.Location = new System.Drawing.Point(1150, 68);
+            this.label6.Location = new System.Drawing.Point(767, 44);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(81, 22);
+            this.label6.Size = new System.Drawing.Size(54, 14);
             this.label6.TabIndex = 16;
             this.label6.Text = " 0 : 0 : 0 : 0";
             this.label6.Click += new System.EventHandler(this.label6_Click);
@@ -229,9 +243,10 @@ namespace Report_Center.Presentation
             // frdate
             // 
             this.frdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.frdate.Location = new System.Drawing.Point(93, 8);
+            this.frdate.Location = new System.Drawing.Point(62, 5);
+            this.frdate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.frdate.Name = "frdate";
-            this.frdate.Size = new System.Drawing.Size(142, 26);
+            this.frdate.Size = new System.Drawing.Size(96, 20);
             this.frdate.TabIndex = 15;
             // 
             // label5
@@ -239,9 +254,10 @@ namespace Report_Center.Presentation
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.Blue;
-            this.label5.Location = new System.Drawing.Point(305, 11);
+            this.label5.Location = new System.Drawing.Point(203, 7);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 20);
+            this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 14;
             this.label5.Text = "Đến ngày";
             // 
@@ -250,18 +266,20 @@ namespace Report_Center.Presentation
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Blue;
-            this.label4.Location = new System.Drawing.Point(15, 11);
+            this.label4.Location = new System.Drawing.Point(10, 7);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(72, 20);
+            this.label4.Size = new System.Drawing.Size(53, 13);
             this.label4.TabIndex = 13;
             this.label4.Text = "Từ ngày";
             // 
             // check_minimart
             // 
             this.check_minimart.AutoSize = true;
-            this.check_minimart.Location = new System.Drawing.Point(244, 39);
+            this.check_minimart.Location = new System.Drawing.Point(163, 25);
+            this.check_minimart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.check_minimart.Name = "check_minimart";
-            this.check_minimart.Size = new System.Drawing.Size(94, 24);
+            this.check_minimart.Size = new System.Drawing.Size(65, 17);
             this.check_minimart.TabIndex = 11;
             this.check_minimart.Text = "MiniMart";
             this.check_minimart.UseVisualStyleBackColor = true;
@@ -270,9 +288,10 @@ namespace Report_Center.Presentation
             // check_mart
             // 
             this.check_mart.AutoSize = true;
-            this.check_mart.Location = new System.Drawing.Point(162, 39);
+            this.check_mart.Location = new System.Drawing.Point(108, 25);
+            this.check_mart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.check_mart.Name = "check_mart";
-            this.check_mart.Size = new System.Drawing.Size(66, 24);
+            this.check_mart.Size = new System.Drawing.Size(46, 17);
             this.check_mart.TabIndex = 10;
             this.check_mart.Text = "Mart";
             this.check_mart.UseVisualStyleBackColor = true;
@@ -281,18 +300,20 @@ namespace Report_Center.Presentation
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(666, 97);
+            this.progressBar1.Location = new System.Drawing.Point(444, 63);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(571, 29);
+            this.progressBar1.Size = new System.Drawing.Size(381, 19);
             this.progressBar1.TabIndex = 1;
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(675, 22);
+            this.button2.Location = new System.Drawing.Point(450, 14);
+            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(96, 38);
+            this.button2.Size = new System.Drawing.Size(64, 25);
             this.button2.TabIndex = 9;
             this.button2.Text = "Refresh";
             this.button2.UseVisualStyleBackColor = true;
@@ -303,20 +324,23 @@ namespace Report_Center.Presentation
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.Color.Blue;
             this.button1.ForeColor = System.Drawing.Color.Red;
-            this.button1.Location = new System.Drawing.Point(1225, 27);
+            this.button1.Location = new System.Drawing.Point(817, 18);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(12, 31);
+            this.button1.Size = new System.Drawing.Size(8, 20);
             this.button1.TabIndex = 6;
             this.button1.Text = "Export Data";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Node_Id
             // 
             this.Node_Id.ForeColor = System.Drawing.Color.DarkOrange;
-            this.Node_Id.Location = new System.Drawing.Point(20, 68);
+            this.Node_Id.Location = new System.Drawing.Point(13, 44);
+            this.Node_Id.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Node_Id.Name = "Node_Id";
-            this.Node_Id.Size = new System.Drawing.Size(598, 26);
+            this.Node_Id.Size = new System.Drawing.Size(400, 20);
             this.Node_Id.TabIndex = 0;
             this.Node_Id.TextChanged += new System.EventHandler(this.Ma_NCC_TextChanged);
             this.Node_Id.DoubleClick += new System.EventHandler(this.Node_Id_DoubleClick);
@@ -325,9 +349,10 @@ namespace Report_Center.Presentation
             // Exit
             // 
             this.Exit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Exit.Location = new System.Drawing.Point(1017, 22);
+            this.Exit.Location = new System.Drawing.Point(678, 14);
+            this.Exit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Exit.Name = "Exit";
-            this.Exit.Size = new System.Drawing.Size(96, 38);
+            this.Exit.Size = new System.Drawing.Size(64, 25);
             this.Exit.TabIndex = 5;
             this.Exit.Text = "Exit";
             this.Exit.UseVisualStyleBackColor = true;
@@ -337,20 +362,23 @@ namespace Report_Center.Presentation
             // 
             this.export_full.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.export_full.BackColor = System.Drawing.Color.Red;
-            this.export_full.Location = new System.Drawing.Point(1225, 5);
+            this.export_full.Location = new System.Drawing.Point(817, 3);
+            this.export_full.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.export_full.Name = "export_full";
-            this.export_full.Size = new System.Drawing.Size(12, 31);
+            this.export_full.Size = new System.Drawing.Size(8, 20);
             this.export_full.TabIndex = 4;
             this.export_full.Text = "Export 1";
             this.export_full.UseVisualStyleBackColor = false;
+            this.export_full.Visible = false;
             this.export_full.Click += new System.EventHandler(this.export_full_Click);
             // 
             // tk_Full
             // 
             this.tk_Full.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tk_Full.Location = new System.Drawing.Point(789, 22);
+            this.tk_Full.Location = new System.Drawing.Point(526, 14);
+            this.tk_Full.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tk_Full.Name = "tk_Full";
-            this.tk_Full.Size = new System.Drawing.Size(96, 38);
+            this.tk_Full.Size = new System.Drawing.Size(64, 25);
             this.tk_Full.TabIndex = 3;
             this.tk_Full.Text = "Báo Cáo";
             this.tk_Full.UseVisualStyleBackColor = true;
@@ -358,41 +386,43 @@ namespace Report_Center.Presentation
             // 
             // panel3
             // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.Controls.Add(this.dataGridView_full);
-            this.panel3.Location = new System.Drawing.Point(12, 150);
+            this.panel3.Location = new System.Drawing.Point(8, 98);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1247, 393);
+            this.panel3.Size = new System.Drawing.Size(831, 255);
             this.panel3.TabIndex = 37;
             // 
             // dataGridView_full
             // 
             this.dataGridView_full.AllowUserToAddRows = false;
             this.dataGridView_full.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataGridView_full.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataGridView_full.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView_full.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Maroon;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_full.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Maroon;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_full.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView_full.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_full.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_full.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_full.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridView_full.Name = "dataGridView_full";
             this.dataGridView_full.ReadOnly = true;
             this.dataGridView_full.RowHeadersWidth = 62;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridView_full.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridView_full.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView_full.RowTemplate.Height = 28;
-            this.dataGridView_full.Size = new System.Drawing.Size(1247, 393);
+            this.dataGridView_full.Size = new System.Drawing.Size(831, 255);
             this.dataGridView_full.TabIndex = 0;
             this.dataGridView_full.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView_full.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_full_CellContentClick_2);
@@ -404,11 +434,12 @@ namespace Report_Center.Presentation
             // 
             // fr_StkISQty
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1270, 555);
+            this.ClientSize = new System.Drawing.Size(847, 361);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "fr_StkISQty";
             this.Text = "Bán - Tồn toàn Hệ thống BRG";
             this.Load += new System.EventHandler(this.fr_StkISQty_Load);

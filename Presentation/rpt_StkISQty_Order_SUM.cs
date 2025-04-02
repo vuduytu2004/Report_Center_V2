@@ -1109,7 +1109,7 @@ namespace Report_Center.Presentation
         {
             if (check_mart.Checked == true)
                 Node_Id.Text = "";
-            cn.Load_TextBox(Node_Id, @"SELECT  (a.NODE_ID)  from stock   awith(nolock) 
+            cn.Load_TextBox(Node_Id, @"SELECT  (a.NODE_ID)  from stock   a with(nolock) 
                             inner join node_def as b with(nolock) on a.stk_id=b.stk_id
                             where left(b.GRP_ID,2)='01' and a.type='01' and a.STATUS ='1'");
             //Node_Id.Enabled = false;

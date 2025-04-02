@@ -1241,7 +1241,7 @@ namespace Report_Center.Presentation
             Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
             if (xlApp == null)
             {
-                MessageBox.Show("can not create Excel");
+                MessageBox.Show("Can not create Excel");
                 return false;
             }
             Workbooks workbooks = xlApp.Workbooks;

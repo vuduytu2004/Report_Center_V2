@@ -30,9 +30,9 @@ namespace Report_Center.Presentation
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Sum_DT = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -130,6 +130,7 @@ namespace Report_Center.Presentation
             this.button5.TabIndex = 33;
             this.button5.Text = "Chia_sheet";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
@@ -142,6 +143,7 @@ namespace Report_Center.Presentation
             this.button6.TabIndex = 32;
             this.button6.Text = "button6";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button4
@@ -209,6 +211,7 @@ namespace Report_Center.Presentation
             this.Exp2Excl.TabIndex = 19;
             this.Exp2Excl.Text = "Export";
             this.Exp2Excl.UseVisualStyleBackColor = true;
+            this.Exp2Excl.Visible = false;
             this.Exp2Excl.Click += new System.EventHandler(this.Exp2Excl_Click);
             // 
             // todate
@@ -301,6 +304,7 @@ namespace Report_Center.Presentation
             this.button1.TabIndex = 6;
             this.button1.Text = "Export Data";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Node_Id
@@ -338,6 +342,7 @@ namespace Report_Center.Presentation
             this.export_full.TabIndex = 4;
             this.export_full.Text = "Export 1";
             this.export_full.UseVisualStyleBackColor = false;
+            this.export_full.Visible = false;
             this.export_full.Click += new System.EventHandler(this.export_full_Click);
             // 
             // tk_Full
@@ -368,17 +373,17 @@ namespace Report_Center.Presentation
             // 
             this.dataGridView_full.AllowUserToAddRows = false;
             this.dataGridView_full.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataGridView_full.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.dataGridView_full.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_full.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Maroon;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_full.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Maroon;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_full.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView_full.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_full.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_full.Location = new System.Drawing.Point(0, 0);
@@ -386,9 +391,9 @@ namespace Report_Center.Presentation
             this.dataGridView_full.Name = "dataGridView_full";
             this.dataGridView_full.ReadOnly = true;
             this.dataGridView_full.RowHeadersWidth = 62;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridView_full.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridView_full.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView_full.RowTemplate.Height = 28;
             this.dataGridView_full.Size = new System.Drawing.Size(874, 312);
             this.dataGridView_full.TabIndex = 0;
