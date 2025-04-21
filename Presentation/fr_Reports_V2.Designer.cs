@@ -415,7 +415,6 @@
             this.Controls.Add(this.bt_Exit);
             this.Controls.Add(this.bt_BC);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximizeBox = false;
             this.Name = "fr_Reports_V2";
             this.Text = "Báo cáo";
             this.Load += new System.EventHandler(this.fr_Reports_Load);

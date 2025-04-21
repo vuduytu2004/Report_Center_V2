@@ -36,6 +36,7 @@
             this.Pro_name = new System.Windows.Forms.Label();
             this.gr_para_name = new System.Windows.Forms.Label();
             this.gr_fr_to_date = new System.Windows.Forms.GroupBox();
+            this.NPH = new System.Windows.Forms.Label();
             this.todate = new System.Windows.Forms.DateTimePicker();
             this.frdate = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
@@ -56,7 +57,6 @@
             this.supp_id = new System.Windows.Forms.TextBox();
             this.lbl_supp_id = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.NPH = new System.Windows.Forms.Label();
             this.gr_fr_to_date.SuspendLayout();
             this.gr_dept_id.SuspendLayout();
             this.gr_stk_id.SuspendLayout();
@@ -156,6 +156,19 @@
             this.gr_fr_to_date.TabIndex = 8;
             this.gr_fr_to_date.TabStop = false;
             this.gr_fr_to_date.Visible = false;
+            // 
+            // NPH
+            // 
+            this.NPH.AutoSize = true;
+            this.NPH.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NPH.ForeColor = System.Drawing.Color.Magenta;
+            this.NPH.Location = new System.Drawing.Point(3, 1);
+            this.NPH.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.NPH.Name = "NPH";
+            this.NPH.Size = new System.Drawing.Size(123, 17);
+            this.NPH.TabIndex = 7;
+            this.NPH.Text = "Ngày phát hành";
+            this.NPH.Visible = false;
             // 
             // todate
             // 
@@ -391,19 +404,6 @@
             this.progressBar1.Size = new System.Drawing.Size(408, 23);
             this.progressBar1.TabIndex = 28;
             // 
-            // NPH
-            // 
-            this.NPH.AutoSize = true;
-            this.NPH.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NPH.ForeColor = System.Drawing.Color.Magenta;
-            this.NPH.Location = new System.Drawing.Point(3, 1);
-            this.NPH.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.NPH.Name = "NPH";
-            this.NPH.Size = new System.Drawing.Size(123, 17);
-            this.NPH.TabIndex = 7;
-            this.NPH.Text = "Ngày phát hành";
-            this.NPH.Visible = false;
-            // 
             // fr_Reports
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -426,7 +426,6 @@
             this.Controls.Add(this.bt_BC);
             this.Controls.Add(this.treeView1);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximizeBox = false;
             this.Name = "fr_Reports";
             this.Text = "Báo cáo";
             this.Load += new System.EventHandler(this.fr_Reports_Load);
