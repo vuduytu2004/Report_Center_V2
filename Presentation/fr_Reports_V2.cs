@@ -3,6 +3,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Report_Center.DataAccess;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -25,7 +26,7 @@ namespace Report_Center.Presentation
         // Khai báo biến apiUrl ở mức độ của lớp
         private string apiUrl = "";
         private bool isDownloading = false; // Biến cờ để theo dõi trạng thái tải xuống
-
+         int _ma_core;
         public fr_Reports_V2()
         {
             InitializeComponent();
@@ -34,17 +35,17 @@ namespace Report_Center.Presentation
             todate.CustomFormat = "dd/MM/yyyy";
 
             // Cập nhật các Label
-            report_name.Text = GlobalVariables.txt_Node_name.ToString();            
+            report_name.Text = GlobalVariables.txt_Node_name.ToString();
             Pro_name.Text = GlobalVariables.txt_Proc_name;
             gr_para_name.Text = GlobalVariables.txt_Gr_Parameter;
-            para_name.Text = GlobalVariables.txt_Parameter;          
-                        
-            object dayValue = GlobalVariables.txt_Day; 
+            para_name.Text = GlobalVariables.txt_Parameter;
+
+            object dayValue = GlobalVariables.txt_Day;
             int daysToAdd = Convert.IsDBNull(dayValue) ? 0 : Convert.ToInt32(dayValue);
             frdate.MaxDate = DateTime.Now.AddDays(daysToAdd);
             todate.MaxDate = DateTime.Now.AddDays(daysToAdd);
 
-            
+
 
         }
 
@@ -303,12 +304,27 @@ namespace Report_Center.Presentation
 
         }
 
+        public class ComboItem
+        {
+            public string Text { get; set; }
+            public int Value { get; set; }
+        }
 
         private void fr_Reports_Load(object sender, EventArgs e)
         {
             // Gọi hàm PopulateTreeView trong sự kiện Load của Form
             //PopulateTreeView();
             test();
+            List<ComboItem> items = new List<ComboItem>
+                {
+                    new ComboItem { Text = "Mart", Value = 1 },
+                    new ComboItem { Text = "MiniMart", Value = 2 }
+                };
+            ma_core.DataSource = items;
+            ma_core.DisplayMember = "Text";  // Hiển thị "Mart" hoặc "MiniMart"
+            ma_core.ValueMember = "Value";  // Khi chọn thì lấy ra 1 hoặc 2
+
+            ma_core.SelectedIndex = 0; // Chọn mặc định là "Mart"
         }
 
         private void bt_Exit_Click(object sender, EventArgs e)
@@ -508,6 +524,37 @@ namespace Report_Center.Presentation
                     {
                         command.Parameters.AddWithValue("@supp_id", supp_id.Text);
                     }
+                    if (sl_fr.Visible == true)
+                    {
+                        command.Parameters.AddWithValue("@sl_fr", sl_fr.Text);
+                    }
+                    if (sl_to.Visible == true)
+                    {
+                        command.Parameters.AddWithValue("@sl_to", sl_to.Text);
+                    }
+                    if (ma_core.Visible == true)
+                    {
+                        //command.Parameters.AddWithValue("@ma_core", ma_core.SelectedValue);
+                        object selectedValue = null;
+
+                        // Đảm bảo truy cập từ đúng UI thread
+                        if (ma_core.InvokeRequired)
+                        {
+                            ma_core.Invoke(new MethodInvoker(delegate
+                            {
+                                selectedValue = ma_core.SelectedValue;
+                                _ma_core = ma_core.SelectedValue != null ? Convert.ToInt32(ma_core.SelectedValue) : 0;
+                            }));
+                        }
+                        else
+                        {
+                            selectedValue = ma_core.SelectedValue;
+                            _ma_core = ma_core.SelectedValue != null ? Convert.ToInt32(ma_core.SelectedValue) : 0;
+                        }
+                        
+                        command.Parameters.AddWithValue("@ma_core", selectedValue ?? DBNull.Value);                       
+
+                    }
                     //command.Parameters.AddWithValue("@stk_id", stk_id.Text);
                     //command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
                     //command.Parameters.AddWithValue("@todate", todate.Value.ToString("yyyyMMdd"));
@@ -547,6 +594,29 @@ namespace Report_Center.Presentation
                         {
                             startRow = 5;
                             worksheet.Cells["B2"].Value = $"Ngày: {frdate.Value}";// - Đến ngày : {todate.Value} ";
+                        }
+                        else if (Pro_name.Text == "rpt_StkISQty_Order_New")// || Pro_name.Text == "rpt_TotalRetailWholesaleByIndustry_lv2")
+                        {
+                            startRow = 5;
+                            string tenCore = _ma_core == 1 ? "MART" : _ma_core == 2 ? "MiniMart" : "Không xác định";
+
+                            worksheet.Cells["A1"].Value = $"BÁO CÁO ĐỘ PHỦ CORE {tenCore} ";
+                            worksheet.Cells["A2"].Value = $"Từ ngày: {frdate.Value} - Đến ngày : {todate.Value} ";
+                        }
+                        else if (Pro_name.Text == "rpt_target_Dt_By_Day")
+                        {
+                            startRow = 5;
+                            worksheet.Cells["B3"].Value = $"Từ ngày: {frdate.Value:dd/MM/yyyy} - Đến ngày: {todate.Value:dd/MM/yyyy}";
+                        }
+                        else if (Pro_name.Text == "rpt_target_Dt_By_Month")
+                        {
+                            startRow = 5;
+                            var fromDate = new DateTime(frdate.Value.Year, frdate.Value.Month, 1);
+                            var toDate = new DateTime(todate.Value.Year, todate.Value.Month, DateTime.DaysInMonth(todate.Value.Year, todate.Value.Month));
+
+                            worksheet.Cells["B3"].Value = $"Từ ngày: {fromDate:dd/MM/yyyy} - Đến ngày: {toDate:dd/MM/yyyy}";
+
+                            //worksheet.Cells["B3"].Value = $"Từ ngày: {frdate.Value:dd/MM/yyyy} - Đến ngày: {todate.Value:dd/MM/yyyy}";
                         }
                         else //if (Pro_name.Text == "rpt_Nonmoving" || Pro_name.Text == "rpt_SUPP_IMPORT")
                         {
@@ -637,6 +707,15 @@ namespace Report_Center.Presentation
                             worksheet.Cells[$"A6:{GetExcelColumnName(columns_dem + 4)}{startRow}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             worksheet.Cells[$"A6:{GetExcelColumnName(columns_dem + 4)}{startRow}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                             worksheet.Cells[$"G7:{GetExcelColumnName(columns_dem + 4)}{startRow}"].Style.Numberformat.Format = "_-* #,##0_-;-* #,##0_-;_-* \"-\"??_-;_-@_-";
+                        }
+                        else if (Pro_name.Text == "rpt_StkISQty_Order_New")
+                        {
+                            //var a = GetExcelColumnName(columns_dem + 4);
+                            worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].AutoFitColumns();
+                            worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;                            
                         }
                         else if (Pro_name.Text == "rpt_TotalRetailWholesaleByIndustry_lv3")
                         {
@@ -1779,5 +1858,14 @@ namespace Report_Center.Presentation
 
             return columnName;
         }
+
+        private void ma_core_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if (ma_core.SelectedValue != null && int.TryParse(ma_core.SelectedValue.ToString(), out int selectedValue))
+            //{
+            //    MessageBox.Show("Giá trị chọn là: " + selectedValue);
+            //}
+        }
+
     }
 }

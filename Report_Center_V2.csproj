@@ -512,6 +512,9 @@
     <None Include="Media\Template\Template-rpt_Member_Card.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Media\Template\Template-rpt_StkISQty_Order_New.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Media\Template\Template-rpt_SUM_By_GRP_5.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -519,6 +522,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template-rpt_Nonmoving.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Media\Template\Template-rpt_target_Dt_By_Day.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Media\Template\Template-rpt_target_Dt_By_Month.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template-rpt_TotalRetailWholesaleByIndustry.xlsx">

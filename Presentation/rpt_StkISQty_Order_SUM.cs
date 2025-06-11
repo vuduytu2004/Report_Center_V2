@@ -1,6 +1,7 @@
 ﻿//using System.Collections;
 using ClosedXML.Excel;
 using Microsoft.Office.Interop.Excel;
+using OfficeOpenXml;
 using Report_Center.DataAccess;
 using System;
 //using System.Collections.Generic;
@@ -18,6 +19,7 @@ using System.Threading;
 //using System.Linq;
 //using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using System.Threading;
 //using Font = System.Drawing.Font;
 using Application = System.Windows.Forms.Application;
@@ -451,7 +453,80 @@ namespace Report_Center.Presentation
 
         }
 
-        private void SQLtoExcel(DataGridView grView, string Output)
+        private void SQLtoExcel(DataGridView grView, string outputPath)
+        {
+            // Cấu hình EPPlus cho mục đích phi thương mại
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage())
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Data");
+
+            int rowIndex = 1;
+            int colIndex = 1;
+
+            // Ghi tiêu đề cột
+            foreach (DataGridViewColumn column in grView.Columns)
+            {
+                worksheet.Cells[rowIndex, colIndex].Value = column.HeaderText;
+                colIndex++;
+            }
+
+            rowIndex++;
+
+            // Ghi dữ liệu
+            int progress = 0;
+            int totalRows = grView.Rows.Count;
+
+            if (progressBar1.InvokeRequired)
+            {
+                progressBar1.Invoke((MethodInvoker)(() =>
+                {
+                    progressBar1.Minimum = 0;
+                    progressBar1.Maximum = totalRows;
+                    progressBar1.Value = 0;
+                }));
+            }
+            else
+            {
+                progressBar1.Minimum = 0;
+                progressBar1.Maximum = totalRows;
+                progressBar1.Value = 0;
+            }
+
+            foreach (DataGridViewRow row in grView.Rows)
+            {
+                colIndex = 1;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    worksheet.Cells[rowIndex, colIndex].Value = cell.Value?.ToString() ?? "";
+                    colIndex++;
+                }
+                rowIndex++;
+
+                progress++;
+                if (progressBar1.InvokeRequired)
+                {
+                    progressBar1.Invoke((MethodInvoker)(() => progressBar1.Value = progress));
+                }
+                else
+                {
+                    progressBar1.Value = progress;
+                }
+            }
+
+            // Tự động điều chỉnh độ rộng cột
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+            // Lưu file Excel
+            FileInfo fi = new FileInfo(outputPath);
+            package.SaveAs(fi);
+        }
+    }
+
+    private void SQLtoExcel_OLD(DataGridView grView, string Output)
         {
             //Lấy số ngẫu nhiên
             Random _r = new Random();
@@ -663,6 +738,7 @@ namespace Report_Center.Presentation
             ////////    //Không cho phép sửa trường STT
             ////////    //txtSTT.Enabled = false;
             ////////}
+            ///
         }
         //----------------------------------------------------------
         private void dataGridView_full_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
@@ -758,39 +834,7 @@ namespace Report_Center.Presentation
             export_full.Enabled = false;
             progressBar1.Visible = true;
             progressBar1.Style = ProgressBarStyle.Marquee;
-            //       string sql = @"select a.SUPP_ID as 'Mã NCC', ISDEFAULT as 'NCC Chỉ định' ,(b.SUPP_NAME) as 'Tên NCC' 
-            //               ,a.SKU_ID as 'Mã Hàng', c.BARCODE 
-            //               ,c.SKU_CODE,(c.FULL_NAME) as 'Tên Hàng'  ,c.UNIT_DESC as 'ĐVT'
-            //               ,c.GRP_ID as 'Nhóm' , (c.grp_name) as 'Tên Nhóm' 
-            //               ,c.rtPRICE as 'Giá Bán', c.MDPRICE as 'Giá nội bộ'
-            //               , c.TAX_RATE , SPPRICE as 'Giá Nhập chỉ định', LASTIMPPR as 'Giá nhập lần trước'
-            //               ,PCPR_CODE as 'Vùng Giá' 
-            //               ,c.STATUS as 'Trạng Thái'
-            //               ,c.ITEM_TYPE as 'Loại hàng'
-            //               ,e.OPEN_DATE ,e.MODI_DATE 
-            //               from SPPRICE a
-            //               left join SUPPLIER as b on a.supp_id=b.supp_id
-            //               left join SKU_DEF as c on a.SKU_ID=c.SKU_ID
-            //left join GOODS as e on right(left(a.SKU_ID,8),6)=e.GOODS_ID
-            //               where c.status <> '02' ";
-            //       if ((Ma_NCC.Text == "") && (Ma_nhom.Text == "") && (Ma_hang.Text == ""))
-            //               { progressBar1.Visible = false;
-            //                   return; }
-            //       if ((Ma_NCC.Text != ""))
-            //               { sql += " and a.SUPP_ID= N'" + Ma_NCC.Text + "' or b.SUPP_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_NCC.Text) + "%'"; }
-            //       if ((Ma_hang.Text != ""))
-            //               { sql += " and (a.SKU_ID like N'%" + Ma_hang.Text + "%' or c.BARCODE like N'%" + Ma_hang.Text + "%' or c.SKU_CODE like N'%" + Ma_hang.Text + "%' or c.FULL_NAME like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_hang.Text) + "%')"; }
-            //       if ((Ma_nhom.Text != ""))
-            //               { sql += " and c.GRP_ID like N'%" + Ma_nhom.Text + "%' or c.grp_name like N'%" + Unicode2TCVN.UnicodeToTCVN3(Ma_nhom.Text) + "%'"; }
-
-
-            //dataGridView_full.DataSource = cn.taobang1(sql);
-
-            //for (int i = 0; i < dataGridView_full.Rows.Count ; i++)
-            //{
-            //    dataGridView_full.Rows[i].Cells[0].Value = i + 1;
-            //}
-            //progressBar1.Visible = false;
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -845,53 +889,7 @@ namespace Report_Center.Presentation
 
         private void Exprot_Table2Excl()
         {
-            //Response.clear()
-            //Creating DataTable.
-            //--------------------------------------------------------------
-            //////////////////////DataTable dt_grid_nhap = new DataTable();
-
-            ////////////////////////Adding the Columns.
-            //////////////////////foreach (DataGridViewColumn column in dataGridView_full.Columns)
-            //////////////////////{
-            //////////////////////    //dt_grid_nhap.Columns.Add(column.HeaderText, column.ValueType);
-            //////////////////////    //dt_grid_nhap.Columns.Add(Converter.TCVN3ToUnicode(column.HeaderText), column.ValueType);
-            //////////////////////    dt_grid_nhap.Columns.Add((column.HeaderText), column.ValueType);
-
-            //////////////////////}
-
-            ////////////////////////Adding the Rows.
-            ////////////////////////int dong = 0;
-            //////////////////////foreach (DataGridViewRow row in dataGridView_full.Rows)
-            //////////////////////{
-            //////////////////////    dt_grid_nhap.Rows.Add();
-            //////////////////////    foreach (DataGridViewCell cell in row.Cells)
-            //////////////////////    {
-            //////////////////////        //if (cell.ColumnIndex == 3 || cell.ColumnIndex == 4)// || cell.ColumnIndex == 10)
-            //////////////////////        //{
-            //////////////////////        //    dt_grid_nhap.Rows[dt_grid_nhap.Rows.Count - 1][cell.ColumnIndex] = Converter.TCVN3ToUnicode(cell.Value.ToString());
-            //////////////////////        //}
-            //////////////////////        ////else if (cell.ColumnIndex == "")
-            //////////////////////        ////{
-
-            //////////////////////        ////}    
-            //////////////////////        //else
-            //////////////////////        //{
-            //////////////////////        //    dt_grid_nhap.Rows[dt_grid_nhap.Rows.Count - 1][cell.ColumnIndex] = cell.Value;
-            //////////////////////        //}
-            //////////////////////        dt_grid_nhap.Rows[dt_grid_nhap.Rows.Count - 1][cell.ColumnIndex] = cell.Value;
-
-            //////////////////////    }
-            //////////////////////    //System.GC.Collect();
-            //////////////////////    //progressBar1.Value = dong + 1;
-            //////////////////////    //dong++;
-            //////////////////////}
-            /////--------------------------------------------------------------------------------------------
-            //Exporting to Excel.
-            //string folderPath = "D:\\Fuji\\";
-            //if (!Directory.Exists(folderPath))
-            //{
-            //    Directory.CreateDirectory(folderPath);
-            //}
+            
             System.GC.Collect();
             using (XLWorkbook wb = new XLWorkbook())
             {
@@ -1998,112 +1996,9 @@ namespace Report_Center.Presentation
                 releaseObject(destWorkbook);
                 return;
             }
-            ////////////destWorkbook.SaveAs(Output, Excel.XlFileFormat.xlWorkbookNormal,      misValue, misValue,     misValue,        misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue,          misValue,     misValue,     misValue);
-            //////////if (curWorkBook != null)
-            //////////{
-            //////////    //curWorkBook.Save();
-            //////////    curWorkBook.Close(false, defaultArg, defaultArg);
-
-            //////////}
-
-            //////////if (destWorkbook != null)
-            //////////{
-            //////////    //destWorkbook.Save();
-            //////////    //destWorkbook.SaveAs(Output, XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //////////    destWorkbook.Close(false, defaultArg, defaultArg);
-
-            //////////}
 
             app.Quit();
 
-            //-------------------------------
-
-            ////////////////////Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-            //////////////////////XLWorkbook wb = new XLWorkbook();
-            ////////////////////Workbook wb = app.Workbooks.Open(Filename, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //////////////////////Microsoft.Office.Interop.Excel.Worksheet ss = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
-            //////////////////////ss.PrintOut(Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            ////////////////////////ss.SaveAs(Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-            ////////////////////Workbook wb1 = app.Workbooks.Open(Filename1, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            ////////////////////wb1.Worksheets[0].CopyFrom(wb.Worksheets[0]);
-
-
-
-            //////////////////////Microsoft.Office.Interop.Excel.Worksheet workSheet_disk = (Microsoft.Office.Interop.Excel.Worksheet)wb.ActiveSheet;
-            //////////////////////Microsoft.Office.Interop.Excel.Worksheet workSheet_copy = (Microsoft.Office.Interop.Excel.Worksheet)wb1.ActiveSheet;
-            //////////////////////workSheet_disk.Copy(workSheet_copy);
-            //////////////////////wb.Sheet.Copy(wb1.Sheets[3]);
-
-            //////////////////////Worksheet sheet = wb.Worksheets.Copy(Worksheet sheet1 = wb1.Worksheets[0]);
-
-            //////////////////////Excel.Worksheet worksheet1 = ((Excel.Worksheet)Application.wb.Worksheets[1]);
-            //////////////////////Excel.Worksheet worksheet3 = ((Excel.Worksheet)Application.ActiveWorkbook.Worksheets[1]);
-            //////////////////////worksheet1.Copy(worksheet3);
-
-            //////////////////////wb.Worksheets.Add(table1, "Tồn_Bán");
-            //////////////////////Workbook wb = app.Workbooks.Add(Type.Missing);
-            //////////////////////Worksheets ws= wb.Worksheets.Add(Filename);
-            //////////////////////Workbook wb3  = app.Workbooks.Add(Filename);
-            //////////////////////Workbook wb4 = app.Workbooks.Add(Filename1);
-            //////////////////////Workbook wb1 = app.Workbooks.Open(Filename1, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //////////////////////wb.Worksheets.Add();
-            //////////////////////wb.Worksheets.Add(Filename1);
-            //////////////////////wb1.Sheets(1).Copy , wb.Sheets(1)
-
-            //////////////////////Microsoft.Office.Interop.Excel.Worksheet workSheet = (Microsoft.Office.Interop.Excel.Worksheet)wb1.ActiveSheet;
-            //////////////////////Microsoft.Office.Interop.Excel.Worksheet workSheet = (Microsoft.Office.Interop.Excel.Worksheet)wb1.Sheets[0].Copy();
-            //////////////////////Microsoft.Office.Interop.Excel.Worksheet workSheet1 = (Microsoft.Office.Interop.Excel.Worksheet)wb.Sheets[1].paste();
-            //////////////////////Worksheet sheet = wb.Worksheets.Copy;
-            //////////////////////Worksheet sheet1 = wb1.Worksheets[0];
-            //////////////////////sheet1.Copy(sheet1);
-            //////////////////////sheet.Paste(sheet);
-            //////////////////////Worksheet sheet111 = wb1.Worksheets[0];
-
-            //////////////////////wb.Sheets.Add(); //' add a new worksheet
-            ////////////////////////wb1.Sheets.;
-            //////////////////////wb1.Sheets(1).Copy , wb.Sheets(1)
-            //////////////////////wb1.Sheets(1).copy;
-            //////////////////////wb.Sheets[1].paste();
-            //////////////////////wb.Sheets[1].name = "ReCap"; //--'rename the worksheet
-
-
-            //////////////////////Excel.Worksheet xlWorkSheetToUpload = default(Excel.Worksheet);
-            //////////////////////xlWorkSheetToUpload = xlAppToUpload.Sheets["Sheet1"];
-
-            //////////////////////Excel._Worksheet workSheet = (Excel.Worksheet)app.ActiveSheet;
-            //////////////////////workSheet[0].Name = "aaaaa";
-            //////////////////////workSheet.Columns.AutoFit();
-            ////////////////////////workSheet.Range["A1", "H5"].AutoFormat(
-            ////////////////////////        Excel.XlRangeAutoFormat.xlRangeAutoFormatList1); //xlRangeAutoFormat3DEffects1); //, xlRangeAutoFormatClassic2) ;
-            //////////////////////workSheet.Range["F:F"].NumberFormat = "0";
-
-            //////////////////////workSheet.Range["A6", "H10"].AutoFormat(
-            //////////////////////        Excel.XlRangeAutoFormat.xlRangeAutoFormatList3);              // Thích cái Format này
-
-            //////////////////////workSheet.Range["A11", "H15"].AutoFormat(
-            //////////////////////        Excel.XlRangeAutoFormat.xlRangeAutoFormatClassic1);
-            //////////////////////workSheet.Range["A16", "H22"].AutoFormat(
-            //////////////////////        Excel.XlRangeAutoFormat.xlRangeAutoFormatClassic2);
-
-            //////////////////////workSheet.Range["A23", "H30"].AutoFormat(
-            //////////////////////        Excel.XlRangeAutoFormat.xlRangeAutoFormatClassic3);
-            //////////////////////workSheet.Range["A31", "H35"].AutoFormat(
-            //////////////////////        Excel.XlRangeAutoFormat.xlRangeAutoFormatLocalFormat1);
-
-            //////////////////////workSheet.Range["A1", "H10"].AutoFormat(
-            //////////////////////     Excel.XlCalcMemNumberFormatType.xlNumberFormatTypeNumber();
-            ////////////////////////workSheet.Range["A1", "H100"].AutoFormat(Excel.XlRangeAutoFormat = Microsoft.Office.Interop.Excel.XlRangeAutoFormat.xlRangeAutoFormatClassic1, object Number, object Font, object Alignment, object Border, object Pattern, object Width);
-
-
-            //////////////////////Worksheets a = (Worksheets)app.Worksheets;
-            ////////////////////////wb.Worksheets.
-            //////////////////////a.. [2].NumberFormat = "@";      // column as a text
-            ////////////////////wb1.Close(Type.Missing);
-            ////////////////////wb.SaveAs(Output, XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //////////////////////XlFileFormat. . .AutoFit();
-            //////////////////////wb.Close();
-            //app.Quit();
             File.Delete(Filename);
             File.Delete(Filename1);
         }

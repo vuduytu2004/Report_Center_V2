@@ -56,11 +56,23 @@
             this.supp_id = new System.Windows.Forms.TextBox();
             this.lbl_supp_id = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.sl_fr = new System.Windows.Forms.NumericUpDown();
+            this.sl_to = new System.Windows.Forms.NumericUpDown();
+            this.gr_sl_f_t = new System.Windows.Forms.GroupBox();
+            this.ma_core = new System.Windows.Forms.ComboBox();
+            this.gr_core = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.gr_fr_to_date.SuspendLayout();
             this.gr_dept_id.SuspendLayout();
             this.gr_stk_id.SuspendLayout();
             this.gr_sku_code.SuspendLayout();
             this.gr_supp_id.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sl_fr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sl_to)).BeginInit();
+            this.gr_sl_f_t.SuspendLayout();
+            this.gr_core.SuspendLayout();
             this.SuspendLayout();
             // 
             // bt_BC
@@ -208,7 +220,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gr_dept_id.Controls.Add(this.dept_id);
             this.gr_dept_id.Controls.Add(this.label2);
-            this.gr_dept_id.Location = new System.Drawing.Point(33, 237);
+            this.gr_dept_id.Location = new System.Drawing.Point(33, 168);
             this.gr_dept_id.Margin = new System.Windows.Forms.Padding(2);
             this.gr_dept_id.Name = "gr_dept_id";
             this.gr_dept_id.Padding = new System.Windows.Forms.Padding(2);
@@ -257,7 +269,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gr_stk_id.Controls.Add(this.stk_id);
             this.gr_stk_id.Controls.Add(this.label3);
-            this.gr_stk_id.Location = new System.Drawing.Point(33, 187);
+            this.gr_stk_id.Location = new System.Drawing.Point(33, 125);
             this.gr_stk_id.Margin = new System.Windows.Forms.Padding(2);
             this.gr_stk_id.Name = "gr_stk_id";
             this.gr_stk_id.Padding = new System.Windows.Forms.Padding(2);
@@ -317,7 +329,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gr_sku_code.Controls.Add(this.sku_code);
             this.gr_sku_code.Controls.Add(this.label6);
-            this.gr_sku_code.Location = new System.Drawing.Point(33, 287);
+            this.gr_sku_code.Location = new System.Drawing.Point(33, 211);
             this.gr_sku_code.Margin = new System.Windows.Forms.Padding(2);
             this.gr_sku_code.Name = "gr_sku_code";
             this.gr_sku_code.Padding = new System.Windows.Forms.Padding(2);
@@ -355,7 +367,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gr_supp_id.Controls.Add(this.supp_id);
             this.gr_supp_id.Controls.Add(this.lbl_supp_id);
-            this.gr_supp_id.Location = new System.Drawing.Point(33, 348);
+            this.gr_supp_id.Location = new System.Drawing.Point(33, 250);
             this.gr_supp_id.Margin = new System.Windows.Forms.Padding(2);
             this.gr_supp_id.Name = "gr_supp_id";
             this.gr_supp_id.Padding = new System.Windows.Forms.Padding(2);
@@ -394,11 +406,115 @@
             this.progressBar1.Size = new System.Drawing.Size(408, 23);
             this.progressBar1.TabIndex = 28;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.Blue;
+            this.label7.Location = new System.Drawing.Point(6, 18);
+            this.label7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(72, 13);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "Số lượng từ";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.Blue;
+            this.label8.Location = new System.Drawing.Point(251, 18);
+            this.label8.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 13);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "đến";
+            // 
+            // sl_fr
+            // 
+            this.sl_fr.Location = new System.Drawing.Point(88, 15);
+            this.sl_fr.Maximum = new decimal(new int[] {
+            1215752192,
+            23,
+            0,
+            0});
+            this.sl_fr.Name = "sl_fr";
+            this.sl_fr.Size = new System.Drawing.Size(120, 20);
+            this.sl_fr.TabIndex = 31;
+            // 
+            // sl_to
+            // 
+            this.sl_to.Location = new System.Drawing.Point(345, 16);
+            this.sl_to.Maximum = new decimal(new int[] {
+            1215752192,
+            23,
+            0,
+            0});
+            this.sl_to.Name = "sl_to";
+            this.sl_to.Size = new System.Drawing.Size(120, 20);
+            this.sl_to.TabIndex = 32;
+            // 
+            // gr_sl_f_t
+            // 
+            this.gr_sl_f_t.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gr_sl_f_t.Controls.Add(this.sl_fr);
+            this.gr_sl_f_t.Controls.Add(this.sl_to);
+            this.gr_sl_f_t.Controls.Add(this.label8);
+            this.gr_sl_f_t.Controls.Add(this.label7);
+            this.gr_sl_f_t.Location = new System.Drawing.Point(33, 291);
+            this.gr_sl_f_t.Margin = new System.Windows.Forms.Padding(2);
+            this.gr_sl_f_t.Name = "gr_sl_f_t";
+            this.gr_sl_f_t.Padding = new System.Windows.Forms.Padding(2);
+            this.gr_sl_f_t.Size = new System.Drawing.Size(490, 46);
+            this.gr_sl_f_t.TabIndex = 21;
+            this.gr_sl_f_t.TabStop = false;
+            this.gr_sl_f_t.Visible = false;
+            // 
+            // ma_core
+            // 
+            this.ma_core.FormattingEnabled = true;
+            this.ma_core.Location = new System.Drawing.Point(78, 15);
+            this.ma_core.Name = "ma_core";
+            this.ma_core.Size = new System.Drawing.Size(121, 21);
+            this.ma_core.TabIndex = 29;
+            this.ma_core.ValueMember = "1";
+            this.ma_core.SelectedIndexChanged += new System.EventHandler(this.ma_core_SelectedIndexChanged);
+            // 
+            // gr_core
+            // 
+            this.gr_core.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gr_core.Controls.Add(this.label10);
+            this.gr_core.Controls.Add(this.ma_core);
+            this.gr_core.Location = new System.Drawing.Point(33, 341);
+            this.gr_core.Margin = new System.Windows.Forms.Padding(2);
+            this.gr_core.Name = "gr_core";
+            this.gr_core.Padding = new System.Windows.Forms.Padding(2);
+            this.gr_core.Size = new System.Drawing.Size(490, 46);
+            this.gr_core.TabIndex = 33;
+            this.gr_core.TabStop = false;
+            this.gr_core.Visible = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.Blue;
+            this.label10.Location = new System.Drawing.Point(6, 18);
+            this.label10.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(33, 13);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "Core";
+            // 
             // fr_Reports_V2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(555, 564);
+            this.Controls.Add(this.gr_core);
+            this.Controls.Add(this.gr_sl_f_t);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.gr_supp_id);
             this.Controls.Add(this.gr_sku_code);
@@ -428,6 +544,12 @@
             this.gr_sku_code.PerformLayout();
             this.gr_supp_id.ResumeLayout(false);
             this.gr_supp_id.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sl_fr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sl_to)).EndInit();
+            this.gr_sl_f_t.ResumeLayout(false);
+            this.gr_sl_f_t.PerformLayout();
+            this.gr_core.ResumeLayout(false);
+            this.gr_core.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -462,5 +584,13 @@
         private System.Windows.Forms.Label lbl_supp_id;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label NPH;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown sl_fr;
+        private System.Windows.Forms.NumericUpDown sl_to;
+        private System.Windows.Forms.GroupBox gr_sl_f_t;
+        private System.Windows.Forms.ComboBox ma_core;
+        private System.Windows.Forms.GroupBox gr_core;
+        private System.Windows.Forms.Label label10;
     }
 }

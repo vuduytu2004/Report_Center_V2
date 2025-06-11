@@ -145,18 +145,49 @@ namespace Report_Center.Presentation
         internal delegate void SetDataSourceDelegate(DataTable table);
         private void setDataSource(DataTable table)
         {
-            // Invoke method if required:
+            // Kiểm tra nếu form đã dispose hoặc handle chưa được tạo thì bỏ qua
+            if (this.IsDisposed || !this.IsHandleCreated) return;
+
             if (this.InvokeRequired)
             {
-                this.Invoke(new SetDataSourceDelegate(setDataSource), table);
+                try
+                {
+                    this.BeginInvoke(new SetDataSourceDelegate(setDataSource), table);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Form đã bị dispose trong khi đang gọi, bỏ qua
+                }
             }
             else
             {
+                if (this.IsDisposed || !this.IsHandleCreated) return;
+
                 dataGridView_full.DataSource = table;
                 progressBar1.Visible = false;
-                dataGridView_full.Columns[4].Frozen = true;
+
+                // Tránh lỗi nếu cột không đủ
+                if (dataGridView_full.Columns.Count > 4)
+                {
+                    dataGridView_full.Columns[4].Frozen = true;
+                }
             }
         }
+
+        //private void setDataSource(DataTable table)
+        //{
+        //    // Invoke method if required:
+        //    if (this.InvokeRequired)
+        //    {
+        //        this.Invoke(new SetDataSourceDelegate(setDataSource), table);
+        //    }
+        //    else
+        //    {
+        //        dataGridView_full.DataSource = table;
+        //        progressBar1.Visible = false;
+        //        dataGridView_full.Columns[4].Frozen = true;
+        //    }
+        //}
         private void label2_Click(object sender, EventArgs e)
         {
 
