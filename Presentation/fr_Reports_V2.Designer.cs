@@ -64,6 +64,12 @@
             this.ma_core = new System.Windows.Forms.ComboBox();
             this.gr_core = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.gr_userId = new System.Windows.Forms.GroupBox();
+            this.userId = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.gr_StoreId = new System.Windows.Forms.GroupBox();
+            this.StoreId = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.gr_fr_to_date.SuspendLayout();
             this.gr_dept_id.SuspendLayout();
             this.gr_stk_id.SuspendLayout();
@@ -73,6 +79,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.sl_to)).BeginInit();
             this.gr_sl_f_t.SuspendLayout();
             this.gr_core.SuspendLayout();
+            this.gr_userId.SuspendLayout();
+            this.gr_StoreId.SuspendLayout();
             this.SuspendLayout();
             // 
             // bt_BC
@@ -473,6 +481,7 @@
             // 
             // ma_core
             // 
+            this.ma_core.DisplayMember = "1";
             this.ma_core.FormattingEnabled = true;
             this.ma_core.Location = new System.Drawing.Point(78, 15);
             this.ma_core.Name = "ma_core";
@@ -508,11 +517,89 @@
             this.label10.TabIndex = 21;
             this.label10.Text = "Core";
             // 
+            // gr_userId
+            // 
+            this.gr_userId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gr_userId.Controls.Add(this.userId);
+            this.gr_userId.Controls.Add(this.label9);
+            this.gr_userId.Location = new System.Drawing.Point(33, 382);
+            this.gr_userId.Margin = new System.Windows.Forms.Padding(2);
+            this.gr_userId.Name = "gr_userId";
+            this.gr_userId.Padding = new System.Windows.Forms.Padding(2);
+            this.gr_userId.Size = new System.Drawing.Size(490, 46);
+            this.gr_userId.TabIndex = 21;
+            this.gr_userId.TabStop = false;
+            this.gr_userId.Visible = false;
+            // 
+            // userId
+            // 
+            this.userId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.userId.ForeColor = System.Drawing.Color.DarkOrange;
+            this.userId.Location = new System.Drawing.Point(78, 18);
+            this.userId.Margin = new System.Windows.Forms.Padding(1);
+            this.userId.Name = "userId";
+            this.userId.Size = new System.Drawing.Size(400, 20);
+            this.userId.TabIndex = 20;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Blue;
+            this.label9.Location = new System.Drawing.Point(3, 20);
+            this.label9.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 13);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "Mã NV";
+            // 
+            // gr_StoreId
+            // 
+            this.gr_StoreId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gr_StoreId.Controls.Add(this.StoreId);
+            this.gr_StoreId.Controls.Add(this.label11);
+            this.gr_StoreId.Location = new System.Drawing.Point(33, 417);
+            this.gr_StoreId.Margin = new System.Windows.Forms.Padding(2);
+            this.gr_StoreId.Name = "gr_StoreId";
+            this.gr_StoreId.Padding = new System.Windows.Forms.Padding(2);
+            this.gr_StoreId.Size = new System.Drawing.Size(490, 46);
+            this.gr_StoreId.TabIndex = 22;
+            this.gr_StoreId.TabStop = false;
+            this.gr_StoreId.Visible = false;
+            // 
+            // StoreId
+            // 
+            this.StoreId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.StoreId.ForeColor = System.Drawing.Color.DarkOrange;
+            this.StoreId.Location = new System.Drawing.Point(139, 18);
+            this.StoreId.Margin = new System.Windows.Forms.Padding(1);
+            this.StoreId.Name = "StoreId";
+            this.StoreId.Size = new System.Drawing.Size(339, 20);
+            this.StoreId.TabIndex = 20;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.Blue;
+            this.label11.Location = new System.Drawing.Point(3, 20);
+            this.label11.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(89, 13);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "Mã điểm chấm";
+            // 
             // fr_Reports_V2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(555, 564);
+            this.Controls.Add(this.gr_StoreId);
+            this.Controls.Add(this.gr_userId);
             this.Controls.Add(this.gr_core);
             this.Controls.Add(this.gr_sl_f_t);
             this.Controls.Add(this.progressBar1);
@@ -550,6 +637,10 @@
             this.gr_sl_f_t.PerformLayout();
             this.gr_core.ResumeLayout(false);
             this.gr_core.PerformLayout();
+            this.gr_userId.ResumeLayout(false);
+            this.gr_userId.PerformLayout();
+            this.gr_StoreId.ResumeLayout(false);
+            this.gr_StoreId.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -592,5 +683,11 @@
         private System.Windows.Forms.ComboBox ma_core;
         private System.Windows.Forms.GroupBox gr_core;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox gr_userId;
+        private System.Windows.Forms.TextBox userId;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox gr_StoreId;
+        private System.Windows.Forms.TextBox StoreId;
+        private System.Windows.Forms.Label label11;
     }
 }

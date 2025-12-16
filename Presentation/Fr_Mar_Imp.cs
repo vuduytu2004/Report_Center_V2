@@ -425,7 +425,7 @@ namespace Report_Center.Presentation
 
 
                             System.Diagnostics.Process.Start(new ProcessStartInfo(savePath) { UseShellExecute = true });
-                            progressBar1.Style = ProgressBarStyle.Blocks;
+                            //progressBar1.Style = ProgressBarStyle.Blocks;
                         }
                     }
                 }

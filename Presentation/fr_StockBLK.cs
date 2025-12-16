@@ -262,7 +262,7 @@ namespace Report_Center.Presentation
                     , c.TAX_RATE as 'Thuế Bán', SPPRICE as 'Giá Nhập chỉ định'                    , PREFPR as 'Giá Vốn chỉ định' , iif( f.tax_rate is null ,'Not Set', CAST(f.tax_rate as varchar(10))) as 'Thuế Nhập'    --, iif(  LEN(ISNULL(a.tax_code,''))=0, 'Not Set',a.tax_code ) as 'Thuế Nhập'  --f.tax_code as 'Thuế Nhập'--
                     ,PCPR_CODE as 'Vùng Giá'                     ,c.STATUS as 'Trạng Thái'                    ,c.ITEM_TYPE as 'Loại hàng'
                     ,e.OPEN_DATE ,e.MODI_DATE
-					from  DSMART12.dbo.SPPRICE a with(nolock) 
+					from  DSMART16.dbo.SPPRICE a with(nolock) 
                     left join  DSMART16.dbo.SUPPLIER as b with(nolock) on a.supp_id=b.supp_id
                     left join  DSMART16.dbo.SKU_DEF as c with(nolock) on a.SKU_ID=c.SKU_ID
 					 left join  DSMART16.dbo.GOODS as e with(nolock) on right(left(a.SKU_ID,8),6)=e.GOODS_ID

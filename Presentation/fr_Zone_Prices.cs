@@ -456,7 +456,7 @@ namespace Report_Center.Presentation
                     ,PCPR_CODE as 'Vùng Giá'                     ,c.STATUS as 'Trạng Thái'                    ,c.ITEM_TYPE as 'Loại hàng'
                     ,e.OPEN_DATE ,e.MODI_DATE
                     ,CU.ZONE_CODE AS 'Vùng giá bán', CU.RTPRICE AS 'Giá bán theo vùng'
-					from  DSMART12.dbo.SPPRICE a WITH (NOLOCK)
+					from  DSMART16.dbo.SPPRICE a WITH (NOLOCK)
                     left join  [172.16.70.30].DATA_DETAIL.dbo.SUPPLIER as b WITH (NOLOCK) on a.supp_id=b.supp_id
                     left join  [172.16.70.30].DATA_DETAIL.dbo.SKU_DEF as c WITH (NOLOCK) on a.SKU_ID=c.SKU_ID
 					 left join  DSMART16.dbo.GOODS as e WITH (NOLOCK) on right(left(a.SKU_ID,8),6)=e.GOODS_ID
