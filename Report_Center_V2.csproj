@@ -227,6 +227,12 @@
     <Compile Include="Presentation\fr_BLe_BBuon_By_SKU_VH.designer.cs">
       <DependentUpon>fr_BLe_BBuon_By_SKU_VH.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\Fr_Core_Mart_MiniMart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Fr_Core_Mart_MiniMart.Designer.cs">
+      <DependentUpon>Fr_Core_Mart_MiniMart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\fr_change_pass.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -403,6 +409,9 @@
     <EmbeddedResource Include="Presentation\fr_BLe_BBuon_By_SKU_VH.resx">
       <DependentUpon>fr_BLe_BBuon_By_SKU_VH.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\Fr_Core_Mart_MiniMart.resx">
+      <DependentUpon>Fr_Core_Mart_MiniMart.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Presentation\fr_change_pass.resx">
       <DependentUpon>fr_change_pass.cs</DependentUpon>
     </EmbeddedResource>
@@ -518,6 +527,9 @@
     <None Include="Media\Template\Template-rpt_Member_Card.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Media\Template\Template-rpt_StkISQty_Core_Mart_MiniMart.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Media\Template\Template-rpt_StkISQty_Order_New.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -558,6 +570,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template-Tach_Don_333_314_315.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Media\Template\Template-Core_Mart_MiniMart.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template-Target_tap_doan.xlsx">

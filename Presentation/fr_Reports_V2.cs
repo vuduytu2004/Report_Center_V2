@@ -100,7 +100,7 @@ namespace Report_Center.Presentation
             //    // Ngược lại, đặt thuộc tính Enabled của Date thành False
             //    todate.Enabled = false;
             //}
-            todate.Enabled = para_name.Text.Contains("todate");
+            todate.Enabled =  para_name.Text.Contains("todate");
             NPH.Visible = para_name.Text.IndexOf("NPH", StringComparison.OrdinalIgnoreCase) >= 0;
 
         }
@@ -443,6 +443,10 @@ namespace Report_Center.Presentation
                     else if (Pro_name.Text == "rpt_truyen_nhan")
                     {
                         await Task.Run(() => RunReportAsync_truyen_nhan(templatePath, uniqueFileName));
+                    }
+                    else if (Pro_name.Text == "rpt_StkISQty_Core_Mart_MiniMart")
+                    {
+                        await Task.Run(() => RunReportAsync_rpt_StkISQty_Core_Mart_MiniMart(templatePath, uniqueFileName));
                     }
                     else if (Pro_name.Text == "Tach_Don_333_314_315")
                     {
@@ -1706,6 +1710,118 @@ namespace Report_Center.Presentation
                 }
             }
         }
+        private async Task RunReportAsync_rpt_StkISQty_Core_Mart_MiniMart(string templatePath,string outputPath)
+        {
+            using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command = new SqlCommand("rpt_StkISQty_Core_Mart_MiniMart", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandTimeout = 0;
+
+                    if (frdate.Visible && frdate.Enabled)
+                    {
+                        command.Parameters.AddWithValue("@toDate", todate.Value.Date);
+                    }
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            MessageBox.Show("Không có dữ liệu", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+
+                        using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
+                        {
+                            ExcelWorksheet wsSumMart = package.Workbook.Worksheets["SUM Mart"];
+                            ExcelWorksheet wsSumMiniMart = package.Workbook.Worksheets["SUM MiniMart"];
+                            ExcelWorksheet wsCoreMart = package.Workbook.Worksheets["Core Mart-G"];
+                            ExcelWorksheet wsCoreMiniMart = package.Workbook.Worksheets["Core mini-G"];
+
+                            int startRow = 3;
+
+                            // Result set 1: SUM Mart
+                            WriteReaderToSheet(reader, wsSumMart, startRow);
+
+                            // Result set 2: SUM MiniMart
+                            if (reader.NextResult())
+                                WriteReaderToSheet(reader, wsSumMiniMart, startRow);
+
+                            // Result set 3: Core Mart-G
+                            if (reader.NextResult())
+                                WriteReaderToSheet(reader, wsCoreMart, startRow);
+
+                            // Result set 4: Core mini-G
+                            if (reader.NextResult())
+                                WriteReaderToSheet(reader, wsCoreMiniMart, startRow);
+
+
+                            foreach (var ws in package.Workbook.Worksheets)
+                            {
+                                // Bỏ qua sheet không có dữ liệu
+                                if (ws.Dimension == null)
+                                    continue;
+                                // Xác định vùng có dữ liệu từ dòng 3
+                                var range = ws.Cells[
+                                    startRow,
+                                    ws.Dimension.Start.Column,
+                                    ws.Dimension.End.Row,
+                                    ws.Dimension.End.Column
+                                ];
+
+                                // Kẻ viền
+                                range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                                // Auto resize cột
+                                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+                            }
+
+                            await package.SaveAsAsync(new FileInfo(outputPath));
+                        }
+                    }
+                }
+            }
+
+            Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
+        }
+
+        private void WriteReaderToSheet(SqlDataReader reader, ExcelWorksheet ws, int startRow)
+        {
+            int colCount = reader.FieldCount;
+            int row = startRow;
+
+            // Ghi dữ liệu
+            while (reader.Read())
+            {
+                for (int col = 0; col < colCount; col++)
+                {
+                    ws.Cells[row, col + 1].Value = reader.GetValue(col);
+                }
+                row++;
+            }
+
+            // Kẻ border
+            if (row > startRow)
+            {
+                using (var range = ws.Cells[startRow, 1, row - 1, colCount])
+                {
+                    range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                }
+            }
+
+            ws.Cells[ws.Dimension.Address].AutoFitColumns();
+        }
+
         private async Task RunReportAsync_rpt_Industry_Gross_Profit_Marginy(string templatePath, string outputPath)
         {
             using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
