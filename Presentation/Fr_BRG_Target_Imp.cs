@@ -407,7 +407,6 @@ namespace Report_Center.Presentation
                             ////await package.SaveAsAsync(new FileInfo(savePath)).ConfigureAwait(false);
                             // Sau khi công việc dài hạn hoàn tất, bạn có thể đặt lại progressBar1 vào chế độ mặc định
 
-
                             System.Diagnostics.Process.Start(new ProcessStartInfo(savePath) { UseShellExecute = true });
                             progressBar1.Style = ProgressBarStyle.Blocks;
                         }
