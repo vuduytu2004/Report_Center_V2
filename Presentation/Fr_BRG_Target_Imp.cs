@@ -246,6 +246,136 @@ namespace Report_Center.Presentation
 
             MessageBox.Show("Import completed successfully.");
         }
+        private void import_data_Click_New(object sender, EventArgs e)
+        {
+            import_data.Enabled = false;
+            progressBar1.Value = 0;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                import_data.Enabled = true;
+                return;
+            }
+
+            try
+            {
+                using (var package = new ExcelPackage(new FileInfo(openFileDialog.FileName)))
+                {
+                    var ws = package.Workbook.Worksheets["Sheet1"];
+                    if (ws == null)
+                        throw new Exception("Không tìm thấy Sheet1.");
+
+                    /* ===== 1️⃣ ĐỌC EXCEL → DATATABLE ===== */
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("PRD_CODE", typeof(string));
+                    dt.Columns.Add("RPS_CODE", typeof(string));
+                    dt.Columns.Add("TRG_AMT", typeof(decimal));
+                    dt.Columns.Add("TRG_AMT_BILL", typeof(decimal));
+
+                    int totalRows = ws.Dimension.End.Row - 2;
+                    progressBar1.Minimum = 0;
+                    progressBar1.Maximum = totalRows;
+
+                    int processed = 0;
+
+                    for (int row = 3; row <= ws.Dimension.End.Row; row++)
+                    {
+                        string prd      =   ws.Cells[row, 1].Text.Trim();
+                        string rps      =   ws.Cells[row, 3].Text.Trim();
+                        string amt      =   ws.Cells[row, 5].Text.Trim();
+                        string amtBill  =   ws.Cells[row, 6].Text.Trim();
+
+                        if (string.IsNullOrEmpty(prd) &&
+                            string.IsNullOrEmpty(rps) &&
+                            string.IsNullOrEmpty(amt) &&
+                            string.IsNullOrEmpty(amtBill))
+                            continue;
+
+                        if (!decimal.TryParse(amt.Split('.')[0], out decimal trgAmt) ||
+                            !decimal.TryParse(amtBill.Split('.')[0], out decimal trgAmtBill))
+                            throw new Exception($"Số không hợp lệ tại dòng {row}");
+
+                        dt.Rows.Add(
+                            prd.Substring(0, Math.Min(8, prd.Length)),
+                            rps.Substring(0, Math.Min(3, rps.Length)),
+                            trgAmt,
+                            trgAmtBill
+                        );
+
+                        processed++;
+                        if (processed % 300 == 0)
+                        {
+                            progressBar1.Value = processed;
+                            Application.DoEvents();
+                        }
+                    }
+
+                    if (dt.Rows.Count == 0)
+                        throw new Exception("Không có dữ liệu hợp lệ.");
+
+                    /* ===== 2️⃣ BULK + SP ===== */
+                    using (SqlConnection conn = new SqlConnection(bientoancuc.connectionString))
+                    {
+                        conn.Open();
+                        using (SqlTransaction tran = conn.BeginTransaction())
+                        {
+                            try
+                            {
+                                /* BULK */
+                                using (SqlBulkCopy bulk = new SqlBulkCopy(
+                                       conn, SqlBulkCopyOptions.TableLock, tran))
+                                {
+                                    bulk.DestinationTableName = "Target_DS_BRG_STG";
+                                    bulk.BatchSize = 3000;
+
+                                    bulk.ColumnMappings.Add("PRD_CODE", "PRD_CODE");
+                                    bulk.ColumnMappings.Add("RPS_CODE", "RPS_CODE");
+                                    bulk.ColumnMappings.Add("TRG_AMT", "TRG_AMT");
+                                    bulk.ColumnMappings.Add("TRG_AMT_BILL", "TRG_AMT_BILL");
+
+                                    bulk.WriteToServer(dt);
+                                }
+
+                                /* CALL SP */
+                                using (SqlCommand cmd = new SqlCommand(
+                                       "sp_Import_Target_DS_BRG", conn, tran))
+                                {
+                                    cmd.CommandType = CommandType.StoredProcedure;
+                                    cmd.ExecuteNonQuery();                                    
+                                }
+
+                                tran.Commit();
+                            }
+                            catch
+                            {
+                                tran.Rollback();
+                                throw;
+                            }
+                        }
+                    }
+
+                    MessageBox.Show("Import Target thành công!",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                import_data.Enabled = true;
+                progressBar1.Value = 0;
+            }
+        }
+
 
         // Hàm để lấy giá trị ô và định dạng lại để phù hợp với kiểu char(8)
         private string FormatToChar8(string cellValue)
@@ -438,9 +568,11 @@ namespace Report_Center.Presentation
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+
                 saveFileDialog.DefaultExt = "xlsx";
                 saveFileDialog.AddExtension = true;
                 saveFileDialog.FileName = $"{fileTemp}_{dateAndRandom}.xlsx"; // Đặt tên file theo định dạng
+
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -451,24 +583,23 @@ namespace Report_Center.Presentation
                         {
                             connection.Open();
 
-                            string sqlQuery = @"
-                    SELECT 
-                        a.PRD_CODE,
-                        RIGHT(a.PRD_CODE, 2) AS Ngay,
-                        a.RPS_CODE,
-                        '' AS NHOM,
-                        a.TRG_AMT AS DT,
-                        b.TRG_AMT AS BILL
-                    FROM [HCRC_Report_Center_V2].[dbo].[Target_DS_BRG] AS a
-                    LEFT JOIN [HCRC_Report_Center_V2].[dbo].[Target_DS_BRG] AS b 
-                        ON b.PRD_CODE = a.PRD_CODE 
-                        AND b.RPS_CODE = a.RPS_CODE 
-                        AND b.TRG_TYPE = '03'
-                    WHERE a.TRG_TYPE = '01'
-                        AND a.Create_DATE IS NOT NULL 
-                        AND a.STATUS = 1
-                        AND YEAR(a.PRD_CODE) = @Year 
-                        AND MONTH(a.PRD_CODE) = @Month";
+                            string sqlQuery = @"SELECT 
+                                                    a.PRD_CODE,
+                                                    RIGHT(a.PRD_CODE, 2) AS Ngay,
+                                                    a.RPS_CODE,
+                                                    '' AS NHOM,
+                                                    a.TRG_AMT AS DT,
+                                                    b.TRG_AMT AS BILL
+                                                FROM [HCRC_Report_Center_V2].[dbo].[Target_DS_BRG] AS a
+                                                LEFT JOIN [HCRC_Report_Center_V2].[dbo].[Target_DS_BRG] AS b 
+                                                    ON b.PRD_CODE = a.PRD_CODE 
+                                                    AND b.RPS_CODE = a.RPS_CODE 
+                                                    AND b.TRG_TYPE = '03'
+                                                WHERE a.TRG_TYPE = '01'
+                                                    AND a.Create_DATE IS NOT NULL 
+                                                    AND a.STATUS = 1
+                                                    AND YEAR(a.PRD_CODE) = @Year 
+                                                    AND MONTH(a.PRD_CODE) = @Month";
 
                             using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                             {
@@ -492,7 +623,7 @@ namespace Report_Center.Presentation
                                         //var worksheet = package.Workbook.Worksheets.Add("Data");
                                         //var worksheet = package.Workbook.Worksheets["Sheet1"]; // Lấy sheet có sẵn
 
-
+                                        
                                         var worksheet = package.Workbook.Worksheets["Sheet1"]; // Lấy sheet có sẵn
 
                                         // Kiểm tra nếu worksheet không phải là null

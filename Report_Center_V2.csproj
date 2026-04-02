@@ -548,6 +548,9 @@
     <None Include="Media\Template\Template-rpt_target_Dt_By_Month.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Media\Template\Template-rpt_TAX_IMP.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Media\Template\Template-rpt_TotalRetailWholesaleByIndustry.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

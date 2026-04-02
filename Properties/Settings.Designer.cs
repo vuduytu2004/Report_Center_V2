@@ -22,5 +22,16 @@ namespace Report_Center_V2.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=TUDAIKA;Initial Catalog=BRG_TIMEKEEPING;Persist Security Info=True;Us" +
+            "er ID=tuvd;Password=Tu@123")]
+        public string BRG_TIMEKEEPINGConnectionString {
+            get {
+                return ((string)(this["BRG_TIMEKEEPINGConnectionString"]));
+            }
+        }
     }
 }
