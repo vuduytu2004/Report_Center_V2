@@ -227,6 +227,12 @@
     <Compile Include="Presentation\fr_BLe_BBuon_By_SKU_VH.designer.cs">
       <DependentUpon>fr_BLe_BBuon_By_SKU_VH.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\Fr_Core_Nhap_Khau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Fr_Core_Nhap_Khau.Designer.cs">
+      <DependentUpon>Fr_Core_Nhap_Khau.cs</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Fr_Core_Mart_MiniMart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -409,6 +415,9 @@
     <EmbeddedResource Include="Presentation\fr_BLe_BBuon_By_SKU_VH.resx">
       <DependentUpon>fr_BLe_BBuon_By_SKU_VH.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\Fr_Core_Nhap_Khau.resx">
+      <DependentUpon>Fr_Core_Nhap_Khau.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Presentation\Fr_Core_Mart_MiniMart.resx">
       <DependentUpon>Fr_Core_Mart_MiniMart.cs</DependentUpon>
     </EmbeddedResource>
@@ -509,6 +518,9 @@
     <None Include="Media\Template\Import_Marketting.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Media\Template\Template-Core_Nhap_Khau.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Media\Template\Template-rpt_B2B.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -525,6 +537,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template-rpt_Member_Card.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Media\Template\Template-rpt_Nhap_Khau.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Media\Template\Template-rpt_StkISQty_Core_Mart_MiniMart.xlsx">

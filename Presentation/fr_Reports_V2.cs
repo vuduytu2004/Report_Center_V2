@@ -472,6 +472,10 @@ namespace Report_Center.Presentation
                     {
                         await Task.Run(() => RunReportAsync_rpt_timekeeping_details(templatePath, uniqueFileName));
                     }
+                    else if (Pro_name.Text == "rpt_Nhap_Khau")
+                    {
+                        await Task.Run(() => RunReportAsync_rpt_Nhap_Khau(templatePath, uniqueFileName));
+                    }
                     else
                     {
                         await Task.Run(() => RunReportAsync(templatePath, uniqueFileName));
@@ -1791,7 +1795,455 @@ namespace Report_Center.Presentation
 
             Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
         }
+        private async Task RunReportAsync_rpt_Nhap_Khau_dong_to_o_Cuoi_group(string templatePath, string outputPath)
+        {
+            using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
+            {
+                await connection.OpenAsync();
 
+                using (SqlCommand command = new SqlCommand("rpt_Nhap_Khau", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandTimeout = 0;
+
+                    if (todate.Visible && todate.Enabled)
+                        command.Parameters.AddWithValue("@toDate", todate.Value.Date);
+
+                    if (frdate.Visible && frdate.Enabled)
+                        command.Parameters.AddWithValue("@frDate", frdate.Value.Date);
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            MessageBox.Show("Không có dữ liệu", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+
+                        using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
+                        {
+                            var ws = package.Workbook.Worksheets["BÁO CÁO"];
+                            if (ws == null)
+                            {
+                                MessageBox.Show("Không tìm thấy sheet 'BÁO CÁO'");
+                                return;
+                            }
+
+
+                            var date_create = "Ngày tạo : " + DateTime.Now.ToString("dd/MM/yyyy - H:mm");
+                            var frto = "Theo kỳ - " + "Từ: " + frdate.Value.ToString("dd/MM/yyyy") + " - đến: " + todate.Value.ToString("dd/MM/yyyy");
+                            var LuyKe_frto = $"Lũy kế - Từ: {new DateTime(frdate.Value.Year, frdate.Value.Month, 1):dd/MM/yyyy} - đến: {todate.Value:dd/MM/yyyy}";
+
+                            // Ghi thông tin ngày tháng vào Sheet1
+                            ws.Cells["A1"].Value = date_create;
+                            ws.Cells["G2"].Value = frto;
+                            ws.Cells["N2"].Value = LuyKe_frto;
+
+                            int startRow = 4;
+                            int currentRow = startRow;
+
+                            int colCount = reader.FieldCount;
+
+                            // ===== CONFIG CỘT TÍNH TỔNG (E → Q) =====
+                            int startSumCol = 5; // cột E
+                            int endSumCol = 17;  // cột Q
+
+                            int dataStartIndex = startSumCol - 2;
+                            int dataEndIndex = endSumCol - 2;
+
+                            decimal[] sumGroup = new decimal[colCount];
+                            decimal[] sumAll = new decimal[colCount];
+
+                            // ===== GROUP =====
+                            int stt = 1;
+                            string currentRptKey = "";
+                            int groupStartRow = startRow;
+
+                            while (await reader.ReadAsync())
+                            {
+                                string rptKey = reader["Rpt_key"]?.ToString() ?? "";
+
+                                // ===== ĐỔI GROUP =====
+                                if (currentRptKey != "" && currentRptKey != rptKey)
+                                {
+                                    int rptKeyCol = 2;
+
+                                    // merge
+                                    ws.Cells[groupStartRow, rptKeyCol, currentRow - 1, rptKeyCol].Merge = true;
+                                    ws.Cells[groupStartRow, rptKeyCol].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+
+                                    // ghi tổng group
+                                    ws.Cells[currentRow, rptKeyCol].Value = "Tổng " + currentRptKey;
+
+                                    for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                                    {                                        
+                                        string colName = reader.GetName(i);
+
+                                        if (colName == "Tyle_lai" || colName == "Lai_gop")
+                                        {
+                                            decimal dt = sumGroup[i - 2];
+                                            decimal lai = sumGroup[i - 1];
+
+                                            ws.Cells[currentRow, i + 2].Value = (dt != 0) ? lai / dt : 0;
+                                        }
+                                        else
+                                        {
+                                            ws.Cells[currentRow, i + 2].Value = sumGroup[i];
+                                        }
+                                    }
+
+                                    // style
+                                    using (var range = ws.Cells[currentRow, 1, currentRow, colCount + 1])
+                                    {
+                                        range.Style.Font.Bold = true;
+                                        range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                    }
+
+                                    currentRow++;
+                                    stt = 1;
+                                    Array.Clear(sumGroup, 0, sumGroup.Length);
+                                    groupStartRow = currentRow;
+                                }
+
+                                currentRptKey = rptKey;
+
+                                // ===== GHI DATA =====
+                                ws.Cells[currentRow, 1].Value = stt++;
+
+                                for (int i = 0; i < colCount; i++)
+                                {
+                                    ws.Cells[currentRow, i + 2].Value = reader[i];
+                                }
+
+                                // ===== CỘNG TỔNG =====
+                                for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                                {
+                                    if (reader[i] != DBNull.Value &&
+                                        decimal.TryParse(reader[i].ToString(), out decimal val))
+                                    {
+                                        sumGroup[i] += val;
+                                        sumAll[i] += val;
+                                    }
+                                }
+
+                                currentRow++;
+                            }
+
+                            // ===== GROUP CUỐI =====
+                            int rptKeyColumn = 2;
+
+                            ws.Cells[groupStartRow, rptKeyColumn, currentRow - 1, rptKeyColumn].Merge = true;
+
+                            ws.Cells[currentRow, rptKeyColumn].Value = "Tổng " + currentRptKey;
+
+                            for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                            {
+                                string colName = reader.GetName(i);
+
+                                if (colName == "Tyle_lai" || colName == "Lai_gop")
+                                {
+                                    decimal dt = sumGroup[i - 2];
+                                    decimal lai = sumGroup[i - 1];
+
+                                    ws.Cells[currentRow, i + 2].Value = (dt != 0) ? lai / dt : 0;
+                                }
+                                else
+                                {
+                                    ws.Cells[currentRow, i + 2].Value = sumGroup[i];
+                                }
+                            }
+
+                            using (var range = ws.Cells[currentRow, 1, currentRow, colCount + 1])
+                            {
+                                range.Style.Font.Bold = true;
+                                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                            }
+
+                            currentRow++;
+
+                            // ===== TỔNG TOÀN BỘ =====
+                            
+                            ws.Cells[currentRow, rptKeyColumn].Value = "TỔNG CỘNG";
+
+                            for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                            {
+                                string colName = reader.GetName(i);
+
+                                if (colName == "Tyle_lai" || colName == "Lai_gop")
+                                {
+                                    decimal dt = sumAll[i - 2];
+                                    decimal lai = sumAll[i - 1];
+
+                                    ws.Cells[currentRow, i + 2].Value = (dt != 0) ? lai / dt : 0;
+                                }
+                                else
+                                {
+                                    ws.Cells[currentRow, i + 2].Value = sumAll[i];
+                                }
+                            }
+
+                            using (var range = ws.Cells[currentRow, 1, currentRow, colCount + 2])
+                            {
+                                range.Style.Font.Bold = true;
+                                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Orange);
+                            }
+
+                            // ===== FORMAT =====
+                            using (var range = ws.Cells[startRow, 1, currentRow, colCount + 2])
+                            {
+                                range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            }
+
+                            // format số (E → Q)
+                            ws.Cells[startRow, startSumCol, currentRow, endSumCol].Style.Numberformat.Format = "#,##0";
+                            // Format % cho cột M (13)
+                            ws.Cells[startRow, 13, currentRow, 13].Style.Numberformat.Format = "0.00%";
+
+                            // Format % cho cột Q (17)
+                            ws.Cells[startRow, 17, currentRow, 17].Style.Numberformat.Format = "0.00%";
+
+                            // căn giữa STT
+                            ws.Cells[startRow, 1, currentRow, 1].Style.HorizontalAlignment =
+                                OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                            // autofit
+                            if (ws.Dimension != null)
+                                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+
+                            await package.SaveAsAsync(new FileInfo(outputPath));
+                        }
+                    }
+                }
+            }
+
+            Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
+        }
+        private async Task RunReportAsync_rpt_Nhap_Khau(string templatePath, string outputPath)
+        {
+            using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command = new SqlCommand("rpt_Nhap_Khau", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandTimeout = 0;
+
+                    if (todate.Visible && todate.Enabled)
+                        command.Parameters.AddWithValue("@toDate", todate.Value.Date);
+
+                    if (frdate.Visible && frdate.Enabled)
+                        command.Parameters.AddWithValue("@frDate", frdate.Value.Date);
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            MessageBox.Show("Không có dữ liệu", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+
+                        using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
+                        {
+                            var ws = package.Workbook.Worksheets["BÁO CÁO"];
+                            if (ws == null)
+                            {
+                                MessageBox.Show("Không tìm thấy sheet 'BÁO CÁO'");
+                                return;
+                            }
+
+                            // ===== HEADER =====
+                            ws.Cells["D1"].Value = "Ngày tạo : " + DateTime.Now.ToString("dd/MM/yyyy - H:mm");
+                            ws.Cells["G2"].Value = $"Theo kỳ - Từ: {frdate.Value:dd/MM/yyyy} - đến: {todate.Value:dd/MM/yyyy}";
+                            ws.Cells["N2"].Value = $"Lũy kế - Từ: {new DateTime(frdate.Value.Year, frdate.Value.Month, 1):dd/MM/yyyy} - đến: {todate.Value:dd/MM/yyyy}";
+
+                            int startRow = 4;
+                            int currentRow = startRow;
+
+                            int colCount = reader.FieldCount;
+
+                            // ===== CONFIG =====
+                            int startSumCol = 5; // E
+                            int endSumCol = 17;  // Q
+
+                            int dataStartIndex = startSumCol - 2;
+                            int dataEndIndex = endSumCol - 2;
+
+                            decimal[] sumGroup = new decimal[colCount];
+                            decimal[] sumAll = new decimal[colCount];
+
+                            // ===== GROUP =====
+                            int sttGroup = 1;
+                            string currentRptKey = "";
+                            int groupStartRow = startRow;
+
+                            while (await reader.ReadAsync())
+                            {
+                                string rptKey = reader["Rpt_key"]?.ToString() ?? "";
+
+                                // ===== ĐỔI GROUP =====
+                                if (currentRptKey != "" && currentRptKey != rptKey)
+                                {
+                                    int rptKeyCol = 2;
+
+                                    // merge
+                                    ws.Cells[groupStartRow, rptKeyCol, currentRow - 1, rptKeyCol].Merge = true;
+
+                                    // ===== DÒNG TỔNG GROUP =====
+                                    ws.Cells[currentRow, 1].Value = sttGroup++; // STT chỉ ở đây
+                                    ws.Cells[currentRow, rptKeyCol].Value = "Tổng " + currentRptKey;
+
+                                    for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                                    {
+                                        string colName = reader.GetName(i);
+
+                                        if (colName == "Tyle_lai" || colName == "Lai_gop")
+                                        {
+                                            decimal dt = sumGroup[i - 2];
+                                            decimal lai = sumGroup[i - 1];
+                                            ws.Cells[currentRow, i + 2].Value = (dt != 0) ? lai / dt : 0;
+                                        }
+                                        else
+                                        {
+                                            ws.Cells[currentRow, i + 2].Value = sumGroup[i];
+                                        }
+                                    }
+
+                                    using (var range = ws.Cells[currentRow, 1, currentRow, colCount + 1])
+                                    {
+                                        range.Style.Font.Bold = true;
+                                        range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                    }
+
+                                    currentRow++;
+                                    Array.Clear(sumGroup, 0, sumGroup.Length);
+                                    groupStartRow = currentRow;
+                                }
+
+                                currentRptKey = rptKey;
+
+                                // ===== DÒNG CHI TIẾT =====
+                                ws.Cells[currentRow, 1].Value = ""; // KHÔNG đánh STT
+
+                                for (int i = 0; i < colCount; i++)
+                                {
+                                    ws.Cells[currentRow, i + 2].Value = reader[i];
+                                }
+
+                                // ===== CỘNG TỔNG =====
+                                for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                                {
+                                    if (reader[i] != DBNull.Value &&
+                                        decimal.TryParse(reader[i].ToString(), out decimal val))
+                                    {
+                                        sumGroup[i] += val;
+                                        sumAll[i] += val;
+                                    }
+                                }
+
+                                currentRow++;
+                            }
+
+                            // ===== GROUP CUỐI =====
+                            int rptKeyColumn = 2;
+
+                            ws.Cells[groupStartRow, rptKeyColumn, currentRow - 1, rptKeyColumn].Merge = true;
+
+                            ws.Cells[currentRow, 1].Value = sttGroup++;
+                            ws.Cells[currentRow, rptKeyColumn].Value = "Tổng " + currentRptKey;
+
+                            for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                            {
+                                string colName = reader.GetName(i);
+
+                                if (colName == "Tyle_lai" || colName == "Lai_gop")
+                                {
+                                    decimal dt = sumGroup[i - 2];
+                                    decimal lai = sumGroup[i - 1];
+                                    ws.Cells[currentRow, i + 2].Value = (dt != 0) ? lai / dt : 0;
+                                }
+                                else
+                                {
+                                    ws.Cells[currentRow, i + 2].Value = sumGroup[i];
+                                }
+                            }
+
+                            using (var range = ws.Cells[currentRow, 1, currentRow, colCount + 1])
+                            {
+                                range.Style.Font.Bold = true;
+                                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                            }
+
+                            currentRow++;
+
+                            // ===== TỔNG TOÀN BỘ =====
+                            ws.Cells[currentRow, 1].Value = "";
+                            ws.Cells[currentRow, rptKeyColumn].Value = "TỔNG CỘNG";
+
+                            for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
+                            {
+                                string colName = reader.GetName(i);
+
+                                if (colName == "Tyle_lai" || colName == "Lai_gop")
+                                {
+                                    decimal dt = sumAll[i - 2];
+                                    decimal lai = sumAll[i - 1];
+                                    ws.Cells[currentRow, i + 2].Value = (dt != 0) ? lai / dt : 0;
+                                }
+                                else
+                                {
+                                    ws.Cells[currentRow, i + 2].Value = sumAll[i];
+                                }
+                            }
+
+                            using (var range = ws.Cells[currentRow, 1, currentRow, colCount + 2])
+                            {
+                                range.Style.Font.Bold = true;
+                                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Orange);
+                            }
+
+                            // ===== FORMAT =====
+                            using (var range = ws.Cells[startRow, 1, currentRow, colCount + 2])
+                            {
+                                range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            }
+
+                            // format số
+                            ws.Cells[startRow, startSumCol, currentRow, endSumCol].Style.Numberformat.Format = "#,##0";
+
+                            // format %
+                            ws.Cells[startRow, 13, currentRow, 13].Style.Numberformat.Format = "0.00%";
+                            ws.Cells[startRow, 17, currentRow, 17].Style.Numberformat.Format = "0.00%";
+
+                            // căn giữa STT
+                            ws.Cells[startRow, 1, currentRow, 1].Style.HorizontalAlignment =
+                                ExcelHorizontalAlignment.Center;
+
+                            if (ws.Dimension != null)
+                                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+
+                            await package.SaveAsAsync(new FileInfo(outputPath));
+                        }
+                    }
+                }
+            }
+
+            Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
+        }
         private void WriteReaderToSheet(SqlDataReader reader, ExcelWorksheet ws, int startRow)
         {
             int colCount = reader.FieldCount;

@@ -1240,7 +1240,7 @@ namespace Report_Center.Presentation
                     newRng.Interior.Color = XlRgbColor.rgbBlue;
                     newRng.Font.Color = XlRgbColor.rgbWhite;
 
-                    //workSheet.Range[workSheet.Cells[1, "A"], workSheet.Cells[1, cot]].Interior.Color = XlRgbColor.rgbBlue;
+                    //    workSheet.Range[workSheet.Cells[1, "A"], workSheet.Cells[1, cot]].Interior.Color = XlRgbColor.rgbBlue;
                     //    workSheet.Range[workSheet.Cells[1, "A"], workSheet.Cells[1, cot]].VerticalAlignment = XlVAlign.xlVAlignCenter;
                     //    workSheet.Range[workSheet.Cells[1, "A"], workSheet.Cells[1, cot]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
                     //    workSheet.Range[workSheet.Cells[1, "A"], workSheet.Cells[1, cot]].font.Color = XlRgbColor.rgbWhite;
