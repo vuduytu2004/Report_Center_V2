@@ -172,7 +172,8 @@ namespace Report_Center.Presentation
             //progressBar11.Visible = true;
             //progressBar11.Style = ProgressBarStyle.Marquee;
             DataTable table = new DataTable();
-            /// -----------------------------test//----------------------------------------------------------------------------------
+            /// -----------------------------
+            /// test//----------------------------------------------------------------------------------
 
             //----------------------------------------------------
             string sql1 = @"rptCheckCurrentDate_new1";
@@ -182,7 +183,7 @@ namespace Report_Center.Presentation
             setDataSource(table);
 
             //--------------------------------------------------------------------------------
-
+            
 
             changecorlor();
             //dosomething();

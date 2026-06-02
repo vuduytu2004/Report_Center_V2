@@ -48,7 +48,10 @@ namespace Report_Center
             public static string txt_Gr_Parameter { get; set; }
             public static string txt_Parameter { get; set; }
             public static int txt_Day { get; set; }
-
+            public static string AccessToken { get; set; }
+            // nếu cần thêm
+            public static string FullName { get; set; }
+            public static string DomainId { get; set; }
             // Các biến toàn cục khác có thể được thêm vào đây
         }
         public Main()

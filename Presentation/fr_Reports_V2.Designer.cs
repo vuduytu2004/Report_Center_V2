@@ -70,6 +70,9 @@
             this.gr_StoreId = new System.Windows.Forms.GroupBox();
             this.StoreId = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.grBox_DV_CH = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.gr_fr_to_date.SuspendLayout();
             this.gr_dept_id.SuspendLayout();
             this.gr_stk_id.SuspendLayout();
@@ -81,6 +84,7 @@
             this.gr_core.SuspendLayout();
             this.gr_userId.SuspendLayout();
             this.gr_StoreId.SuspendLayout();
+            this.grBox_DV_CH.SuspendLayout();
             this.SuspendLayout();
             // 
             // bt_BC
@@ -593,11 +597,51 @@
             this.label11.TabIndex = 18;
             this.label11.Text = "Mã điểm chấm";
             // 
+            // grBox_DV_CH
+            // 
+            this.grBox_DV_CH.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grBox_DV_CH.Controls.Add(this.comboBox1);
+            this.grBox_DV_CH.Controls.Add(this.label12);
+            this.grBox_DV_CH.Location = new System.Drawing.Point(33, 456);
+            this.grBox_DV_CH.Margin = new System.Windows.Forms.Padding(2);
+            this.grBox_DV_CH.Name = "grBox_DV_CH";
+            this.grBox_DV_CH.Padding = new System.Windows.Forms.Padding(2);
+            this.grBox_DV_CH.Size = new System.Drawing.Size(490, 46);
+            this.grBox_DV_CH.TabIndex = 23;
+            this.grBox_DV_CH.TabStop = false;
+            this.grBox_DV_CH.Visible = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.Blue;
+            this.label12.Location = new System.Drawing.Point(3, 20);
+            this.label12.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(69, 13);
+            this.label12.TabIndex = 18;
+            this.label12.Text = "Đơn vị, CH";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(180, 12);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(298, 21);
+            this.comboBox1.TabIndex = 19;
+            this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
+            // 
             // fr_Reports_V2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(555, 564);
+            this.Controls.Add(this.grBox_DV_CH);
             this.Controls.Add(this.gr_StoreId);
             this.Controls.Add(this.gr_userId);
             this.Controls.Add(this.gr_core);
@@ -641,6 +685,8 @@
             this.gr_userId.PerformLayout();
             this.gr_StoreId.ResumeLayout(false);
             this.gr_StoreId.PerformLayout();
+            this.grBox_DV_CH.ResumeLayout(false);
+            this.grBox_DV_CH.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -689,5 +735,8 @@
         private System.Windows.Forms.GroupBox gr_StoreId;
         private System.Windows.Forms.TextBox StoreId;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.GroupBox grBox_DV_CH;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

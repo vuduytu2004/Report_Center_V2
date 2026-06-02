@@ -15,6 +15,7 @@ namespace Report_Center.DataAccess
         public static string connectionString;
         public static string connectionString_DWH;
         public static string connectionString_BRGReports_97_30= "Data Source=172.16.79.30;initial catalog=BRGReports;persist security info=True;user id=report1h;Password=Reports@123;";
+        public static string connectionString_HRM = "Data Source=172.16.79.30;initial catalog=NHANSU_DB_HCRC;persist security info=True;user id=report1h;Password=Reports@123;";
         //public static string amti = "BC123";
     }
     class ConnectDB

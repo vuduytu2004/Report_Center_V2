@@ -70,9 +70,10 @@ namespace Report_Center.Presentation
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.List_Connected);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Location = new System.Drawing.Point(8, 8);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1142, 166);
+            this.panel1.Size = new System.Drawing.Size(761, 108);
             this.panel1.TabIndex = 0;
             // 
             // List_Connected
@@ -90,12 +91,13 @@ namespace Report_Center.Presentation
             this.List_Connected.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.List_Connected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.List_Connected.Location = new System.Drawing.Point(0, 0);
+            this.List_Connected.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.List_Connected.Name = "List_Connected";
             this.List_Connected.RowHeadersWidth = 62;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             this.List_Connected.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.List_Connected.RowTemplate.Height = 28;
-            this.List_Connected.Size = new System.Drawing.Size(1142, 166);
+            this.List_Connected.Size = new System.Drawing.Size(761, 108);
             this.List_Connected.TabIndex = 0;
             this.List_Connected.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.List_Connected_CellContentClick_1);
             this.List_Connected.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.List_Connected_ColumnHeaderMouseClick);
@@ -106,9 +108,10 @@ namespace Report_Center.Presentation
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoSize = true;
             this.panel2.Controls.Add(this.List_Not_Connect);
-            this.panel2.Location = new System.Drawing.Point(12, 185);
+            this.panel2.Location = new System.Drawing.Point(8, 120);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1142, 235);
+            this.panel2.Size = new System.Drawing.Size(761, 153);
             this.panel2.TabIndex = 1;
             // 
             // List_Not_Connect
@@ -126,12 +129,13 @@ namespace Report_Center.Presentation
             this.List_Not_Connect.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.List_Not_Connect.Dock = System.Windows.Forms.DockStyle.Fill;
             this.List_Not_Connect.Location = new System.Drawing.Point(0, 0);
+            this.List_Not_Connect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.List_Not_Connect.Name = "List_Not_Connect";
             this.List_Not_Connect.RowHeadersWidth = 62;
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
             this.List_Not_Connect.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.List_Not_Connect.RowTemplate.Height = 28;
-            this.List_Not_Connect.Size = new System.Drawing.Size(1142, 235);
+            this.List_Not_Connect.Size = new System.Drawing.Size(761, 153);
             this.List_Not_Connect.TabIndex = 1;
             this.List_Not_Connect.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.List_Not_Connect_CellContentClick);
             // 
@@ -150,9 +154,10 @@ namespace Report_Center.Presentation
             this.panel3.Controls.Add(this.check_not_connect);
             this.panel3.Controls.Add(this.check_all);
             this.panel3.Controls.Add(this.progressBar1);
-            this.panel3.Location = new System.Drawing.Point(12, 426);
+            this.panel3.Location = new System.Drawing.Point(8, 277);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1142, 72);
+            this.panel3.Size = new System.Drawing.Size(761, 47);
             this.panel3.TabIndex = 2;
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
@@ -160,10 +165,9 @@ namespace Report_Center.Presentation
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Blue;
-            this.label3.Location = new System.Drawing.Point(20, 43);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(13, 28);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 20);
+            this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 10;
             this.label3.Text = "Sum Time";
             // 
@@ -171,10 +175,9 @@ namespace Report_Center.Presentation
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Crimson;
-            this.label2.Location = new System.Drawing.Point(15, 15);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(10, 10);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 20);
+            this.label2.Size = new System.Drawing.Size(65, 13);
             this.label2.TabIndex = 9;
             this.label2.Text = "Ngày check";
             // 
@@ -182,25 +185,28 @@ namespace Report_Center.Presentation
             // 
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(118, 43);
+            this.label1.Location = new System.Drawing.Point(79, 28);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 22);
+            this.label1.Size = new System.Drawing.Size(95, 14);
             this.label1.TabIndex = 8;
             this.label1.Text = " 0 : 0 : 0 : 0";
             // 
             // frdate
             // 
             this.frdate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.frdate.Location = new System.Drawing.Point(120, 11);
+            this.frdate.Location = new System.Drawing.Point(80, 7);
+            this.frdate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.frdate.Name = "frdate";
-            this.frdate.Size = new System.Drawing.Size(142, 26);
+            this.frdate.Size = new System.Drawing.Size(96, 20);
             this.frdate.TabIndex = 7;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(988, 11);
+            this.button1.Location = new System.Drawing.Point(659, 7);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(129, 54);
+            this.button1.Size = new System.Drawing.Size(86, 35);
             this.button1.TabIndex = 5;
             this.button1.Text = "&Exit";
             this.button1.UseVisualStyleBackColor = true;
@@ -208,9 +214,10 @@ namespace Report_Center.Presentation
             // 
             // Refresh
             // 
-            this.Refresh.Location = new System.Drawing.Point(850, 11);
+            this.Refresh.Location = new System.Drawing.Point(567, 7);
+            this.Refresh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Refresh.Name = "Refresh";
-            this.Refresh.Size = new System.Drawing.Size(129, 54);
+            this.Refresh.Size = new System.Drawing.Size(86, 35);
             this.Refresh.TabIndex = 4;
             this.Refresh.Text = "Refresh";
             this.Refresh.UseVisualStyleBackColor = true;
@@ -218,9 +225,10 @@ namespace Report_Center.Presentation
             // 
             // export_not_connect
             // 
-            this.export_not_connect.Location = new System.Drawing.Point(712, 11);
+            this.export_not_connect.Location = new System.Drawing.Point(475, 7);
+            this.export_not_connect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.export_not_connect.Name = "export_not_connect";
-            this.export_not_connect.Size = new System.Drawing.Size(129, 54);
+            this.export_not_connect.Size = new System.Drawing.Size(86, 35);
             this.export_not_connect.TabIndex = 3;
             this.export_not_connect.Text = "Export Not Connects";
             this.export_not_connect.UseVisualStyleBackColor = true;
@@ -228,9 +236,10 @@ namespace Report_Center.Presentation
             // 
             // export_all
             // 
-            this.export_all.Location = new System.Drawing.Point(574, 11);
+            this.export_all.Location = new System.Drawing.Point(383, 7);
+            this.export_all.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.export_all.Name = "export_all";
-            this.export_all.Size = new System.Drawing.Size(129, 54);
+            this.export_all.Size = new System.Drawing.Size(86, 35);
             this.export_all.TabIndex = 2;
             this.export_all.Text = "Export All";
             this.export_all.UseVisualStyleBackColor = true;
@@ -239,9 +248,10 @@ namespace Report_Center.Presentation
             // check_not_connect
             // 
             this.check_not_connect.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.check_not_connect.Location = new System.Drawing.Point(436, 11);
+            this.check_not_connect.Location = new System.Drawing.Point(291, 7);
+            this.check_not_connect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.check_not_connect.Name = "check_not_connect";
-            this.check_not_connect.Size = new System.Drawing.Size(129, 54);
+            this.check_not_connect.Size = new System.Drawing.Size(86, 35);
             this.check_not_connect.TabIndex = 1;
             this.check_not_connect.Text = "Check Not Connect";
             this.check_not_connect.UseVisualStyleBackColor = true;
@@ -249,9 +259,10 @@ namespace Report_Center.Presentation
             // 
             // check_all
             // 
-            this.check_all.Location = new System.Drawing.Point(298, 11);
+            this.check_all.Location = new System.Drawing.Point(199, 7);
+            this.check_all.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.check_all.Name = "check_all";
-            this.check_all.Size = new System.Drawing.Size(129, 54);
+            this.check_all.Size = new System.Drawing.Size(86, 35);
             this.check_all.TabIndex = 0;
             this.check_all.Text = "Check All";
             this.check_all.UseVisualStyleBackColor = true;
@@ -259,9 +270,10 @@ namespace Report_Center.Presentation
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(4, 0);
+            this.progressBar1.Location = new System.Drawing.Point(3, 0);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(1137, 72);
+            this.progressBar1.Size = new System.Drawing.Size(758, 47);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 6;
             this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
@@ -272,12 +284,13 @@ namespace Report_Center.Presentation
             // 
             // fr_CheckConnects
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1166, 509);
+            this.ClientSize = new System.Drawing.Size(777, 331);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "fr_CheckConnects";
             this.Text = "Check Connections-Doanh Số - BRG";
             this.Load += new System.EventHandler(this.Form3_Load);

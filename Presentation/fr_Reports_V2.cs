@@ -26,7 +26,7 @@ namespace Report_Center.Presentation
         // Khai báo biến apiUrl ở mức độ của lớp
         private string apiUrl = "";
         private bool isDownloading = false; // Biến cờ để theo dõi trạng thái tải xuống
-         int _ma_core;
+        int _ma_core;
         public fr_Reports_V2()
         {
             InitializeComponent();
@@ -100,7 +100,7 @@ namespace Report_Center.Presentation
             //    // Ngược lại, đặt thuộc tính Enabled của Date thành False
             //    todate.Enabled = false;
             //}
-            todate.Enabled =  para_name.Text.Contains("todate");
+            todate.Enabled = para_name.Text.Contains("todate");
             NPH.Visible = para_name.Text.IndexOf("NPH", StringComparison.OrdinalIgnoreCase) >= 0;
 
         }
@@ -325,8 +325,76 @@ namespace Report_Center.Presentation
             ma_core.ValueMember = "Value";  // Khi chọn thì lấy ra 1 hoặc 2
 
             ma_core.SelectedIndex = 0; // Chọn mặc định là "Mart"
+            // lấy đơn vị , CH cho HRM
+            LoadLevel1ManagerOrgName();
         }
+        private List<string> _allItems = new List<string>();
+        private void LoadLevel1ManagerOrgName_Luu()
+        {
+            _allItems.Clear();
 
+            string sql = @"
+        SELECT DISTINCT Lv1OrgName
+        FROM View_KpiEvaluation_Organization
+        WHERE Level1ManagerOrgName IS NOT NULL";
+
+            using (SqlConnection conn = new SqlConnection(bientoancuc.connectionString_HRM))
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            {
+                conn.Open();
+
+                using (SqlDataReader rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        _allItems.Add(rd[0].ToString());
+                    }
+                }
+            }
+
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(_allItems.ToArray());
+        }
+        private void LoadLevel1ManagerOrgName()
+        {
+            _allItems.Clear();
+
+            string sql = @"
+        SELECT DISTINCT Lv1OrgName
+        FROM View_KpiEvaluation_Organization
+        WHERE Level1ManagerOrgName IS NOT NULL";
+
+            using (SqlConnection conn =
+                   new SqlConnection(bientoancuc.connectionString_HRM))
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            {
+                conn.Open();
+
+                using (SqlDataReader rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        _allItems.Add(rd[0].ToString());
+                    }
+                }
+            }
+
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(_allItems.ToArray());
+
+            AutoCompleteStringCollection ac =
+                new AutoCompleteStringCollection();
+
+            ac.AddRange(_allItems.ToArray());
+
+            comboBox1.AutoCompleteMode =
+                AutoCompleteMode.SuggestAppend;
+
+            comboBox1.AutoCompleteSource =
+                AutoCompleteSource.CustomSource;
+
+            comboBox1.AutoCompleteCustomSource = ac;
+        }
         private void bt_Exit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -375,18 +443,7 @@ namespace Report_Center.Presentation
             string Dirpath = Directory.GetCurrentDirectory();
             string Template = Dirpath + @"/Media/Template/";
             string file_temp = "";
-            //if (Pro_name.Text == "rpt_Do_Phu_ASM")
-            //{
-            //     file_temp= "Template-BC-do_phu_ASM.xlsx";
-            //}
-            //else if (Pro_name.Text == "rpt_Nonmoving")
-            //{
-            //     file_temp = "Template-BC_NonMoving.xlsx";
-            //}
-            //else if (Pro_name.Text == "rpt_SUPP_IMPORT")
-            //{
-            //    file_temp = "Template-BC-NhapHang.xlsx";
-            //}
+
             file_temp = $"Template-{Pro_name.Text}.xlsx";
             //string dateAndRandom = DateTime.Now.ToString("yyyyMMdd") + "_" + new Random().Next(1000, 9999);
             string dateAndRandom = frdate.Value.ToString("yyyyMMddHHmm") + "_" + new Random().Next(100, 999);
@@ -398,38 +455,12 @@ namespace Report_Center.Presentation
                 saveFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
                 saveFileDialog.DefaultExt = "xlsx";
                 saveFileDialog.AddExtension = true;
-                //if (Pro_name.Text == "rpt_Do_Phu_ASM")
-                //{
-                //    saveFileDialog.FileName = "BC_do_phu_ASM";
-                //}
-                //else if (Pro_name.Text == "rpt_Nonmoving")
-                //{
-                //    saveFileDialog.FileName = "BC_Nonmoving";
-                //}
-                //else if (Pro_name.Text == "rpt_SUPP_IMPORT")
-                //{
-                //    saveFileDialog.FileName = "BC_Nhap_hang";
-                //}
-                //else if (Pro_name.Text == "rpt_DioByNCC")
-                //{
-                //    saveFileDialog.FileName = "BC_DIOByNCC";
-                //}
-                //saveFileDialog.FileName = Pro_name.Text;
+
                 saveFileDialog.FileName = $"Template-{Pro_name.Text}_{dateAndRandom}.xlsx";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string selectedDirectory = Path.GetDirectoryName(saveFileDialog.FileName);
                     string uniqueFileName = GetUniqueFileName(Path.GetFileName(saveFileDialog.FileName), selectedDirectory);
-                    //// Lấy tên tệp đã chọn
-                    //string originalFileName = Path.GetFileName(saveFileDialog.FileName);
-
-                    //// Tạo chuỗi ngày tháng và số ngẫu nhiên
-                    //string dateAndRandom = DateTime.Now.ToString("yyyyMMddHHmmss") +" "+ new Random().Next(1000, 9999);
-
-                    //// Kết hợp tên tệp gốc, ngày tháng và số ngẫu nhiên để tạo tên tệp duy nhất
-                    //string uniqueFileName = originalFileName + " " + dateAndRandom;
-
-                    ////string outputPath = saveFileDialog.FileName;
 
                     // Chạy thủ tục trong một luồng riêng biệt
                     if (Pro_name.Text == "rpt_TotalRetailWholesaleByIndustry")
@@ -475,6 +506,24 @@ namespace Report_Center.Presentation
                     else if (Pro_name.Text == "rpt_Nhap_Khau")
                     {
                         await Task.Run(() => RunReportAsync_rpt_Nhap_Khau(templatePath, uniqueFileName));
+                    }
+                    //else if (Pro_name.Text == "HRM_KPI_Thang")
+                    //{
+                    //    string nameEn = comboBox1.Text;
+                    //    DateTime atMonth = todate.Value.Date;
+                    //    //await Task.Run(() => RunReportAsync_HRM_KPI_Thang(templatePath, uniqueFileName));
+                    //    await Task.Run(() =>RunReportAsync_HRM_KPI_Thang(templatePath,uniqueFileName,atMonth,nameEn));
+                    //}
+                    else if (Pro_name.Text == "HRM_KPI_Thang")
+                    {
+                        string Lv1OrgName = comboBox1.Text;
+                        DateTime atMonth = frdate.Value.Date;
+                        //MessageBox.Show(atMonth.ToString("yyyy-MM-dd"));
+                        await RunReportAsync_HRM_KPI_Thang(
+                            templatePath,
+                            uniqueFileName,
+                            atMonth,
+                            Lv1OrgName);
                     }
                     else
                     {
@@ -569,7 +618,7 @@ namespace Report_Center.Presentation
                                 row++;
                             } while (await reader.ReadAsync());
                         }
-                        
+
                         // --- Sheet "K080" ---
                         await reader.NextResultAsync();
                         if (await reader.ReadAsync())
@@ -648,7 +697,7 @@ namespace Report_Center.Presentation
                             if (await reader.ReadAsync())
                             {
                                 ExcelWorksheet sheet2 = package.Workbook.Worksheets["K076"];
-                                sheet2.Cells["A1"].Value = "Tháng "+frdate.Value.ToString("MM");
+                                sheet2.Cells["A1"].Value = "Tháng " + frdate.Value.ToString("MM");
                                 int row = 6;
                                 do
                                 {
@@ -750,8 +799,8 @@ namespace Report_Center.Presentation
                             selectedValue = ma_core.SelectedValue;
                             _ma_core = ma_core.SelectedValue != null ? Convert.ToInt32(ma_core.SelectedValue) : 0;
                         }
-                        
-                        command.Parameters.AddWithValue("@ma_core", selectedValue ?? DBNull.Value);                       
+
+                        command.Parameters.AddWithValue("@ma_core", selectedValue ?? DBNull.Value);
 
                     }
                     //command.Parameters.AddWithValue("@stk_id", stk_id.Text);
@@ -914,7 +963,7 @@ namespace Report_Center.Presentation
                             worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                             worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                             worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                            worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;                            
+                            worksheet.Cells[$"A5:{GetExcelColumnName(columns_dem + 1)}{startRow}"].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                         }
                         else if (Pro_name.Text == "rpt_TotalRetailWholesaleByIndustry_lv3")
                         {
@@ -1620,7 +1669,7 @@ namespace Report_Center.Presentation
                 using (SqlCommand command = new SqlCommand(Pro_name.Text, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    
+
                     if (frdate.Visible == true)
                     {
                         command.Parameters.AddWithValue("@frdate", frdate.Value.ToString("yyyyMMdd"));
@@ -1714,7 +1763,7 @@ namespace Report_Center.Presentation
                 }
             }
         }
-        private async Task RunReportAsync_rpt_StkISQty_Core_Mart_MiniMart(string templatePath,string outputPath)
+        private async Task RunReportAsync_rpt_StkISQty_Core_Mart_MiniMart(string templatePath, string outputPath)
         {
             using (SqlConnection connection = new SqlConnection(bientoancuc.connectionString))
             {
@@ -1794,6 +1843,257 @@ namespace Report_Center.Presentation
             }
 
             Process.Start(new ProcessStartInfo(outputPath) { UseShellExecute = true });
+        }
+
+        private async Task RunReportAsync_HRM_KPI_Thang(string templatePath, string outputPath, DateTime atMonth, string Lv1OrgName)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection =
+                   new SqlConnection(bientoancuc.connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (SqlCommand command =
+                       new SqlCommand("HRM_KPI_Thang", connection))
+                {
+                    command.CommandType =
+                        CommandType.StoredProcedure;
+
+                    command.CommandTimeout = 0;
+
+                    command.Parameters.Add(
+                        "@atMonth",
+                        SqlDbType.Date).Value = atMonth;
+
+                    command.Parameters.AddWithValue(
+                        "@Lv1OrgName",
+                        string.IsNullOrWhiteSpace(Lv1OrgName)
+                            ? DBNull.Value
+                            : (object)Lv1OrgName);
+
+                    using (SqlDataAdapter da =
+                           new SqlDataAdapter(command))
+                    {
+                        da.Fill(dt);
+                    }
+                }
+            }
+
+            if (dt.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Không có dữ liệu",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            ExcelPackage.LicenseContext =
+                LicenseContext.NonCommercial;
+
+            using (var package =
+                   new ExcelPackage(
+                       new FileInfo(templatePath)))
+            {
+                var ws =
+                    package.Workbook.Worksheets[
+                        "Bao_cao_them_BTH KPI_thang"];
+
+                if (ws == null)
+                {
+                    MessageBox.Show(
+                        "Không tìm thấy sheet Bao_cao_them_BTH KPI_thang");
+
+                    return;
+                }
+
+                ws.Cells["A2"].Value =
+                    $"THÁNG {atMonth.Month:00} NĂM {atMonth.Year}";
+
+                int row = 5;
+
+                string oldLv1OrgName = "";
+                string oldNameEn = "";
+
+                int stt = 0;
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string lv1Org =
+                        dr["Lv1OrgName"]?.ToString();
+
+                    string nameEn =
+                        dr["NameEn"]?.ToString();
+
+                    // Group cấp 1
+                    if (oldLv1OrgName != lv1Org)
+                    {
+                        stt = 0;
+
+                        ws.Cells[row, 1].Value =
+                            lv1Org;
+
+                        ws.Cells[row, 1, row, 11]
+                          .Merge = true;
+
+                        ws.Cells[row, 1].Style.Font.Bold = true;
+
+                        row++;
+
+                        oldLv1OrgName = lv1Org;
+                        oldNameEn = "";
+                    }
+
+                    // Group cấp 2
+                    if (oldNameEn != nameEn)
+                    {
+                        ws.Cells[row, 1].Value =
+                            nameEn;
+
+                        ws.Cells[row, 1, row, 11]
+                          .Merge = true;
+
+                        ws.Cells[row, 1].Style.Font.Bold = true;
+
+                        row++;
+
+                        oldNameEn = nameEn;
+                    }
+
+                    // Dữ liệu chi tiết
+                    stt++;
+
+                    ws.Cells[row, 1].Value = stt;
+                    ws.Cells[row, 2].Value = dr["UserName"];
+                    ws.Cells[row, 3].Value = dr["EmployeeName"];
+                    ws.Cells[row, 4].Value = dr["EmployeeJobTitle"];
+                    ws.Cells[row, 5].Value = dr["LevelName"];
+                    ws.Cells[row, 6].Value = dr["NameEn"];
+                    ws.Cells[row, 7].Value = dr["EmpKpiPoint"];
+                    ws.Cells[row, 8].Value = dr["EmpKpiClassification"]?.ToString().Trim();
+                    ws.Cells[row, 9].Value = dr["Level1ManagerKpiPoint"];
+                    ws.Cells[row, 10].Value = dr["Level1ManagerKpiClassification"]?.ToString().Trim();
+                    ws.Cells[row, 11].Value = dr["reportPoint"];
+                    ws.Cells[row, 12].Value = dr["reportClassification"]?.ToString().Trim();
+
+                    row++;
+                }
+
+                int endRow = row - 1;
+
+                var range =
+                    ws.Cells[6, 1, endRow, 13];
+
+                range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+
+                range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+
+                range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                // Cột B căn giữa
+                ws.Cells[6, 2, endRow, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                // Cột G -> L căn giữa
+                ws.Cells[6, 7, endRow, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+
+                // Tạo bảng tổng hợp dưới cùng
+                int summaryRow = row + 2;
+                var summaryRange =ws.Cells[summaryRow, 2, summaryRow + 8, 5];
+
+                for (int r = summaryRow; r <= summaryRow + 8; r++)
+                {
+                    ws.Cells[r, 2, r, 3].Merge = true;
+                }
+                summaryRange.Style.HorizontalAlignment =    ExcelHorizontalAlignment.Center;
+
+                summaryRange.Style.VerticalAlignment =                    ExcelVerticalAlignment.Center;
+                var headerRange =    ws.Cells[summaryRow, 2, summaryRow, 5];
+
+                headerRange.Style.Fill.PatternType =                    ExcelFillStyle.Solid;
+
+                headerRange.Style.Fill.BackgroundColor                    .SetColor(Color.FromArgb(255, 230, 153));
+                var totalRange =ws.Cells[summaryRow + 8, 2, summaryRow + 8, 5];
+
+                totalRange.Style.Fill.PatternType =ExcelFillStyle.Solid;
+
+                totalRange.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 230, 153));
+
+                headerRange.Style.Font.Bold = true;
+                totalRange.Style.Font.Bold = true;
+
+                ws.Cells[summaryRow, 2].Value = "Bảng xếp loại";
+                ws.Cells[summaryRow, 4].Value = "Số CBNV";
+                ws.Cells[summaryRow, 5].Value = "Xếp loại theo tỉ lệ";
+
+                ws.Cells[summaryRow, 7].Value = "Trưởng bộ phận";
+                ws.Cells[summaryRow, 11].Value = "Tổng Giám Đốc";
+                ws.Cells[summaryRow + 1, 2].Value ="Loại A+ (Hoàn thành xuất sắc)";
+
+                ws.Cells[summaryRow + 1, 4].Formula =$"COUNTIF(L:L,\"*A+*\")";
+
+                ws.Cells[summaryRow + 1, 5].Formula =$"D{summaryRow + 1}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 1, 2].Value ="Loại A+ (Hoàn thành xuất sắc)";
+
+                ws.Cells[summaryRow + 1, 4].Formula =$"COUNTIF(L:L,\"*A+*\")";
+
+                ws.Cells[summaryRow + 1, 5].Formula =$"D{summaryRow + 1}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 2, 2].Value ="Loại A (Hoàn thành nhiệm vụ)";
+
+                ws.Cells[summaryRow + 2, 4].Formula =$"COUNTIF(L:L,\"A\")";
+
+                ws.Cells[summaryRow + 2, 5].Formula =$"D{summaryRow + 2}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 3, 2].Value ="Loại A- (Cơ bản hoàn thành nhiệm vụ)";
+
+                ws.Cells[summaryRow + 3, 4].Formula =$"COUNTIF(L:L,\"*A-*\")";
+
+                ws.Cells[summaryRow + 3, 5].Formula =$"D{summaryRow + 3}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 4, 2].Value ="Loại B+ (Cần cải thiện)";
+                ws.Cells[summaryRow + 4, 4].Formula =$"COUNTIF(L:L,\"*B+*\")";
+
+                ws.Cells[summaryRow + 4, 5].Formula =$"D{summaryRow + 4}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 5, 2].Value ="Loại B (Cần cải thiện)";
+
+                ws.Cells[summaryRow + 5, 4].Formula =$"COUNTIF(L:L,\"B\")";
+
+                ws.Cells[summaryRow + 5, 5].Formula =$"D{summaryRow + 5}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 6, 2].Value ="Loại B- (Cần cải thiện)";
+
+                ws.Cells[summaryRow + 6, 4].Formula =$"COUNTIF(L:L,\"*B-*\")";
+
+                ws.Cells[summaryRow + 6, 5].Formula =$"D{summaryRow + 6}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 7, 2].Value ="Loại C (Không đạt yêu cầu)";
+
+                ws.Cells[summaryRow + 7, 4].Formula =$"COUNTIF(L:L,\"C\")";
+
+                ws.Cells[summaryRow + 7, 5].Formula =$"D{summaryRow + 7}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 8, 2].Value ="Tổng số CBNV đã đánh giá";
+
+                ws.Cells[summaryRow + 8, 4].Formula =$"SUM(D{summaryRow + 1}:D{summaryRow + 7})";
+                ws.Cells[summaryRow + 1,5,summaryRow + 7,5].Style.Numberformat.Format = "0%";
+                var summaryRange1 =ws.Cells[summaryRow,2,summaryRow + 8,5];
+
+                summaryRange1.Style.Border.Top.Style =ExcelBorderStyle.Thin;
+
+                summaryRange1.Style.Border.Bottom.Style =ExcelBorderStyle.Thin;
+
+                summaryRange1.Style.Border.Left.Style =ExcelBorderStyle.Thin;
+
+                summaryRange1.Style.Border.Right.Style =ExcelBorderStyle.Thin;
+                // Tạo bảng tổng hợp dưới cùng ---------------------------------------------------------
+
+                await package.SaveAsAsync(new FileInfo(outputPath));
+            }
+
+            Process.Start(
+                new ProcessStartInfo(outputPath)
+                {
+                    UseShellExecute = true
+                });
         }
         private async Task RunReportAsync_rpt_Nhap_Khau_dong_to_o_Cuoi_group(string templatePath, string outputPath)
         {
@@ -1877,7 +2177,7 @@ namespace Report_Center.Presentation
                                     ws.Cells[currentRow, rptKeyCol].Value = "Tổng " + currentRptKey;
 
                                     for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
-                                    {                                        
+                                    {
                                         string colName = reader.GetName(i);
 
                                         if (colName == "Tyle_lai" || colName == "Lai_gop")
@@ -1965,7 +2265,7 @@ namespace Report_Center.Presentation
                             currentRow++;
 
                             // ===== TỔNG TOÀN BỘ =====
-                            
+
                             ws.Cells[currentRow, rptKeyColumn].Value = "TỔNG CỘNG";
 
                             for (int i = dataStartIndex; i <= dataEndIndex && i < colCount; i++)
@@ -2295,7 +2595,7 @@ namespace Report_Center.Presentation
                             Console.WriteLine("Không có dữ liệu để xuất Excel.");
                             return;
                         }
-                       
+
                         using (ExcelPackage package = new ExcelPackage(new FileInfo(templatePath)))
                         {
 
@@ -2402,7 +2702,7 @@ namespace Report_Center.Presentation
                                 }
                                 row++;
                             }
-                            
+
                             // Kẻ ô cho toàn bộ dữ liệu trên tất cả các sheet
                             foreach (var ws in package.Workbook.Worksheets)
                             {
@@ -2896,5 +3196,75 @@ namespace Report_Center.Presentation
             //}
         }
 
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private bool _updating = false;
+
+        private void comboBox1_TextUpdate(object sender, EventArgs e)
+        {
+            //if (_updating) return;
+
+            //try
+            //{
+            //    _updating = true;
+
+            //    string txt = comboBox1.Text;
+
+            //    var filtered = _allItems
+            //        .Where(x =>
+            //            x.IndexOf(txt,
+            //                StringComparison.OrdinalIgnoreCase) >= 0)
+            //        .ToArray();
+
+            //    comboBox1.BeginUpdate();
+
+            //    comboBox1.Items.Clear();
+            //    comboBox1.Items.AddRange(filtered);
+
+            //    comboBox1.EndUpdate();
+
+            //    comboBox1.DroppedDown = true;
+
+            //    comboBox1.SelectionStart = txt.Length;
+            //    comboBox1.SelectionLength = 0;
+            //}
+            //finally
+            //{
+            //    _updating = false;
+            //}
+        }
+
+        private bool _loading = false;
+
+        private void comboBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (_loading) return;
+
+            string txt = comboBox1.Text;
+
+            var filtered = _allItems
+                .Where(x =>
+                    x.IndexOf(txt,
+                        StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToArray();
+
+            BeginInvoke(new Action(() =>
+            {
+                _loading = true;
+
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(filtered);
+
+                comboBox1.DroppedDown = true;
+
+                comboBox1.Text = txt;
+                comboBox1.SelectionStart = txt.Length;
+
+                _loading = false;
+            }));
+        }
     }
 }

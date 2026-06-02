@@ -602,6 +602,9 @@
     <None Include="Media\Template\Template_Excl_Dynamic_Colums_More_1tr_Rows.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Media\Template\Template-HRM_KPI_Thang.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Media\Template\Template_Marketting.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
