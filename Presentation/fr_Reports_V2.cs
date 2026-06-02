@@ -2060,7 +2060,7 @@ namespace Report_Center.Presentation
 
                 ws.Cells[summaryRow + 5, 4].Formula =$"COUNTIF(L:L,\"B\")";
 
-                ws.Cells[summaryRow + 5, 5].Formula =$"D{summaryRow + 5}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 5, 5].Formula =$"D{summaryRow + 5}/D{summaryRow + 8}"; 
                 ws.Cells[summaryRow + 6, 2].Value ="Loại B- (Cần cải thiện)";
 
                 ws.Cells[summaryRow + 6, 4].Formula =$"COUNTIF(L:L,\"*B-*\")";
