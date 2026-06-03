@@ -2003,23 +2003,23 @@ namespace Report_Center.Presentation
 
                 // Tạo bảng tổng hợp dưới cùng
                 int summaryRow = row + 2;
-                var summaryRange =ws.Cells[summaryRow, 2, summaryRow + 8, 5];
+                var summaryRange = ws.Cells[summaryRow, 2, summaryRow + 8, 5];
 
                 for (int r = summaryRow; r <= summaryRow + 8; r++)
                 {
                     ws.Cells[r, 2, r, 3].Merge = true;
                 }
-                summaryRange.Style.HorizontalAlignment =    ExcelHorizontalAlignment.Center;
+                summaryRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-                summaryRange.Style.VerticalAlignment =                    ExcelVerticalAlignment.Center;
-                var headerRange =    ws.Cells[summaryRow, 2, summaryRow, 5];
+                summaryRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                var headerRange = ws.Cells[summaryRow, 2, summaryRow, 5];
 
-                headerRange.Style.Fill.PatternType =                    ExcelFillStyle.Solid;
+                headerRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
 
-                headerRange.Style.Fill.BackgroundColor                    .SetColor(Color.FromArgb(255, 230, 153));
-                var totalRange =ws.Cells[summaryRow + 8, 2, summaryRow + 8, 5];
+                headerRange.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 230, 153));
+                var totalRange = ws.Cells[summaryRow + 8, 2, summaryRow + 8, 5];
 
-                totalRange.Style.Fill.PatternType =ExcelFillStyle.Solid;
+                totalRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
 
                 totalRange.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 230, 153));
 
@@ -2032,58 +2032,58 @@ namespace Report_Center.Presentation
 
                 ws.Cells[summaryRow, 7].Value = "Trưởng bộ phận";
                 ws.Cells[summaryRow, 11].Value = "Tổng Giám Đốc";
-                ws.Cells[summaryRow + 1, 2].Value ="Loại A+ (Hoàn thành xuất sắc)";
+                ws.Cells[summaryRow + 1, 2].Value = "Loại A+ (Hoàn thành xuất sắc)";
 
-                ws.Cells[summaryRow + 1, 4].Formula =$"COUNTIF(L:L,\"*A+*\")";
+                ws.Cells[summaryRow + 1, 4].Formula = $"COUNTIF(L:L,\"*A+*\")";
 
-                ws.Cells[summaryRow + 1, 5].Formula =$"D{summaryRow + 1}/D{summaryRow + 8}";
-                ws.Cells[summaryRow + 1, 2].Value ="Loại A+ (Hoàn thành xuất sắc)";
+                ws.Cells[summaryRow + 1, 5].Formula = $"D{summaryRow + 1}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 1, 2].Value = "Loại A+ (Hoàn thành xuất sắc)";
 
-                ws.Cells[summaryRow + 1, 4].Formula =$"COUNTIF(L:L,\"*A+*\")";
+                ws.Cells[summaryRow + 1, 4].Formula = $"COUNTIF(L:L,\"*A+*\")";
 
-                ws.Cells[summaryRow + 1, 5].Formula =$"D{summaryRow + 1}/D{summaryRow + 8}";
-                ws.Cells[summaryRow + 2, 2].Value ="Loại A (Hoàn thành nhiệm vụ)";
+                ws.Cells[summaryRow + 1, 5].Formula = $"D{summaryRow + 1}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 2, 2].Value = "Loại A (Hoàn thành nhiệm vụ)";
 
-                ws.Cells[summaryRow + 2, 4].Formula =$"COUNTIF(L:L,\"A\")";
+                ws.Cells[summaryRow + 2, 4].Formula = $"COUNTIF(L:L,\"A\")";
 
-                ws.Cells[summaryRow + 2, 5].Formula =$"D{summaryRow + 2}/D{summaryRow + 8}";
-                ws.Cells[summaryRow + 3, 2].Value ="Loại A- (Cơ bản hoàn thành nhiệm vụ)";
+                ws.Cells[summaryRow + 2, 5].Formula = $"D{summaryRow + 2}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 3, 2].Value = "Loại A- (Cơ bản hoàn thành nhiệm vụ)";
 
-                ws.Cells[summaryRow + 3, 4].Formula =$"COUNTIF(L:L,\"*A-*\")";
+                ws.Cells[summaryRow + 3, 4].Formula = $"COUNTIF(L:L,\"*A-*\")";
 
-                ws.Cells[summaryRow + 3, 5].Formula =$"D{summaryRow + 3}/D{summaryRow + 8}";
-                ws.Cells[summaryRow + 4, 2].Value ="Loại B+ (Cần cải thiện)";
-                ws.Cells[summaryRow + 4, 4].Formula =$"COUNTIF(L:L,\"*B+*\")";
+                ws.Cells[summaryRow + 3, 5].Formula = $"D{summaryRow + 3}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 4, 2].Value = "Loại B+ (Cần cải thiện)";
+                ws.Cells[summaryRow + 4, 4].Formula = $"COUNTIF(L:L,\"*B+*\")";
 
-                ws.Cells[summaryRow + 4, 5].Formula =$"D{summaryRow + 4}/D{summaryRow + 8}";
-                ws.Cells[summaryRow + 5, 2].Value ="Loại B (Cần cải thiện)";
+                ws.Cells[summaryRow + 4, 5].Formula = $"D{summaryRow + 4}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 5, 2].Value = "Loại B (Cần cải thiện)";
 
-                ws.Cells[summaryRow + 5, 4].Formula =$"COUNTIF(L:L,\"B\")";
+                ws.Cells[summaryRow + 5, 4].Formula = $"COUNTIF(L:L,\"B\")";
 
-                ws.Cells[summaryRow + 5, 5].Formula =$"D{summaryRow + 5}/D{summaryRow + 8}"; 
-                ws.Cells[summaryRow + 6, 2].Value ="Loại B- (Cần cải thiện)";
+                ws.Cells[summaryRow + 5, 5].Formula = $"D{summaryRow + 5}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 6, 2].Value = "Loại B- (Cần cải thiện)";
 
-                ws.Cells[summaryRow + 6, 4].Formula =$"COUNTIF(L:L,\"*B-*\")";
+                ws.Cells[summaryRow + 6, 4].Formula = $"COUNTIF(L:L,\"*B-*\")";
 
-                ws.Cells[summaryRow + 6, 5].Formula =$"D{summaryRow + 6}/D{summaryRow + 8}";
-                ws.Cells[summaryRow + 7, 2].Value ="Loại C (Không đạt yêu cầu)";
+                ws.Cells[summaryRow + 6, 5].Formula = $"D{summaryRow + 6}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 7, 2].Value = "Loại C (Không đạt yêu cầu)";
 
-                ws.Cells[summaryRow + 7, 4].Formula =$"COUNTIF(L:L,\"C\")";
+                ws.Cells[summaryRow + 7, 4].Formula = $"COUNTIF(L:L,\"C\")";
 
-                ws.Cells[summaryRow + 7, 5].Formula =$"D{summaryRow + 7}/D{summaryRow + 8}";
-                ws.Cells[summaryRow + 8, 2].Value ="Tổng số CBNV đã đánh giá";
+                ws.Cells[summaryRow + 7, 5].Formula = $"D{summaryRow + 7}/D{summaryRow + 8}";
+                ws.Cells[summaryRow + 8, 2].Value = "Tổng số CBNV đã đánh giá";
 
-                ws.Cells[summaryRow + 8, 4].Formula =$"SUM(D{summaryRow + 1}:D{summaryRow + 7})";
-                ws.Cells[summaryRow + 1,5,summaryRow + 7,5].Style.Numberformat.Format = "0%";
-                var summaryRange1 =ws.Cells[summaryRow,2,summaryRow + 8,5];
+                ws.Cells[summaryRow + 8, 4].Formula = $"SUM(D{summaryRow + 1}:D{summaryRow + 7})";
+                ws.Cells[summaryRow + 1, 5, summaryRow + 7, 5].Style.Numberformat.Format = "0%";
+                var summaryRange1 = ws.Cells[summaryRow, 2, summaryRow + 8, 5];
 
-                summaryRange1.Style.Border.Top.Style =ExcelBorderStyle.Thin;
+                summaryRange1.Style.Border.Top.Style = ExcelBorderStyle.Thin;
 
-                summaryRange1.Style.Border.Bottom.Style =ExcelBorderStyle.Thin;
+                summaryRange1.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
-                summaryRange1.Style.Border.Left.Style =ExcelBorderStyle.Thin;
+                summaryRange1.Style.Border.Left.Style = ExcelBorderStyle.Thin;
 
-                summaryRange1.Style.Border.Right.Style =ExcelBorderStyle.Thin;
+                summaryRange1.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                 // Tạo bảng tổng hợp dưới cùng ---------------------------------------------------------
 
                 await package.SaveAsAsync(new FileInfo(outputPath));
