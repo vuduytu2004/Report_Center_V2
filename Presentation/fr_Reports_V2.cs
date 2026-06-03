@@ -2022,6 +2022,7 @@ namespace Report_Center.Presentation
                 totalRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
 
                 totalRange.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 230, 153));
+                //totalRange.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 230, 153));
 
                 headerRange.Style.Font.Bold = true;
                 totalRange.Style.Font.Bold = true;
