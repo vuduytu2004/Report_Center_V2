@@ -44,6 +44,7 @@ namespace Report_Center.Presentation
             int daysToAdd = Convert.IsDBNull(dayValue) ? 0 : Convert.ToInt32(dayValue);
             frdate.MaxDate = DateTime.Now.AddDays(daysToAdd);
             todate.MaxDate = DateTime.Now.AddDays(daysToAdd);
+            //todate.MaxDate = DateTime.Now.AddDays(daysToAdd);
 
 
 
