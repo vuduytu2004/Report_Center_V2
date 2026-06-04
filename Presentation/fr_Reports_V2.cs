@@ -439,6 +439,37 @@ namespace Report_Center.Presentation
         {
             if (Pro_name.Text == null || Pro_name.Text == "" || Pro_name.Text == "1") { return; }
 
+            using (SqlConnection conn = new SqlConnection(bientoancuc.connectionString))
+            {
+                conn.Open();
+
+                string sql = @"SELECT COUNT(*) FROM sys.procedures WHERE name = @ProcName";
+
+                using (SqlCommand cmd =
+                       new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue(
+                        "@ProcName",
+                        Pro_name.Text);
+
+                    int count =
+                        Convert.ToInt32(
+                            cmd.ExecuteScalar());
+
+                    if (count == 0)
+                    {
+                        MessageBox.Show(
+                            "Báo cáo đang trong giai đoạn đang phát triển",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        return;
+                    }
+                }
+            }
+
+
             progressBar1.Style = ProgressBarStyle.Marquee;
 
             string Dirpath = Directory.GetCurrentDirectory();
